@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "27340201446",
+    "project_id": "itemtracker-dev-50418",
+    "storage_bucket": "itemtracker-dev-50418.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27340201446:android:6ba30c884e73a965544a27",
+        "android_client_info": {
+          "package_name": "com.company.itemtracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDBlrt11AqsJqGk3Ocvu1tRqsL5Y_sE34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
