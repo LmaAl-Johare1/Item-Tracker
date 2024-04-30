@@ -44,6 +44,7 @@ This Inventory Management System is a comprehensive mobile application built wit
 ## System Requirements
 - Requires Flutter (latest version) for mobile app development.
 - Dart SDK for backend operations.
+- An IDE ( Visual Studio Code or Android Studio)
 
 ## Usage Instructions
 - Users can log in to access personalized dashboards.
