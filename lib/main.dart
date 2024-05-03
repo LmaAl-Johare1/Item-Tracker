@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/views/splash_screen.dart';
 import 'package:project/res/AppColor.dart';
 
-import 'package:project/views/authentication/forgot_password_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -30,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: AppColor.primary,
       ),
-      home: SplashScreen(),
+        home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
