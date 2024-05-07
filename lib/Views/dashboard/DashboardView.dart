@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
 
+/// Represents a reminder with a title and a date/time.
 class Reminder {
   final String title;
   final DateTime dateTime;
 
+  /// Constructs a [Reminder] instance with the given [title] and [dateTime].
   Reminder({required this.title, required this.dateTime});
 }
 
+/// Represents the home page of the application.
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -20,6 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _productOut = 20;
   List<Reminder> _reminders = [];
 
+  /// Adds a reminder with the given [title] and [dateTime] to the list of reminders.
   void _addReminder(String title, DateTime dateTime) {
     setState(() {
       _reminders.add(Reminder(title: title, dateTime: dateTime));
@@ -28,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _selectedIndex = 0;
 
+  /// Handles the selection of items in the bottom navigation bar.
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

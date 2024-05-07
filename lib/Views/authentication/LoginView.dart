@@ -7,7 +7,16 @@ import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../../viewmodels/LoginViewModel.dart';
 import '../dashboard/DashboardView.dart';
-
+/// A screen widget for user login.
+///
+/// This screen provides a user interface for users to input their login credentials
+/// (email and password) and attempt to log in. It includes text fields for email and password,
+/// as well as a button to initiate the login process. Additionally, users can reset their password
+/// if needed by tapping on the "Forget password?" link.
+///
+/// Uses [FirebaseAuth] for authentication and [LoginModel] for managing login data.
+/// Relies on [AppColor] and [AppText] for consistent UI styling.
+/// Handles login logic through [LoginViewModel].
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -175,3 +184,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 }
+
+
+
+
+
