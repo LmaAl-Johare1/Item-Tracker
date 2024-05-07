@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:project/services/network_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /// ViewModel for the registration screen.
 ///
 /// Handles user inputs, prepares user data, and sends it to the network service.
 class RegisterViewModel extends ChangeNotifier {
-  final NetworkService _networkService;
+final NetworkService _networkService;
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  RegisterViewModel(this._networkService);
+RegisterViewModel(this._networkService);
 
-  String _email = '';
-  String _password = '';
-  String _confirmPassword = '';
-  String _selectedRole = 'Admin';
-  String _businessName = '';
-  String _phoneNumber = '';
-  String _businessAddress = '';
+String _email = '';
+String _password = '';
+String _confirmPassword = '';
+String _selectedRole = 'Admin';
+String _businessName = '';
+String _phoneNumber = '';
+String _businessAddress = '';
 
   /// Getters for the form fields
   String get email => _email;
@@ -70,37 +72,40 @@ class RegisterViewModel extends ChangeNotifier {
 
   /// Sends registration data to the server.
   ///
-  /// Prepares user data and sends it to the network service.
   /// Throws an error if sending data fails.
-  Future<void> sendDataToServer() async {
-    try {
-      final userData = _prepareUserData();
-      await _networkService.sendData('Users', userData);
-    } catch (e) {
-      print('Error sending data: $e');
-      rethrow; // Rethrow the exception for upper layers to handle
-    }
+Future<void> signUp() async {
+  try {
+    final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      email: _email,
+      password: _password,
+    );
+
+    // User registration successful, now prepare user data to send to the server
+    final userData = _prepareUserData(userCredential.user!.uid);
+    await _networkService.sendData('Users', userData);
+  } catch (e) {
+    print('Error signing up: $e');
+    rethrow; // Rethrow the exception for upper layers to handle
+  }
+}
+
+/// Prepares user data based on the selected role.
+Map<String, dynamic> _prepareUserData(String userId) {
+  final userData = {
+    'userId': userId, // Include the user ID obtained from Firebase Authentication
+    'email': _email,
+    'user_rule': _selectedRole,
+  };
+
+  // Include additional fields for Manager role
+  if (_selectedRole == 'Manager') {
+    userData.addAll({
+      'businessName': _businessName,
+      'phoneNumber': _phoneNumber,
+      'businessAddress': _businessAddress,
+    });
   }
 
-  /// Prepares user data based on the selected role.
-  ///
-  /// Returns a map containing user data to be sent to the server.
-  Map<String, dynamic> _prepareUserData() {
-    final userData = {
-      'email': _email,
-      'password': _password,
-      'user_rule': _selectedRole, // Add selected user role here
-    };
-
-    // If the role is Manager, add additional fields
-    if (_selectedRole == 'Manager') {
-      userData.addAll({
-        'businessName': _businessName,
-        'phoneNumber': _phoneNumber,
-        'businessAddress': _businessAddress,
-      });
-    }
-
-    return userData;
-  }
+  return userData;
+}
 }

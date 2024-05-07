@@ -3,18 +3,17 @@ class Validator {
   ///
   /// Returns true if the email is valid; otherwise, false.
   static bool validateEmail(String email) {
-    // Basic email validation using a regular expression
-    // You can customize the regular expression as per your requirements
-    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     return emailRegex.hasMatch(email);
   }
+
 
   /// Validates a password.
   ///
   /// Returns true if the password meets the validation criteria; otherwise, false.
   static bool validatePassword(String password) {
-    // Password validation criteria (e.g., minimum length)
-    return password.length >= 6; // Example: Password should be at least 6 characters long
+    return password.length >= 6;
   }
 
   /// Validates whether two passwords match.
@@ -23,7 +22,14 @@ class Validator {
   static bool validatePasswordMatch(String password, String confirmPassword) {
     return password == confirmPassword;
   }
+  /// Validates a phone number.
+  ///
+  /// Returns true if the phone number is valid; otherwise, false.
+  static bool validatePhoneNumber(String phoneNumber) {
 
+    final RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
+    return phoneRegex.hasMatch(phoneNumber);
+  }
   /// Checks if a field is empty.
   ///
   /// Returns true if the field is empty or contains only whitespace; otherwise, false.

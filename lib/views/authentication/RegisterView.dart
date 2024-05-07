@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/views/authentication/login_screen.dart';
 import 'package:project/services/network_service.dart';
 import '../../utils/validators.dart';
 import '../../viewmodels/authentication/RegisterViewModel.dart';
@@ -54,7 +53,10 @@ class _RegisterPageState extends State<RegisterPage> {
       _showSnackBar('Passwords do not match');
       return;
     }
-
+    if (!Validator.validatePhoneNumber(_phoneNumberController.text)) {
+      _showSnackBar('Invalid phone number');
+      return;
+    }
     _registerViewModel.setEmail(_emailController.text);
     _registerViewModel.setPassword(_passwordController.text);
     _registerViewModel.setConfirmPassword(_confirmPasswordController.text);
@@ -63,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _registerViewModel.setPhoneNumber(_phoneNumberController.text);
     _registerViewModel.setBusinessAddress(_businessAddressController.text);
 
-    _registerViewModel.sendDataToServer();
+    _registerViewModel.signUp();
     _emailController.clear();
     _passwordController.clear();
     _confirmPasswordController.clear();
@@ -113,14 +115,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(
-                    color: AppColor.primary,
+                    color: Validator.validateEmail(_emailController.text) ? AppColor.primary : Colors.red, // Change border color based on email validation
                     width: 2,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(
-                    color: AppColor.primary,
+                    color: Validator.validateEmail(_emailController.text) ? AppColor.primary : Colors.red, // Change border color based on email validation
                     width: 2,
                   ),
                 ),
@@ -274,7 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
   /// Builds the Continue button widget.
   Widget buildContinueButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30,horizontal:60),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
       child: SizedBox(
         width: 204,
         height: 55,
@@ -288,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           ),
           onPressed: () {
-            _handleFormSubmission();
+            _handleFormSubmission(); // Call the handleFormSubmission method
           },
           child: Text('Continue', style: AppText.ButtonText),
         ),
