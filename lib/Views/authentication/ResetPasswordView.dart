@@ -5,21 +5,22 @@ import 'package:project/ViewModels/ResetPasswordViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 
+/// A StatelessWidget that provides a user interface for resetting passwords.
 class ResetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: AppColor.primary),
-        title: Text('Reset Password', style: TextStyle(color: AppColor.primary, fontSize: AppText.headingOne.fontSize, fontWeight: AppText.headingOne.fontWeight)),
-        centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios),
-           onPressed: () {
-             // Navigator.pushReplacementNamed(context, '/login');
-           }
-        )
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(color: AppColor.primary),
+          title: Text('Reset Password', style: TextStyle(color: AppColor.primary, fontSize: AppText.headingOne.fontSize, fontWeight: AppText.headingOne.fontWeight)),
+          centerTitle: true,
+          leading: IconButton(icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                //Navigator.pushReplacementNamed(context, '/login');
+              }
+          )
       ),
 
       body: ChangeNotifierProvider<ResetPasswordViewModel>(
@@ -32,18 +33,18 @@ class ResetPassword extends StatelessWidget {
               children: [
                 SizedBox(height: 20),
                 Text(
-                  "Enter your email address to reset your password.",
-                  style: TextStyle(
-                    fontSize: AppText.headingFour.fontSize,
-                    fontWeight: AppText.headingFour.fontWeight,
-                  )
+                    "Enter your email address to reset your password.",
+                    style: TextStyle(
+                      fontSize: AppText.headingFour.fontSize,
+                      fontWeight: AppText.headingFour.fontWeight,
+                    )
                 ),
                 SizedBox(height: 40),
                 TextField(
                   controller: model.emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                       color: AppColor.primary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -81,19 +82,19 @@ class ResetPassword extends StatelessWidget {
                           borderRadius: BorderRadius.circular(17),
                         ),
                       ),
-                      onPressed: model.emailError == null && !model.isLoading ? model.sendPasswordResetEmail : null,
+                      onPressed:
+                      model.emailError == null && !model.isLoading ? model.sendPasswordResetEmail : null,
                       child: model.isLoading
                           ? CircularProgressIndicator(color: Colors.white)
                           : Text('Reset Password' ,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: AppText.headingFour.fontSize, // Assuming headingFour defines fontSize
-                          fontWeight: AppText.headingFour.fontWeight,
-                        )),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppText.headingFour.fontSize, // Assuming headingFour defines fontSize
+                            fontWeight: AppText.headingFour.fontWeight,
+                          )),
                     ),
                   ),
                 ),
-
 
                 if (model.emailError != null)
                   Padding(

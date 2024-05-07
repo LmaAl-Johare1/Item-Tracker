@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:project/Services/network_service.dart'; // Ensure this import is correct based on your project structure
+import 'package:project/Services/network_service.dart';
+import 'package:project/utils/validators.dart'; // Import validators
 
 class ResetPasswordViewModel extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
@@ -15,7 +16,8 @@ class ResetPasswordViewModel extends ChangeNotifier {
   void sendPasswordResetEmail() async {
     String email = emailController.text.trim();
 
-    if (email.isEmpty || !email.contains('@')) {
+    // Use the Validators class to check if the email is valid.
+    if (!Validators.isValidEmail(email)) {
       _errorMessage = "Please enter a valid email";
       notifyListeners();
       return;
@@ -25,7 +27,6 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // First check if the email exists in the database
       bool emailExists = await _networkService.emailExists(email);
       if (!emailExists) {
         _isLoading = false;
@@ -34,7 +35,6 @@ class ResetPasswordViewModel extends ChangeNotifier {
         return;
       }
 
-      // If email exists, proceed to send the reset email
       await _networkService.sendPasswordResetEmail(email);
       _isLoading = false;
       _errorMessage = "Reset password link sent to your email.";
