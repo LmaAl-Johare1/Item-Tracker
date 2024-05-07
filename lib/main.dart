@@ -1,13 +1,11 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:project/ViewModels/ForgetPasswordViewModel.dart';  // Your ViewModel file
-import 'package:project/Services/network_service.dart';            // Your Network service file
-import 'package:project/Views/authentication/EmailEntryView.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:project/res/AppColor.dart';
 
-import 'Views/authentication/ForgetPasswordView.dart';           // Your Email Entry View file
+import 'Views/authentication/ResetPasswordView.dart';
 
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: FirebaseOptions(
@@ -17,28 +15,28 @@ void main() async{
       projectId: "itemtracker-dev-50418",
     ),
   );
-  runApp(MyApp());
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<NetworkService>(
-          create: (_) => NetworkService(),
-        ),
-        ChangeNotifierProvider<PasswordResetViewModel>(
-          create: (context) => PasswordResetViewModel(context.read<NetworkService>()),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: EmailEntryView(),  // Your initial screen
-        routes: {
-          '/ForgetPasswordView': (context) => ForgetPasswordView(),
-        },
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: AppColor.primary,
       ),
+
+      // home: SplashScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ResetPassword(),
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
