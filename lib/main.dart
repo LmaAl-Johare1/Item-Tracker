@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/views/products/InsertProductView.dart';
+import 'package:project/views/dashboard/dashboardView.dart';
+
 
 void main() async {
 
@@ -23,11 +24,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Your App Title',
-      theme: ThemeData(
-        // Your theme data
-      ),
-      home: InsertProductScreen(), // Set RegisterPage as the home screen
+        routes: {
+          '/' : (context) => InsertProductScreen(),
+          '/dashboard': (context) => MyHomePage(),
+          '/insertProduct' : (context)  => InsertProductScreen(),// Adjust according to your actual dashboard widget name
+          // other routes
+        }, // Set RegisterPage as the home screen
     );
   }
 }
+
+

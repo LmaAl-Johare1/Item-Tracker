@@ -5,6 +5,7 @@ import 'package:project/res/AppText.dart';
 import 'package:project/viewmodels/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:project/views/dashboard/dashboardView.dart';
 
 /// Screen for inserting a new product.
 class InsertProductScreen extends StatelessWidget {
@@ -29,7 +30,9 @@ class InsertProductScreen extends StatelessWidget {
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/dashboard');
+            },
           ),
         ),
         body: Consumer<ProductViewModel>(
