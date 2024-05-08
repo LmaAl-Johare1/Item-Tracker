@@ -17,7 +17,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     String email = emailController.text.trim();
 
     // Use the Validators class to check if the email is valid.
-    if (!Validators.isValidEmail(email)) {
+    if (!Validators.validateEmail(email)) {
       _errorMessage = "Please enter a valid email";
       notifyListeners();
       return;

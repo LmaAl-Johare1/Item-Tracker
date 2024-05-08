@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:project/ViewModels/ResetPasswordViewModel.dart';
+import 'package:project/ViewModels/authentication/ResetPasswordViewModel.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';

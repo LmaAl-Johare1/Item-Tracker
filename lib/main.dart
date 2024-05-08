@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:project/res/AppColor.dart';
-import 'Views/authentication/ResetPasswordView.dart';
 import 'package:project/views/authentication/LoginView.dart';
-import 'package:project/views/splash_screen.dart';
 import 'package:project/res/AppColor.dart';
+import 'package:project/Views/authentication/ResetPasswordView.dart';
+
+import 'Views/authentication/RegisterView.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,11 +33,15 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginScreen(),
+        '/': (context) => RegisterPage(),
         '/resetPassword': (context) => ResetPassword(),
         '/login': (context) => LoginScreen(),
+        '/Login' : (context) => LoginScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
   }
 }
+
+
+

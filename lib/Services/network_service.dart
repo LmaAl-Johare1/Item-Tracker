@@ -22,21 +22,26 @@ class NetworkService {
   }
 
   /// Sends data to the specified [collection] and [documentId].
+
+
+  /// Sends data to the specified [collection].
   ///
-  /// Returns a [Map<String, dynamic>] representing the response data.
+  /// Returns a [Map<String, dynamic>] representing the response data including the document ID.
   ///
+
   /// Throws a [FirebaseException] if the request fails.
-  Future<Map<String, dynamic>> sendData(String collection, String documentId,
+  Future<Map<String, dynamic>> sendData(String collection,
       Map<String, dynamic> data) async {
     try {
-      await _firestore.collection(collection).doc(documentId).set(data);
-      return data;
+      DocumentReference documentReference = await _firestore.collection(collection).add(data);
+      return {...data, 'documentId': documentReference.id};
     } catch (e, stackTrace) {
       throw FirebaseException(plugin: 'Firestore',
           message: 'Failed to send data: $e',
           stackTrace: stackTrace);
     }
   }
+
 
   /// Updates data at the specified [collection] and [documentId].
   ///

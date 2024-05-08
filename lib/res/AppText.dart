@@ -24,7 +24,6 @@ class AppText{
     fontSize: 24,
     fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
-
   );
 
   static const headingFour = TextStyle(
@@ -43,7 +42,6 @@ class AppText{
     fontSize: 14,
     fontFamily: 'Georama',
   );
-
 }
 
 

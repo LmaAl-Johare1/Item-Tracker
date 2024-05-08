@@ -1,5 +1,5 @@
-import '../../services/network_service.dart';
-import '../models/login.dart';
+import '../../../services/network_service.dart';
+import '../../models/login.dart';
 
 /// A view model class responsible for handling login operations.
 class LoginViewModel {
