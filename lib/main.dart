@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/views/products/InsertProductView.dart';
-import 'package:project/res/AppColor.dart';
-
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
+    options: FirebaseOptions(
       apiKey: "AIzaSyDDBlrt11AqsJqGk3Ocvu1tRqsL5Y_sE34",
       appId: "1:27340201446:android:6ba30c884e73a965544a27",
       messagingSenderId: "27340201446",
@@ -15,27 +15,19 @@ void main() async {
     ),
   );
 
-  runApp(const MyApp());
+
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Your App Title',
       theme: ThemeData(
-        primaryColor: AppColor.primary,
+        // Your theme data
       ),
-
-      // home: SplashScreen(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => InsertProductScreen(),
-      },
-      debugShowCheckedModeBanner: false,
+      home: InsertProductScreen(), // Set RegisterPage as the home screen
     );
   }
 }
