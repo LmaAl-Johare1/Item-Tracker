@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:project/views/authentication/LoginView.dart';
-import 'package:project/res/AppColor.dart';
-import 'package:project/Views/authentication/ResetPasswordView.dart';
+import 'package:project/Views/authentication/LoginView.dart';
+import 'package:project/views/dashboard/dashboardView.dart';
 
 import 'Views/authentication/RegisterView.dart';
+import 'Views/authentication/ResetPasswordView.dart';
+import 'Views/setting/settingview.dart';
+// import 'Views/splash_screen.dart';
+
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: FirebaseOptions(
@@ -17,31 +21,25 @@ void main() async {
     ),
   );
 
-  runApp(const MyApp());
+
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: AppColor.primary,
-      ),
-      initialRoute: '/',
       routes: {
-        '/': (context) => RegisterPage(),
+        '/' : (context) => LoginScreen(), // changing to welcome screen
+        '/LoginPage' : (context) => LoginScreen(),
+        '/RegisterPage' :(context) => RegisterPage(),
+        '/LoginFromReset' : (context) => LoginScreen(),
         '/resetPassword': (context) => ResetPassword(),
-        '/login': (context) => LoginScreen(),
-        '/Login' : (context) => LoginScreen(),
-      },
-      debugShowCheckedModeBanner: false,
+        '/login' : (context)  => LoginScreen(),// Adjust according to your actual dashboard widget name
+        '/signup' : (context) => RegisterPage(),
+        'RegisterBack' : (context) => LoginScreen(),
+        '/dashboardRegister' : (context) => MyHomePage(),
+      }, // Set RegisterPage as the home screen
     );
   }
 }
-
-
-

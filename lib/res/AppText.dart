@@ -42,6 +42,5 @@ class AppText{
     fontSize: 14,
     fontFamily: 'Georama',
   );
+
 }
-
-

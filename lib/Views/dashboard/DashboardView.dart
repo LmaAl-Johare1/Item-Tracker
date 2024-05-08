@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project/Views/authentication/LoginView.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
+
+import '../setting/settingview.dart';
 
 /// Represents a reminder with a title and a date/time.
 class Reminder {
@@ -36,9 +39,25 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      switch (_selectedIndex) {
+        case 0:
+        // Navigate to Reports page
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          break;
+        case 1:
+        // (Home)
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          break;
+        case 2:
+        // Navigate to Settings page
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SettingsPage()));
+          break;
+      }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

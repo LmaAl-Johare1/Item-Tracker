@@ -87,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
           onPressed: (){
-            Navigator.pushReplacementNamed(context, '/Login');
+            Navigator.pushReplacementNamed(context, '/RegisterBack');
           },
         ),
         title: Text(
@@ -284,7 +284,9 @@ class _RegisterPageState extends State<RegisterPage> {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           ),
           onPressed: () {
-            _handleFormSubmission(); // Call the handleFormSubmission method
+            _handleFormSubmission();
+            Navigator.pushReplacementNamed(context, '/dashboardRegister');
+             // Call the handleFormSubmission method
           },
           child: Text('Continue', style: AppText.ButtonText),
         ),

@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () {
                             Navigator.pushNamed(context, '/resetPassword');
                           },
-                          child: Text(
+                          child: const Text(
                             'Forget password?',
                             textAlign: TextAlign.right,
                             style: TextStyle(
