@@ -9,4 +9,3 @@ class AppColor{
   static const Color greylight = Color(0xD4D9D9D9);
   static const Color FieldLabel = Color(0xFF49454F);
 }
-

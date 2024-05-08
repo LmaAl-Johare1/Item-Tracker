@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/Views/authentication/LoginView.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
 
@@ -26,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Reminder> _reminders = [];
 
   /// Adds a reminder with the given [title] and [dateTime] to the list of reminders.
-  void addReminder(String title, DateTime dateTime) {
+  void _addReminder(String title, DateTime dateTime) {
     setState(() {
       _reminders.add(Reminder(title: title, dateTime: dateTime));
     });
@@ -42,12 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
         case 0:
         // Navigate to Reports page
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyHomePage()));
+              context, MaterialPageRoute(builder: (context) => LoginScreen()));
           break;
         case 1:
         // (Home)
-           Navigator.pushReplacement(
-               context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyHomePage()));
           break;
         case 2:
         // Navigate to Settings page
@@ -221,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/insertProduct');
+                                      // Add code here to navigate to the View Category view
                                     },
                                     child: Center(
                                       child: Text('Insert Product', style: TextStyle(fontSize: 16, color: AppColor.secondary)), // Adjusted font size
@@ -245,8 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.pushNamed(context, '/insertProduct');
-
+                                      // Add code here to insert a new product
                                     },
                                     child: Center(
                                       child: Text('supply product', style: TextStyle(fontSize: 16, color: AppColor.secondary)), // Adjusted font size
