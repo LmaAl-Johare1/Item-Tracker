@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/res/AppColor.dart';
+import 'Views/authentication/ResetPasswordView.dart';
 
-// import 'Views/authentication/ResetPasswordView.dart';
 
 
 void main() async {
@@ -31,9 +31,11 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColor.primary,
       ),
 
+
       initialRoute: '/',
       routes: {
-        // '/': (context) => ResetPassword(),
+      // home: SplashScreen(),
+        '/': (context) => ResetPassword(),
       },
       debugShowCheckedModeBanner: false,
     );
