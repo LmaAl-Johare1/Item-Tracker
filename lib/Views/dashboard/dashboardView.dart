@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
-
 import '../setting/settingview.dart';
 
 /// Represents a reminder with a title and a date/time.
