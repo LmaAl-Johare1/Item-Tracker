@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/viewmodels/InsertProductViewModel.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
+/// Screen for inserting a new product.
 class InsertProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,9 +18,19 @@ class InsertProductScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
-          title: Text('Insert Product', style: TextStyle(color: AppColor.primary, fontSize: AppText.headingOne.fontSize, fontWeight: AppText.headingOne.fontWeight)),
+          title: Text(
+            'Insert Product',
+            style: TextStyle(
+              color: AppColor.primary,
+              fontSize: AppText.headingOne.fontSize,
+              fontWeight: AppText.headingOne.fontWeight,
+            ),
+          ),
           centerTitle: true,
-          leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Navigator.pop(context)),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         body: Consumer<ProductViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
@@ -26,8 +39,41 @@ class InsertProductScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    // Trigger camera functionality to capture image
+                  onTap: () async {
+                    final picker = ImagePicker();
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return SafeArea(
+                          child: Wrap(
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.photo_library),
+                                title: Text('Choose from gallery'),
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  final pickedImage = await picker.getImage(source: ImageSource.gallery);
+                                  if (pickedImage != null) {
+                                    model.updateImagePath(pickedImage.path);
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.photo_camera),
+                                title: Text('Take a photo'),
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  final pickedImage = await picker.getImage(source: ImageSource.camera);
+                                  if (pickedImage != null) {
+                                    model.updateImagePath(pickedImage.path);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: Container(
                     height: 150,
@@ -35,12 +81,13 @@ class InsertProductScreen extends StatelessWidget {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(Icons.camera_alt, size: 50, color: Colors.grey[700]),
+                    child: model.imagePath != null
+                        ? Image.file(File(model.imagePath!))
+                        : Icon(Icons.camera_alt, size: 50, color: Colors.grey[700]),
                     alignment: Alignment.center,
                   ),
                 ),
                 SizedBox(height: 40),
-
 
                 TextField(
                   onChanged: model.updateProductName,
@@ -48,56 +95,45 @@ class InsertProductScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
 
-
                 TextField(
                   onChanged: model.updateProductId,
                   decoration: _inputDecoration('Product ID').copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
-                      onPressed: () {
-                        // Implement barcode scan functionality
+                      onPressed: () async {
+                        await model.scanBarCode();
                       },
                     ),
                   ),
                 ),
+
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
                     Flexible(
                       flex: 3,
                       child: Row(
                         children: [
-                          IconButton(icon: Icon(Icons.remove,
-                              color: AppColor.primary),
-                              onPressed: model.decrementQuantity,
-                          ),
+                          IconButton(icon: Icon(Icons.remove, color: AppColor.primary), onPressed: model.decrementQuantity),
                           SizedBox(
                             width: 60,
                             child: TextField(
-                            keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
-                              controller: TextEditingController(text: model.quantity.toString())
-                                ..selection = TextSelection.collapsed(offset: model.quantity.toString().length),
-                              onChanged: (value){
-                              int ? newQuantity = int.tryParse(value);
-                              if(newQuantity != null){
-                                model.quantity = newQuantity ;
-                              }
+                              controller: TextEditingController(text: model.quantity.toString())..selection = TextSelection.collapsed(offset: model.quantity.toString().length),
+                              onChanged: (value) {
+                                int? newQuantity = int.tryParse(value);
+                                if (newQuantity != null) {
+                                  model.quantity = newQuantity;
+                                }
                               },
-                              onSubmitted: (value){
-                                 border: OutlineInputBorder();
-                          },
                             ),
                           ),
                           IconButton(icon: Icon(Icons.add, color: AppColor.primary), onPressed: model.incrementQuantity),
                         ],
                       ),
                     ),
-
-
-
                     Flexible(
                       flex: 2,
                       child: TextField(
@@ -110,20 +146,20 @@ class InsertProductScreen extends StatelessWidget {
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
                           );
-                          if (pickedDate != null) model.setExpDate(pickedDate);
+                          if (pickedDate != null) model.updateExpDate(pickedDate);
                         },
                       ),
                     ),
                   ],
                 ),
 
-
                 SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: AppColor.primary,
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColor.primary,
                       minimumSize: Size(204, 55),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
@@ -139,6 +175,7 @@ class InsertProductScreen extends StatelessWidget {
     );
   }
 
+  /// Returns input decoration for text fields.
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,
