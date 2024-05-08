@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:project/views/products/InsertProductView.dart';
-// import 'package:project/views/dashboard/dashboardView.dart';
+// import 'package:project/Views/products/InsertProductView.dart';
+// import 'package:project/Views/dashboard/dashboardView.dart';
 
 
 void main() async {
