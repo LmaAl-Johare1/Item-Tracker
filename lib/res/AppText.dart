@@ -1,45 +1,44 @@
 import 'package:flutter/material.dart';
 
 class AppText{
-  static const ButtonText = TextStyle(
+
+    static const ButtunText = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
-    color: Colors.white,
   );
 
-  static const headingOne = TextStyle(
+  static const HeadingOne = TextStyle(
     fontSize: 32,
+    fontFamily: 'Georama',
     fontWeight: FontWeight.w900,
-    fontFamily: 'Georama',
-
   );
 
-  static const headingTwo = TextStyle(
+  static const HeadingTwo = TextStyle(
     fontSize: 26,
-    fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
+    fontWeight: FontWeight.w600,
   );
 
-  static const headingThree = TextStyle(
+  static const HeadingThree = TextStyle(
     fontSize: 24,
-    fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
+    fontWeight: FontWeight.w600,
   );
 
-  static const headingFour = TextStyle(
+  static const HeadingFour = TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
+    fontWeight: FontWeight.w600,
   );
 
-  static const headingFive = TextStyle(
+  static const HeadingFive = TextStyle(
     fontSize: 16,
-    fontWeight: FontWeight.w600,
     fontFamily: 'Georama',
+    fontWeight: FontWeight.w600,
   );
 
-  static const headingsix = TextStyle(
+  static const HeadingSix = TextStyle(
     fontSize: 14,
     fontFamily: 'Georama',
   );

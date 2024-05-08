@@ -15,7 +15,7 @@ class InsertProductScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
-          title: Text('Insert Product', style: TextStyle(color: AppColor.primary, fontSize: AppText.headingOne.fontSize, fontWeight: AppText.headingOne.fontWeight)),
+          title: Text('Insert Product', style: TextStyle(color: AppColor.primary, fontSize: AppText.HeadingOne.fontSize, fontWeight: AppText.HeadingOne.fontWeight)),
           centerTitle: true,
           leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Navigator.pop(context)),
         ),
@@ -40,7 +40,6 @@ class InsertProductScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 40),
-
 
                 TextField(
                   onChanged: model.updateProductName,
@@ -128,7 +127,7 @@ class InsertProductScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
                     onPressed: model.saveProduct,
-                    child: Text('Save', style: AppText.ButtonText),
+                    child: Text('Save', style: AppText.ButtunText),
                   ),
                 ),
               ],
