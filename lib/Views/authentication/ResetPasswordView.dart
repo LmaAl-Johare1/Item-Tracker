@@ -18,7 +18,7 @@ class ResetPassword extends StatelessWidget {
           centerTitle: true,
           leading: IconButton(icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
-                //Navigator.pushReplacementNamed(context, '/login');
+                Navigator.pushReplacementNamed(context, '/login');
               }
           )
       ),

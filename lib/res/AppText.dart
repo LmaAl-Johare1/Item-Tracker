@@ -12,7 +12,6 @@ class AppText{
     fontSize: 32,
     fontWeight: FontWeight.w900,
     fontFamily: 'Georama',
-
   );
 
   static const headingTwo = TextStyle(
@@ -46,3 +45,5 @@ class AppText{
   );
 
 }
+
+
