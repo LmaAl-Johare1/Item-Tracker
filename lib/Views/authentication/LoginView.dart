@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../ViewModels/authentication/LoginViewModel.dart';
 import '../../models/login.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../dashboard/DashboardView.dart';
+
 /// A screen widget for user login.
 ///
 /// This screen provides a user interface for users to input their login credentials

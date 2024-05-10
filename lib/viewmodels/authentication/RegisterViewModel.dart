@@ -80,24 +80,22 @@ Future<void> signUp() async {
       password: _password,
     );
 
-    // User registration successful, now prepare user data to send to the server
     final userData = _prepareUserData(userCredential.user!.uid);
     await _networkService.sendData('Users', userData);
   } catch (e) {
     print('Error signing up: $e');
-    rethrow; // Rethrow the exception for upper layers to handle
+    rethrow;
   }
 }
 
 /// Prepares user data based on the selected role.
 Map<String, dynamic> _prepareUserData(String userId) {
   final userData = {
-    'userId': userId, // Include the user ID obtained from Firebase Authentication
+    'userId': userId,
     'email': _email,
     'user_rule': _selectedRole,
   };
 
-  // Include additional fields for Manager role
   if (_selectedRole == 'Manager') {
     userData.addAll({
       'businessName': _businessName,

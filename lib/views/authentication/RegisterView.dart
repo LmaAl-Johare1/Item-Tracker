@@ -72,6 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _businessNameController.clear();
     _phoneNumberController.clear();
     _businessAddressController.clear();
+    Navigator.pushReplacementNamed(context, '/dashboardRegister');
   }
 
   /// Shows a SnackBar with the provided message.
@@ -83,6 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
@@ -285,8 +287,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           onPressed: () {
             _handleFormSubmission();
-            Navigator.pushReplacementNamed(context, '/dashboardRegister');
-             // Call the handleFormSubmission method
           },
           child: Text('Continue', style: AppText.ButtonText),
         ),

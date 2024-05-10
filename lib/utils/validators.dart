@@ -7,15 +7,12 @@ class Validators {
     );
     return emailRegex.hasMatch(email);
   }
-
-
   /// Validates a password.
   ///
   /// Returns true if the password meets the validation criteria; otherwise, false.
   static bool validatePassword(String password) {
     return password.length >= 6;
   }
-
   /// Validates whether two passwords match.
   ///
   /// Returns true if both passwords match; otherwise, false.
