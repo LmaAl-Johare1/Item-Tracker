@@ -54,4 +54,6 @@ class NetworkService {
       throw FirebaseException(plugin: 'Firestore', message: 'Failed to delete data: $e', stackTrace: stackTrace);
     }
   }
+
+
 }
