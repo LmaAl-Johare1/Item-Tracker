@@ -5,23 +5,32 @@ import '../Services/network_service.dart';
 
 class CategoryViewModel with ChangeNotifier {
   List<Category> _categories = [];
-  List<Category> _filteredCategories = [];
+  List<Category> _filteredCategories = [];  // Holds filtered categories
   String? _errorMessage;
 
   List<Category> get categories => _categories;
   List<Category> get filteredCategories => _filteredCategories.isEmpty ? _categories : _filteredCategories;
   String? get errorMessage => _errorMessage;
 
+  void setCategories(List<Category> categories) {
+    _filteredCategories = categories;
+    _filteredCategories = List<Category>.from(categories);
+    notifyListeners();
+  }
+
   void filterCategories(String query) {
+    print("Search query: $query"); // Log the query
     if (query.isEmpty) {
-      _filteredCategories = [];
+      _filteredCategories = List<Category>.from(_filteredCategories);
     } else {
-      _filteredCategories = _categories.where((category) {
+      _filteredCategories = _filteredCategories.where((category) {
         return category.name.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
+    print("Filtered categories: ${_filteredCategories.length}"); // Log the number of filtered categories
     notifyListeners();
   }
+
 
   Future<void> fetchCategories() async {
     try {
