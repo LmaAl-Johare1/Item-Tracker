@@ -6,10 +6,10 @@ class CategoryViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
 
   String? _imagePath;
-  String? _CategoryName;
+  String? _name;
 
   String? get imagePath => _imagePath;
-  String? get CategoryName => _CategoryName;
+  String? get name => _name;
 
   void updateImagePath(String path) {
     _imagePath = path;
@@ -17,14 +17,14 @@ class CategoryViewModel extends ChangeNotifier {
   }
 
   void updateCategoryName(String name) {
-    _CategoryName = name;
+    _name = name;
     notifyListeners();
   }
 
   Future<void> saveCategory() async {
     Map<String, dynamic> data = {
       'imagePath': _imagePath,
-      'CategoryName': _CategoryName,
+      'name': _name,
     };
 
     try {
@@ -38,7 +38,7 @@ class CategoryViewModel extends ChangeNotifier {
   /// Reset all fields to their initial values.
   void resetFields() {
     _imagePath = null;
-    _CategoryName = null;
+    _name = '';
     notifyListeners();
   }
 }
