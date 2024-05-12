@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:project/views/products/InsertProductView.dart';
-import 'package:project/views/dashboard/dashboardView.dart';
-
+import 'package:project/views/Category/ViewCategoryView.dart';
 
 void main() async {
 
@@ -25,10 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         routes: {
-          '/' : (context) => InsertProductScreen(),
-          '/dashboard': (context) => MyHomePage(),
-          '/insertProduct' : (context)  => InsertProductScreen(),// Adjust according to your actual dashboard widget name
-          // other routes
+          '/' : (context) => ViewCategoryScreen(),
         }, // Set RegisterPage as the home screen
     );
   }
