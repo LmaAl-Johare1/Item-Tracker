@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:project/services/network_service.dart';
@@ -94,6 +95,7 @@ class InsertProductViewModel with ChangeNotifier {
       'productName': _productName,
       'quantity': _quantity,
       'expDate': _expDate,
+      'category': _selectedCategory,
     };
 
     try {
@@ -125,8 +127,8 @@ class InsertProductViewModel with ChangeNotifier {
 
   Future<void> fetchCategories() async {
     try {
-      var result = await _networkService.fetchAll('Categories'); // Assuming fetchAll takes a collection name as parameter
-      _categories = result.map<String>((doc) => doc['name'] as String).toList();
+      List<Map<String, dynamic>> result = await _networkService.fetchAll('Categories');
+      _categories = result.map<String>((doc) => doc!['name'] as String).toList();
       notifyListeners();
     } catch (e) {
       print('Error fetching categories: $e');

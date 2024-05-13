@@ -65,4 +65,16 @@ class NetworkService {
     }
   }
 
+  Future<List<DocumentSnapshot>> fetchProductsByCategory(String category) async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('products')
+          .where('category', isEqualTo: category)
+          .get();
+      return snapshot.docs;
+    } catch (e) {
+      print('Error fetching products: $e');
+      return [];
+    }
+  }
+
 }

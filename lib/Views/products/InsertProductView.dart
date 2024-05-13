@@ -161,10 +161,11 @@ class _InsertProductViewState  extends State<InsertProductView> {
                     ),
                   ],
                 ),
+                SizedBox(height: 40),
 
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
-                  hint: Text('Select Category'),
+                  //hint: Text('Select Category'),
                   items: model.categories.map((category) {
                     return DropdownMenuItem(
                       value: category,
@@ -179,8 +180,6 @@ class _InsertProductViewState  extends State<InsertProductView> {
                   },
                   decoration: InputDecoration(labelText: 'Category'),
                 ),
-
-                SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
                   child: ElevatedButton(
