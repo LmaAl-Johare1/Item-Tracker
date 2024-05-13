@@ -24,12 +24,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        routes: {
-          '/' : (context) => InsertProductScreen(),
-          '/dashboard': (context) => MyHomePage(),
-          '/insertProduct' : (context)  => InsertProductScreen(),// Adjust according to your actual dashboard widget name
-          // other routes
-        }, // Set RegisterPage as the home screen
+      title: 'Inventory Management',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: InsertProductView(),
     );
   }
 }

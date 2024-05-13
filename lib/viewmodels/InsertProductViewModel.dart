@@ -3,7 +3,15 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:project/services/network_service.dart';
 
 /// View model for managing product data.
-class ProductViewModel with ChangeNotifier {
+class InsertProductViewModel with ChangeNotifier {
+
+  final NetworkService _networkService = NetworkService();
+
+  String? _selectedCategory;
+  String? get selectedCategory => _selectedCategory;
+
+
+  List<String> _categories = [];
   String? _imagePath;
   String? _productId;
   String? _productName;
@@ -16,7 +24,13 @@ class ProductViewModel with ChangeNotifier {
   String? get productName => _productName;
   int get quantity => _quantity;
   DateTime? get expDate => _expDate;
+  List<String> get categories => _categories;
 
+
+  void updateCategory(List<String> category){
+    _categories = category;
+    notifyListeners();
+  }
   /// Update the image path.
   void updateImagePath(String path) {
     _imagePath = path;
@@ -105,5 +119,23 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  InsertProductViewModel() {
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      var result = await _networkService.fetchAll('Categories'); // Assuming fetchAll takes a collection name as parameter
+      _categories = result.map<String>((doc) => doc['name'] as String).toList();
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
+  void updateSelectedCategory(String? category) {
+    _selectedCategory = category;
+    notifyListeners();
+  }
 
 }

@@ -5,14 +5,20 @@ import 'package:project/res/AppText.dart';
 import 'package:project/viewmodels/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:project/views/dashboard/dashboardView.dart';
+
+
+class InsertProductView extends StatefulWidget {
+  @override
+  _InsertProductViewState createState() => _InsertProductViewState();
+}
 
 /// Screen for inserting a new product.
-class InsertProductScreen extends StatelessWidget {
+class _InsertProductViewState  extends State<InsertProductView> {
+  String? _selectedCategory;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProductViewModel(),
+      create: (_) => InsertProductViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -35,7 +41,7 @@ class InsertProductScreen extends StatelessWidget {
             },
           ),
         ),
-        body: Consumer<ProductViewModel>(
+        body: Consumer<InsertProductViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -154,6 +160,24 @@ class InsertProductScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  hint: Text('Select Category'),
+                  items: model.categories.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value;
+                      model.updateSelectedCategory(value);
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Category'),
                 ),
 
                 SizedBox(height: 30),
