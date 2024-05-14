@@ -74,7 +74,6 @@ class ProductViewModel with ChangeNotifier {
 
   /// Save the product data.
   Future<void> saveProduct() async {
-    // تاريخ الإضافة
     DateTime dateAdded = DateTime.now();
 
     Map<String, dynamic> data = {
@@ -83,7 +82,7 @@ class ProductViewModel with ChangeNotifier {
       'productName': _productName,
       'quantity': _quantity,
       'expDate': _expDate,
-      'dateAdded': dateAdded, // تاريخ الإضافة
+      'created_at': dateAdded,
     };
 
     try {

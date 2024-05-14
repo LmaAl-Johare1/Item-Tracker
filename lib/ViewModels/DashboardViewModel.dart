@@ -9,7 +9,9 @@ class MyHomePageViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
 
   int get total => _total;
+
   int get productIn => _productIn;
+
   int get productOut => _productOut;
 
   Future<void> updateProductInCount() async {
@@ -59,7 +61,6 @@ class MyHomePageViewModel extends ChangeNotifier {
       });
 
       _productIn = productInQuantity;
-      _productOut = productOutQuantity;
       _total = totalQuantity;
       notifyListeners();
     }, onError: (error) {
@@ -67,27 +68,37 @@ class MyHomePageViewModel extends ChangeNotifier {
     });
   }
 
-  void listenForProductOut() {
+  void checkAndAggregateQuantities() {
     FirebaseFirestore.instance
         .collection('products')
-        .snapshots()
-        .listen((snapshot) {
-      snapshot.docChanges.forEach((change) {
-        if (change.type == DocumentChangeType.modified) {
-          int oldQuantity = change.doc['quantity'];
-          int newQuantity = change.doc['quantity'];
-          int difference = oldQuantity - newQuantity;
+        .get()
+        .then((querySnapshot) {
+      int productOutQuantity = 0; // Initialize productOutQuantity
+      querySnapshot.docs.forEach((doc) {
+        if (doc.data().containsKey('supply_date')) {
+          Timestamp supplyTimestamp = doc['supply_date'];
+          DateTime supplyDate = supplyTimestamp.toDate();
 
-          if (difference > 0) {
-            int decreasedQuantity = difference.abs();
-            _productOut += decreasedQuantity;
-            _total -= decreasedQuantity; // Subtract decreased quantity from total
-            notifyListeners();
+          if (supplyDate.day == DateTime
+              .now()
+              .day) {
+            int quantity = doc['quantity'] ?? 0;
+            productOutQuantity += quantity;
           }
         }
       });
-    }, onError: (error) {
-      print('Error fetching product insertions: $error');
+
+      // Update productOut quantity
+      _productOut = productOutQuantity;
+
+      // Subtract productOut quantity from total
+      _total -= productOutQuantity;
+
+
+      notifyListeners();
+    }).catchError((error) {
+      print('Error fetching products: $error');
     });
   }
+
 }

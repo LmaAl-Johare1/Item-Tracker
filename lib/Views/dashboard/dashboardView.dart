@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage>
 
       _viewModel.updateProductInCount();
       _viewModel.listenForProductInsertions();
-      _viewModel.listenForProductOut();
+      _viewModel.checkAndAggregateQuantities();
     } else {
       setState(() {});
     }
