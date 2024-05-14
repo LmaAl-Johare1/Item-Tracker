@@ -12,7 +12,7 @@ class MyHomePageViewModel extends ChangeNotifier {
   int get productIn => _productIn;
   int get productOut => _productOut;
 
-  void updateProductInCount() async {
+  Future<void> updateProductInCount() async {
     try {
       int totalQuantity = 0;
 
@@ -81,6 +81,7 @@ class MyHomePageViewModel extends ChangeNotifier {
           if (difference > 0) {
             int decreasedQuantity = difference.abs();
             _productOut += decreasedQuantity;
+            _total -= decreasedQuantity; // Subtract decreased quantity from total
             notifyListeners();
           }
         }

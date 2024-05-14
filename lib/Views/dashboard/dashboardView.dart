@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // استيراد FirebaseFirestore
 import 'package:project/Views/authentication/LoginView.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
@@ -17,22 +16,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
 {
   late MyHomePageViewModel _viewModel;
-
-  int _total = 0;
-  int _productIn = 0; // Initialize with a default value
-  int _productOut = 20;
   final NetworkService _networkService = NetworkService();
 
   @override
   void initState() {
     super.initState();
+
     _viewModel = MyHomePageViewModel();
-    _viewModel.updateProductInCount();
-    _viewModel.listenForProductInsertions();
-    _viewModel.listenForProductOut();
+
+    if (_viewModel.total == 0 && _viewModel.productIn == 0 && _viewModel.productOut == 0) {
+
+      _viewModel.updateProductInCount();
+      _viewModel.listenForProductInsertions();
+      _viewModel.listenForProductOut();
+    } else {
+      setState(() {});
+    }
   }
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -43,8 +45,9 @@ class _MyHomePageState extends State<MyHomePage>
               context, MaterialPageRoute(builder: (context) => LoginScreen()));
           break;
         case 1:
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => MyHomePage()));
+        // (Home)
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyHomePage()));
           break;
         case 2:
           Navigator.push(
@@ -316,7 +319,7 @@ class _MyHomePageState extends State<MyHomePage>
         ],
         currentIndex: _selectedIndex,
         backgroundColor: AppColor.greylight,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.black, // تعيين لون العنصر المحدد إلى اللون الأسود
         onTap: _onItemTapped,
       ),
     );
