@@ -2,23 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/InsertProductViewModel.dart';
+import 'package:project/viewmodels/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-
-class InsertProductView extends StatefulWidget {
-  @override
-  _InsertProductViewState createState() => _InsertProductViewState();
-}
+import 'package:project/views/dashboard/dashboardView.dart';
 
 /// Screen for inserting a new product.
-class _InsertProductViewState  extends State<InsertProductView> {
-  String? _selectedCategory;
+class InsertProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => InsertProductViewModel(),
+      create: (_) => ProductViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -41,7 +35,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
             },
           ),
         ),
-        body: Consumer<InsertProductViewModel>(
+        body: Consumer<ProductViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -161,25 +155,8 @@ class _InsertProductViewState  extends State<InsertProductView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 40),
 
-                DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  //hint: Text('Select Category'),
-                  items: model.categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategory = value;
-                      model.updateSelectedCategory(value);
-                    });
-                  },
-                  decoration: InputDecoration(labelText: 'Category'),
-                ),
+                SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
                   child: ElevatedButton(

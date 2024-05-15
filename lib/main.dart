@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Views/Category/InsertCategoryView.dart';
-import 'package:provider/provider.dart';
-import 'package:project/ViewModels/InsertCategoryViewModel.dart';
+import 'package:project/views/products/InsertProductView.dart';
+import 'package:project/views/dashboard/dashboardView.dart';
+
 
 void main() async {
 
@@ -15,17 +15,21 @@ void main() async {
       projectId: "itemtracker-dev-50418",
     ),
   );
+
+
   runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CategoryViewModel>(
-      create: (context) => CategoryViewModel(),
-      child: MaterialApp(
-        home: InsertCategoryScreen(), // Or wherever it fits in your navigation logic
-      ),
+    return MaterialApp(
+        routes: {
+          '/' : (context) => InsertProductScreen(),
+          '/dashboard': (context) => MyHomePage(),
+          '/insertProduct' : (context)  => InsertProductScreen(),// Adjust according to your actual dashboard widget name
+          // other routes
+        }, // Set RegisterPage as the home screen
     );
   }
 }
