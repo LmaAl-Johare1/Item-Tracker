@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../ViewModels/InsertProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import '../products/CategoryProductView.dart';
+import '../product/CategoryProductView.dart';
+import '../product/InsertProductView.dart';
 
 class ViewCategoryView extends StatelessWidget {
   @override

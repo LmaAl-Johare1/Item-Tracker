@@ -40,3 +40,4 @@ class EditProductViewModel extends ChangeNotifier {
     }
   }
 }
+

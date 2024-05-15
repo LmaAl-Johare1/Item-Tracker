@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:project/ViewModels/ViewCategoryViewModel.dart';
 import 'package:project/ViewModels/InsertProductViewModel.dart';
 import 'package:project/ViewModels/ProductViewModel.dart'; // Import ProductViewModel
-// import 'Views/Product/InsertProductView.dart';
+//import 'Views/Product/InsertProductView.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
+        //ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
         ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-        ChangeNotifierProvider(create: (_) => ProductViewModel()), // Add ProductViewModel
+        // ChangeNotifierProvider(create: (_) => ProductViewModel()), // Add ProductViewModel
       ],
       child: MaterialApp(
         title: 'Inventory Management',
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         ),
         home: ViewCategoryView(),
         routes: {
-         // '/insertProduct': (context) => InsertProductView(),
+          //'/insertProduct': (context) => InsertProductView(),
           '/viewCategories': (context) => ViewCategoryView(),
         },
       ),
