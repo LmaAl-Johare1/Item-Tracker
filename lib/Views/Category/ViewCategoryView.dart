@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../ViewModels/InsertProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'CategoryProductView.dart';
+import '../products/CategoryProductView.dart';
 
 class ViewCategoryView extends StatelessWidget {
   @override
