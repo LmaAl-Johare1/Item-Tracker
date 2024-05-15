@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/network_service.dart';
-import '../models/product.dart';
+import '../Models/Product.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
@@ -21,4 +21,17 @@ class ProductViewModel extends ChangeNotifier {
       print('Error fetching product: $error');
     }
   }
+
+  Future<void> updateProduct(String productId, Map<String, dynamic> updatedData) async {
+    try {
+      print('Updating product with ID: $productId');
+      await _networkService.updateData('products', 'productId', productId, updatedData);
+      print('Product updated successfully');
+      // Optionally, fetch the updated product to refresh the local state
+      await fetchProduct(productId);
+    } catch (error) {
+      print('Error updating product: $error');
+    }
+  }
+
 }
