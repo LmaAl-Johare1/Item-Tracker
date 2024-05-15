@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:project/ViewModels/InsertProductViewModel.dart';
+import '../../ViewModels/InsertProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-// import 'CategoryProductView.dart';
+import 'CategoryProductView.dart';
 
 class ViewCategoryView extends StatelessWidget {
   @override
@@ -93,7 +93,7 @@ class ViewCategoryView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                               const Padding(
+                                const Padding(
                                   padding: const EdgeInsets.only(right: 22), // Add padding to the right
                                   child: Icon(Icons.arrow_forward_ios),
                                 ),

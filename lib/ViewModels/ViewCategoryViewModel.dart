@@ -37,8 +37,7 @@ class ViewCategoryViewModel with ChangeNotifier {
 
   Future<void> fetchCategories() async {
     try {
-      final List<Map<String, dynamic>> data = await NetworkService().fetchAll(
-          'Categories');
+      final List<Map<String, dynamic>> data = await NetworkService().fetchAll('Categories');
       _categories = data.map((json) => Category.fromJson(json)).toList();
       _errorMessage = null;
     } catch (e) {
