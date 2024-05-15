@@ -54,4 +54,12 @@ class NetworkService {
       throw FirebaseException(plugin: 'Firestore', message: 'Failed to delete data: $e', stackTrace: stackTrace);
     }
   }
+  Future<List<Map<String, dynamic>>> fetchAll(String collection) async {
+    try {
+      final QuerySnapshot snapshot = await _firestore.collection(collection).get();
+      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e, stackTrace) {
+      throw FirebaseException(plugin: 'Firestore', message: 'Failed to fetch data: $e', stackTrace: stackTrace);
+    }
+  }
 }
