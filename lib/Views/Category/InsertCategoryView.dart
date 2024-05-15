@@ -2,23 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/InsertProductViewModel.dart';
+import 'package:project/ViewModels/InsertCategoryViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 
-class InsertProductView extends StatefulWidget {
-  @override
-  _InsertProductViewState createState() => _InsertProductViewState();
-}
-
 /// Screen for inserting a new product.
-class _InsertProductViewState  extends State<InsertProductView> {
-  String? _selectedCategory;
+class InsertCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => InsertProductViewModel(),
+      create: (_) => CategoryViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -26,7 +20,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            'Insert Product',
+            'Insert Category',
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -41,7 +35,9 @@ class _InsertProductViewState  extends State<InsertProductView> {
             },
           ),
         ),
-        body: Consumer<InsertProductViewModel>(
+
+
+        body: Consumer<CategoryViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -84,6 +80,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       },
                     );
                   },
+
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
@@ -97,89 +94,11 @@ class _InsertProductViewState  extends State<InsertProductView> {
                   ),
                 ),
                 SizedBox(height: 40),
-
                 TextField(
-                  onChanged: model.updateProductName,
-                  decoration: _inputDecoration('Product Name'),
+                  onChanged: model.updateCategoryName,
+                  decoration: _inputDecoration('Category Name'),
                 ),
                 SizedBox(height: 40),
-
-                TextField(
-                  onChanged: model.updateProductId,
-                  decoration: _inputDecoration('Product ID').copyWith(
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
-                      onPressed: () async {
-                        await model.scanBarCode();
-                      },
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: Row(
-                        children: [
-                          IconButton(icon: Icon(Icons.remove, color: AppColor.primary), onPressed: model.decrementQuantity),
-                          SizedBox(
-                            width: 60,
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              controller: TextEditingController(text: model.quantity.toString())..selection = TextSelection.collapsed(offset: model.quantity.toString().length),
-                              onChanged: (value) {
-                                int? newQuantity = int.tryParse(value);
-                                if (newQuantity != null) {
-                                  model.quantity = newQuantity;
-                                }
-                              },
-                            ),
-                          ),
-                          IconButton(icon: Icon(Icons.add, color: AppColor.primary), onPressed: model.incrementQuantity),
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        controller: TextEditingController(text: model.expDate?.toString().split(' ')[0]),
-                        decoration: _inputDecoration('Exp Date'),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (pickedDate != null) model.updateExpDate(pickedDate);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-
-                DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  //hint: Text('Select Category'),
-                  items: model.categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategory = value;
-                      model.updateSelectedCategory(value);
-                    });
-                  },
-                  decoration: InputDecoration(labelText: 'Category'),
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
                   child: ElevatedButton(
@@ -189,10 +108,11 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       minimumSize: Size(204, 55),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
-                    onPressed: model.saveProduct,
+                    onPressed: model.saveCategory,
                     child: Text('Save', style: AppText.ButtunText),
                   ),
                 ),
+
               ],
             ),
           ),

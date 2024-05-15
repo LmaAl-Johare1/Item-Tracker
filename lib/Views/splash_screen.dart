@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:provider/provider.dart';
+import '../ViewModels/splashscreen_view_model.dart';
 import '../models/user.dart';
-import '../viewmodels/splashscreen_view_model.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
