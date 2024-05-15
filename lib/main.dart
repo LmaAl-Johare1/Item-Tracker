@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
-import 'package:project/viewmodels/InsertProductViewModel.dart';
 import 'package:project/views/products/InsertProductView.dart';
+import 'package:project/views/dashboard/dashboardView.dart';
+
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: FirebaseOptions(
@@ -15,28 +16,22 @@ void main() async {
     ),
   );
 
-  runApp(MyApp());
+
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
-      ],
-      child: MaterialApp(
-        title: 'Inventory Management',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: InsertProductView(),
+    return MaterialApp(
         routes: {
-          '/insertProduct': (context) => InsertProductView(),
-          // '/viewCategories': (context) => ViewCategoryView(),
-          // '/dashboard': (context) => DashboardView(),
-        },
-      ),
+          '/' : (context) => InsertProductScreen(),
+          '/dashboard': (context) => MyHomePage(),
+          '/insertProduct' : (context)  => InsertProductScreen(),// Adjust according to your actual dashboard widget name
+          // other routes
+        }, // Set RegisterPage as the home screen
     );
   }
 }
+
+
