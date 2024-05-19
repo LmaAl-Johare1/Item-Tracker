@@ -75,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   size:35
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/signup');
+                Navigator.pushReplacementNamed(context, '/ChangePasswordView  ');
               },
             ),
           ),
