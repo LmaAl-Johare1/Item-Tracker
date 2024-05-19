@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/viewmodels/InsertProductViewModel.dart';
+import 'package:project/ViewModels/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:project/views/dashboard/dashboardView.dart';
+
+
+class InsertProductView extends StatefulWidget {
+  @override
+  _InsertProductViewState createState() => _InsertProductViewState();
+}
 
 /// Screen for inserting a new product.
-class InsertProductScreen extends StatelessWidget {
+class _InsertProductViewState  extends State<InsertProductView> {
+  String? _selectedCategory;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProductViewModel(),
+      create: (_) => InsertProductViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -35,7 +41,7 @@ class InsertProductScreen extends StatelessWidget {
             },
           ),
         ),
-        body: Consumer<ProductViewModel>(
+        body: Consumer<InsertProductViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -100,6 +106,7 @@ class InsertProductScreen extends StatelessWidget {
 
                 TextField(
                   onChanged: model.updateProductId,
+                  controller: TextEditingController(text: model.productId ?? ''), // Set the controller to reflect the product ID
                   decoration: _inputDecoration('Product ID').copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
@@ -109,6 +116,7 @@ class InsertProductScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
 
                 SizedBox(height: 40),
                 Row(
@@ -155,8 +163,25 @@ class InsertProductScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 40),
 
-                SizedBox(height: 30),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  //hint: Text('Select Category'),
+                  items: model.categories.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value;
+                      model.updateSelectedCategory(value);
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Category'),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
                   child: ElevatedButton(
