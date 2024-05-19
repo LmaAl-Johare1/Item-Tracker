@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/Views/products/InsertProductView.dart';
 import 'package:project/views/splash_screen.dart';
+import 'Views/authentication/ChangePasswordView.dart';
 import 'Views/authentication/LoginView.dart';
 import 'Views/authentication/RegisterView.dart';
 import 'Views/authentication/ResetPasswordView.dart';
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
         '/RegisterBack': (context) => LoginScreen(),
 
         '/MyHomePage' : (context) => MyHomePage(),
+        '/ChangePasswordView' : (context) => ChangePasswordView(),
+
         '/insertProduct': (context) => InsertProductScreen(),
       },
     );
