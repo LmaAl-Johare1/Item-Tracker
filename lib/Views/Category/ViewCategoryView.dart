@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../ViewModels/InsertProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../product/CategoryProductView.dart';
-import '../product/InsertProductView.dart';
 
 class ViewCategoryView extends StatelessWidget {
   @override
@@ -28,14 +28,14 @@ class ViewCategoryView extends StatelessWidget {
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
-                // Navigator.pushReplacementNamed(context, '/dahsboardFromCategory');
+                Navigator.pushReplacementNamed(context, '/dahsboardFromCategory');
               },
             ),
             actions: [
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  // Navigator.pushReplacementNamed(context, '/addCategory');
+                  Navigator.pushReplacementNamed(context, '/addCategory');
                 },
               ),
             ],

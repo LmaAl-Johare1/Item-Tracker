@@ -31,7 +31,7 @@ class InsertCategoryScreen extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              Navigator.pushReplacementNamed(context, '/CategoryfromInsert');
             },
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../ViewModels/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
+import 'EditProductView.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final String productId;
@@ -67,9 +68,17 @@ class ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           trailing: TextButton(
-                            onPressed: () {
-                              // Handle edit action
-                              // NavigationHelper.navigateToEditProduct(context);
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProductPage(product: product),
+                                ),
+                              );
+                              if (result == true) {
+                                // Refresh product details after edit
+                                viewModel.fetchProduct(productId);
+                              }
                             },
                             child: Text(
                               'edit',

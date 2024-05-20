@@ -107,7 +107,7 @@ class InsertProductViewModel with ChangeNotifier {
       final reportData = {
         'operation': 'Insert Product',
         'date': DateTime.now(),
-        'description': ' ${_quantity} Inserted product ${_productName}}',
+        'description': 'Inserted product $_productName with quantity $_quantity',
       };
       await _networkService.sendData('Reports', reportData);
 

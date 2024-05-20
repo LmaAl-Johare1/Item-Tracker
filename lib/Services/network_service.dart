@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart' ;
 class NetworkService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -42,6 +41,8 @@ class NetworkService {
       );
     }
   }
+
+
   /// Sends data to the specified [collection].
   ///
   /// Returns a [Map<String, dynamic>] representing the response data including the document ID.
@@ -113,6 +114,7 @@ class NetworkService {
           .get();
       return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
+
     } catch (e, stackTrace) {
       throw FirebaseException(plugin: 'Firestore',
           message: 'Failed to fetch data: $e',
@@ -132,5 +134,6 @@ class NetworkService {
       return [];
     }
   }
+
 
 }
