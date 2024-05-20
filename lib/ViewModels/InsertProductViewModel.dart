@@ -1,9 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:project/services/network_service.dart';
 
 /// View model for managing product data.
-class ProductViewModel with ChangeNotifier {
+class InsertProductViewModel with ChangeNotifier {
+
+  final NetworkService _networkService = NetworkService();
+
+  String? _selectedCategory;
+  String? get selectedCategory => _selectedCategory;
+
+
+  List<String> _categories = [];
   String? _imagePath;
   String? _productId;
   String? _productName;
@@ -16,7 +25,13 @@ class ProductViewModel with ChangeNotifier {
   String? get productName => _productName;
   int get quantity => _quantity;
   DateTime? get expDate => _expDate;
+  List<String> get categories => _categories;
 
+
+  void updateCategory(List<String> category){
+    _categories = category;
+    notifyListeners();
+  }
   /// Update the image path.
   void updateImagePath(String path) {
     _imagePath = path;
@@ -74,16 +89,29 @@ class ProductViewModel with ChangeNotifier {
 
   /// Save the product data.
   Future<void> saveProduct() async {
+    DateTime dateAdded = DateTime.now();
+
     Map<String, dynamic> data = {
       'imagePath': _imagePath,
       'productId': _productId,
       'productName': _productName,
       'quantity': _quantity,
       'expDate': _expDate,
-    };
+      'category': _selectedCategory,
+      'created_at': dateAdded,
 
+    };
     try {
       await NetworkService().sendData('products', data);
+      /// this is for Reports
+      final reportData = {
+        'operation': 'Insert Product',
+        'date': DateTime.now(),
+        'description': ' ${_quantity} Inserted product ${_productName}}',
+      };
+      await _networkService.sendData('Reports', reportData);
+
+
       resetFields();
       print('Product inserted successfully');
     } catch (error) {
@@ -105,5 +133,22 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  InsertProductViewModel() {
+    fetchCategories();
+  }
 
+  Future<void> fetchCategories() async {
+    try {
+      List<Map<String, dynamic>> result = await _networkService.fetchAll('Categories');
+      _categories = result.map<String>((doc) => doc!['name'] as String).toList();
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
+  void updateSelectedCategory(String? category) {
+    _selectedCategory = category;
+    notifyListeners();
+  }
 }
