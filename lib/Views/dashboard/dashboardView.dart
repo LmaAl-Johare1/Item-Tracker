@@ -32,28 +32,20 @@ class _MyHomePageState extends State<MyHomePage>
       setState(() {});
     }
   }
-
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (_selectedIndex) {
-        case 0:
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ReportView()));
-          break;
-        case 1:
-        // (Home)
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => MyHomePage()));
-          break;
-        case 2:
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyHomePage()));
-          break;
-      }
     });
+
+    if (index == 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ReportView()));
+    } else if (index == 1) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    } else if (index == 2) {
+      // Navigate to Settings
+    }
   }
 
   @override
@@ -304,10 +296,8 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
-
-
-
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFD9D9D9),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_chart),
@@ -323,10 +313,10 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
         currentIndex: _selectedIndex,
-        backgroundColor: AppColor.greylight,
         selectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
+
     );
   }
 }

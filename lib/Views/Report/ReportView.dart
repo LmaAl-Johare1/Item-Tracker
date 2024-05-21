@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:project/ViewModels/ReportViewModel.dart';
+import 'package:project/Views/dashboard/dashboardView.dart';
 import 'package:provider/provider.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 
-class ReportView extends StatelessWidget {
+class ReportView extends StatefulWidget {
+  @override
+  _ReportViewState createState() => _ReportViewState();
+}
+
+class _ReportViewState extends State<ReportView> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ReportView()));
+    } else if (index == 1) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    } else if (index == 2) {
+      // Navigate to Settings
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -15,7 +37,7 @@ class ReportView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: IconThemeData(color: AppColor.primary),
+          automaticallyImplyLeading: false,
           title: Text(
             'Reports',
             style: TextStyle(
@@ -46,10 +68,11 @@ class ReportView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: TextField(
-                        onChanged: (value) {
-
-                        },
+                      child:  TextField(
+                        // onChanged: (value) {
+                        //   Provider.of<ReportViewModel>(context, listen: false)
+                        //       .searchTransactions(value);
+                        // },
                         decoration: const InputDecoration(
                           hintText: 'Search',
                           prefixIcon: Icon(Icons.search),
@@ -61,9 +84,9 @@ class ReportView extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   GestureDetector(
-                    onTap: () {
-                      // _showFilterDialog(context);
-                    },
+                    // onTap: () {
+                    //    _showFilterDialog(context);
+                    // },
                     child: Container(
                       padding: EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
@@ -93,9 +116,9 @@ class ReportView extends StatelessWidget {
                   }
 
                   return ListView.builder(
-                    itemCount: viewModel.report.length,
+                    itemCount: viewModel.filteredReport.length,
                     itemBuilder: (context, index) {
-                      final transaction = viewModel.report[index];
+                      final transaction = viewModel.filteredReport[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         child: GestureDetector(
@@ -159,50 +182,27 @@ class ReportView extends StatelessWidget {
             ),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color(0xFFD9D9D9),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.insert_chart),
+              label: 'Reports',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.black,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
 }
-
-
-// void _showFilterDialog(BuildContext context) {
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       String selectedOperation = 'Insert Product';
-//
-//       return AlertDialog(
-//         title: Text('Filter Reports'),
-//         content: DropdownButton<String>(
-//           value: selectedOperation,
-//           onChanged: (String? newValue) {
-//             selectedOperation = newValue!;
-//           },
-//           items: <String>['Insert Product', 'Supply Product', 'Other Operation']
-//               .map<DropdownMenuItem<String>>((String value) {
-//             return DropdownMenuItem<String>(
-//               value: value,
-//               child: Text(value),
-//             );
-//           }).toList(),
-//         ),
-//         actions: [
-//           TextButton(
-//             onPressed: () {
-//               Provider.of<ReportViewModel>(context, listen: false)
-//                   .filterTransactions(selectedOperation);
-//               Navigator.of(context).pop();
-//             },
-//             child: Text('Apply'),
-//           ),
-//           TextButton(
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//             child: Text('Cancel'),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
