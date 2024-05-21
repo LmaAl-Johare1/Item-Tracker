@@ -45,9 +45,9 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
-      body: ListView(
+      body:ListView(
         children: <Widget>[
-          SizedBox(height:0),
+          SizedBox(height: 0),
           Container(
             margin: EdgeInsets.all(22),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -64,18 +64,58 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ListTile(
-              title: Text('Add account', style: TextStyle(
+              title: Text(
+                'Profile',
+                style: TextStyle(
                   fontSize: AppText.headingTwo.fontSize,
                   fontWeight: AppText.headingTwo.fontWeight,
-                  color: AppColor.primary
-              ), textAlign: TextAlign.center),
-              trailing: Icon(
-                  Icons.navigate_next,
                   color: AppColor.primary,
-                  size:35
+                ),
+                textAlign: TextAlign.center,
+              ),
+              trailing: Icon(
+                Icons.navigate_next,
+                color: AppColor.primary,
+                size: 35,
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/ChangePasswordView  ');
+                Navigator.pushReplacementNamed(context, '/Profile');
+              },
+            ),
+          ),
+          SizedBox(height: 10), // Add some space between "Add account" and "Change password"
+          Container(
+            margin: EdgeInsets.all(22),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListTile(
+              title: Text(
+                'Change password',
+                style: TextStyle(
+                  fontSize: AppText.headingThree.fontSize,
+                  fontWeight: AppText.headingTwo.fontWeight,
+                  color: AppColor.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              trailing: Icon(
+                Icons.navigate_next,
+                color: AppColor.primary,
+                size: 30,
+              ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/ChangePasswordView');
               },
             ),
           ),
@@ -96,23 +136,22 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ListTile(
-              title: Text('Logout', style: TextStyle(
+              title: Text(
+                'Logout',
+                style: TextStyle(
                   fontSize: AppText.headingTwo.fontSize,
                   fontWeight: AppText.headingTwo.fontWeight,
-                  color: AppColor.validation
-              )),
-              leading: Icon(
-                  Icons.logout,
-                  color: AppColor.productInfo,
-                  size:40
+                  color: AppColor.validation,
+                ),
               ),
-
+              leading: Icon(
+                Icons.logout,
+                color: AppColor.productInfo,
+                size: 40,
+              ),
               onTap: () {
                 _authService.signOut(context);
-
-              },// Navigate to the LoginPage
-
-
+              },
             ),
           ),
         ],

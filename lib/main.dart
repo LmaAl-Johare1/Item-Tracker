@@ -7,6 +7,7 @@ import 'Views/authentication/LoginView.dart';
 import 'Views/authentication/RegisterView.dart';
 import 'Views/authentication/ResetPasswordView.dart';
 import 'Views/dashboard/DashboardView.dart';
+import 'Views/setting/ProfileManager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
 
         '/MyHomePage' : (context) => MyHomePage(),
         '/ChangePasswordView' : (context) => ChangePasswordView(),
-
+        '/Profile' : (context) => Profile(),
         '/insertProduct': (context) => InsertProductScreen(),
       },
     );
