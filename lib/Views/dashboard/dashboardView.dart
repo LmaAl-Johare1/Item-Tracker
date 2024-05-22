@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Center(
                               child: TextButton(
                                 onPressed: () {
-                                  // Add code here to navigate to the Charts view
+                                  Navigator.pushReplacementNamed(context, '/charts');
                                 },
                                 style: ButtonStyle(
                                   foregroundColor: MaterialStateProperty.all(AppColor.primary),
