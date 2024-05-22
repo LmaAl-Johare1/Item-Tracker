@@ -171,7 +171,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           SizedBox(height: 10),
                           Center(
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+    Navigator.pushReplacementNamed(
+    context, '/Charts');
+
+                              },
                               style: ButtonStyle(
                                 foregroundColor:
                                 MaterialStateProperty.all(AppColor.primary),

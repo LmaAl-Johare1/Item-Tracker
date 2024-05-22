@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:project/ViewModels/ViewCategoryViewModel.dart';
 import 'package:project/ViewModels/InsertProductViewModel.dart';
 import 'package:project/ViewModels/ProductViewModel.dart';
+import 'Views/Dashboard/DashboardView.dart';
+import 'Views/product/ChartsView.dart';
 import 'Views/product/InsertProductView.dart';
-import 'package:project/views/dashboard/dashboardView.dart';
-
 import 'Views/product/InsertProductView.dart';
 import 'Views/product/SupplyProductView.dart';
 
@@ -46,6 +46,8 @@ class MyApp extends StatelessWidget {
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/SupplyProduct': (context) => SupplyProductPage(),
+          '/Charts': (context) => ChartView(),
+
         },
       )
     );
