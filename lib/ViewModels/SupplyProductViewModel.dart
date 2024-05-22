@@ -52,7 +52,7 @@ class SupplyProductViewModel with ChangeNotifier {
       if (data.isNotEmpty) {
         product = Product.fromMap(data, productId);
         productInfoMessage =
-        'The inventory has ${product!.quantity} of ${product!.productName}. Please enter the quantity you want to supply.';
+        'The inventory has ${product!.quantity} of ${product!.name}. Please enter the quantity you want to supply.';
       } else {
         productInfoMessage = 'Product not found in the inventory.';
       }
@@ -78,7 +78,7 @@ class SupplyProductViewModel with ChangeNotifier {
         await _networkService.updateData(
           'products',
           'productId',
-          product!.productId!,
+          product!.id!,
           {
             'quantity': newStock,
             'supply_date': now,

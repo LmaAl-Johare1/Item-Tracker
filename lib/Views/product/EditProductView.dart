@@ -17,12 +17,12 @@ class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
   final _quantityController = TextEditingController();
-  DateTime? _expDate;
+  Timestamp? _expDate;
 
   @override
   void initState() {
     super.initState();
-    _productNameController.text = widget.product.productName;
+    _productNameController.text = widget.product.name;
     _quantityController.text = widget.product.quantity.toString();
     _expDate = widget.product.expDate;
   }
@@ -64,11 +64,11 @@ class _EditProductPageState extends State<EditProductPage> {
                     Map<String, dynamic> updatedData = {
                       'productName': _productNameController.text,
                       'quantity': int.parse(_quantityController.text),
-                      'expDate': Timestamp.fromDate(_expDate!),
-                      'productId': widget.product.productId,
+                      'expDate': Timestamp.fromDate(_expDate! as DateTime),
+                      'productId': widget.product.id,
                     };
                     // Call the updateProduct method in your ViewModel
-                    context.read<ProductViewModel>().updateProduct(widget.product.productId, updatedData);
+                    context.read<ProductViewModel>().updateProduct(widget.product.id, updatedData);
                     Navigator.pop(context, true);  // Return true to indicate success
                   }
                 },
