@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/insertProductss');
+                              Navigator.pushReplacementNamed(context, '/insertProduct');
                             },
                             child: const Center(
                               child: Text('Insert Product',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:provider/provider.dart';
 import 'package:project/ViewModels/ViewCategoryViewModel.dart';
 import 'package:project/ViewModels/InsertProductViewModel.dart';
@@ -24,38 +23,31 @@ void main() async {
   );
 
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-
       providers: [
         ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
         ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-
-
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
-
       ],
       child: MaterialApp(
         title: 'Inventory Management',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-
         routes: {
           '/': (context) => MyHomePage(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
-          '/Charts': (context) => ChartView(),
-          '/viewCategories':(context) => ViewCategoryView(),
+          '/charts': (context) => ChartView(),
+          '/viewCategories': (context) => ViewCategoryView(),
         },
-      )
+      ),
     );
   }
 }
