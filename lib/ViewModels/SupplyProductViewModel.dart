@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import '../Models/Product.dart';
 import '../Services/network_service.dart';
-import '../Models/product.dart';
 import 'DashboardViewModel.dart';
 
 /// ViewModel for managing the supply of products.
