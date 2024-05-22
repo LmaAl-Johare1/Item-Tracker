@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:project/Views/products/InsertProductView.dart';
 import 'package:project/views/splash_screen.dart';
 import 'Views/authentication/ChangePasswordView.dart';
 import 'Views/authentication/LoginView.dart';
-import 'Views/authentication/RegisterView.dart';
-import 'Views/authentication/ResetPasswordView.dart';
 import 'Views/dashboard/DashboardView.dart';
 import 'Views/setting/ProfileManager.dart';
+import 'Views/setting/settingview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,17 +31,14 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SplashScreen(),
         '/LoginPage': (context) => LoginScreen(),
-        '/RegisterPage': (context) => RegisterPage(),
         '/LoginFromReset': (context) => LoginScreen(),
-        '/resetPassword': (context) => ResetPassword(),
         '/login': (context) => LoginScreen(),
-        '/signup': (context) => RegisterPage(),
         '/RegisterBack': (context) => LoginScreen(),
+        '/SettingsPage' : (context) => SettingsPage(),
 
         '/MyHomePage' : (context) => MyHomePage(),
         '/ChangePasswordView' : (context) => ChangePasswordView(),
         '/Profile' : (context) => Profile(),
-        '/insertProduct': (context) => InsertProductScreen(),
       },
     );
   }

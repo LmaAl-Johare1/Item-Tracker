@@ -6,6 +6,7 @@ import '../../models/login.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../dashboard/DashboardView.dart';
+import '../setting/settingview.dart';
 
 /// A screen widget for user login.
 ///
@@ -165,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
+        MaterialPageRoute(builder: (context) => SettingsPage()),
       );
     } catch (e) {
       showDialog(
