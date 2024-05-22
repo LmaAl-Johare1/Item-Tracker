@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../services/network_service.dart';
+import '../Services/network_service.dart';
 import 'package:project/Models/Product.dart';
 
 class EditProductViewModel extends ChangeNotifier {

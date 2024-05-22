@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:project/Views/Category/ViewCategoryView.dart';
 import 'package:provider/provider.dart';
 import 'package:project/ViewModels/ViewCategoryViewModel.dart';
 import 'package:project/ViewModels/InsertProductViewModel.dart';
-import 'package:project/ViewModels/ProductViewModel.dart'; // Import ProductViewModel
-//import 'Views/Product/InsertProductView.dart';
+import 'package:project/ViewModels/ProductViewModel.dart';
+import 'Views/product/InsertProductView.dart';
+import 'package:project/views/dashboard/dashboardView.dart';
+
+import 'Views/product/InsertProductView.dart';
+import 'Views/product/SupplyProductView.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,21 +32,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        //ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
+        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
         ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-        // ChangeNotifierProvider(create: (_) => ProductViewModel()), // Add ProductViewModel
+        ChangeNotifierProvider(create: (_) => ProductViewModel()), // Add ProductViewModel
       ],
       child: MaterialApp(
         title: 'Inventory Management',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: ViewCategoryView(),
         routes: {
-          //'/insertProduct': (context) => InsertProductView(),
-          '/viewCategories': (context) => ViewCategoryView(),
+          '/': (context) => MyHomePage(),
+          '/dashboard': (context) => MyHomePage(),
+          '/insertProduct': (context) => InsertProductView(),
+          '/SupplyProduct': (context) => SupplyProductPage(),
         },
-      ),
+      )
     );
   }
 }

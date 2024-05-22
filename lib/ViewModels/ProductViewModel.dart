@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/network_service.dart';
+import '../Services/network_service.dart';
 import '../Models/Product.dart';
 
 class ProductViewModel extends ChangeNotifier {

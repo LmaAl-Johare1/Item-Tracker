@@ -77,6 +77,7 @@ class InsertProductViewModel with ChangeNotifier {
   }
 
   /// Scan a QR code to update the product ID.
+  /// Scan a QR code to update the product ID.
   Future<void> scanBarCode() async {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
@@ -84,8 +85,11 @@ class InsertProductViewModel with ChangeNotifier {
       false,
       ScanMode.BARCODE,
     );
-    updateProductId(barcodeScanRes);
+    if (barcodeScanRes.isNotEmpty) {
+      updateProductId(barcodeScanRes);
+    }
   }
+
 
   /// Save the product data.
   Future<void> saveProduct() async {
@@ -101,17 +105,9 @@ class InsertProductViewModel with ChangeNotifier {
       'created_at': dateAdded,
 
     };
+
     try {
       await NetworkService().sendData('products', data);
-      /// this is for Reports
-      final reportData = {
-        'operation': 'Insert Product',
-        'date': DateTime.now(),
-        'description': ' ${_quantity} Inserted product ${_productName}}',
-      };
-      await _networkService.sendData('Reports', reportData);
-
-
       resetFields();
       print('Product inserted successfully');
     } catch (error) {

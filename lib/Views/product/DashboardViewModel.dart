@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project/Services/network_service.dart';
+import 'package:project/services/network_service.dart';
 
 class MyHomePageViewModel extends ChangeNotifier {
   int _total = 0;

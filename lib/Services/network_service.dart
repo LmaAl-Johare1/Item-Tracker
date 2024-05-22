@@ -21,9 +21,9 @@ class NetworkService {
 
   Future<Map<String, dynamic>> fetchData(String collection, String field, String value) async {
     try {
-      final querySnapshot = await _firestore
-          .collection(collection)
+      final querySnapshot = await _firestore.collection(collection)
           .where(field, isEqualTo: value)
+          .limit(1)
           .get();
 
       if (querySnapshot.docs.isEmpty) {
@@ -42,6 +42,7 @@ class NetworkService {
       );
     }
   }
+
   /// Sends data to the specified [collection].
   ///
   /// Returns a [Map<String, dynamic>] representing the response data including the document ID.
@@ -132,5 +133,5 @@ class NetworkService {
       return [];
     }
   }
-
 }
+
