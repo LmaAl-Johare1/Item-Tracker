@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import '../Models/Product.dart';
+import '../Models/products.dart';
 import '../Services/network_service.dart';
 import 'DashboardViewModel.dart';
 
@@ -14,7 +14,6 @@ class SupplyProductViewModel with ChangeNotifier {
   int suppliedQuantity = 0;
   final NetworkService _networkService = NetworkService();
   final MyHomePageViewModel _dashboardViewModel;
-
   SupplyProductViewModel(this._dashboardViewModel);
 
   /// Scans a product barcode and fetches product information.
@@ -52,7 +51,7 @@ class SupplyProductViewModel with ChangeNotifier {
       if (data.isNotEmpty) {
         product = Product.fromMap(data, productId);
         productInfoMessage =
-        'The inventory has ${product!.quantity} of ${product!.name}. Please enter the quantity you want to supply.';
+        'The inventory has ${product!.quantity} of ${product!.productName}. Please enter the quantity you want to supply.';
       } else {
         productInfoMessage = 'Product not found in the inventory.';
       }
@@ -78,7 +77,7 @@ class SupplyProductViewModel with ChangeNotifier {
         await _networkService.updateData(
           'products',
           'productId',
-          product!.id!,
+          product!.productId!,
           {
             'quantity': newStock,
             'supply_date': now,

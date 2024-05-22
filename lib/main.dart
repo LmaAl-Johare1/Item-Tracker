@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => MyHomePage(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
-          '/SupplyProduct': (context) => SupplyProductPage(),
+          '/supplyProduct': (context) => SupplyProductPage(),
           '/Charts': (context) => ChartView(),
           '/viewCategories':(context) => ViewCategoryView(),
         },

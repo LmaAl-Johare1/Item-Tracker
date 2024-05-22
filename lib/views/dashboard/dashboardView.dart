@@ -5,15 +5,12 @@ import 'package:project/services/network_service.dart';
 import '../../ViewModels/DashboardViewModel.dart';
 import '../Report/ReportView.dart';
 
-
-
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-{
+class _MyHomePageState extends State<MyHomePage> {
   late MyHomePageViewModel _viewModel;
   final NetworkService _networkService = NetworkService();
 
@@ -24,7 +21,6 @@ class _MyHomePageState extends State<MyHomePage>
     _viewModel = MyHomePageViewModel();
 
     if (_viewModel.total == 0 && _viewModel.productIn == 0 && _viewModel.productOut == 0) {
-
       _viewModel.updateProductInCount();
       _viewModel.listenForProductInsertions();
       _viewModel.checkAndAggregateQuantities();
@@ -32,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage>
       setState(() {});
     }
   }
+
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
@@ -58,244 +55,219 @@ class _MyHomePageState extends State<MyHomePage>
               color: Colors.white,
             ),
           ),
-          Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 50),
-                      Text(
-                        'Dashboard',
-                        style: AppText.headingOne
-                            .copyWith(color: AppColor.primary),
-                      ),
-                      const SizedBox(height: 30),
-                      Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 25),
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
-                              decoration: BoxDecoration(
-                                color: AppColor.greylight,
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.inventory,
-                                        size: 30,
-                                        color: AppColor.primary,
-                                      ),
-                                      const SizedBox(width: 15),
-                                      Text(
-                                        'Total:               ${_viewModel.total}',
-                                        style: AppText.headingThree
-                                            .copyWith(color: AppColor.primary),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.file_upload_outlined,
-                                          size: 30, color: AppColor.primary),
-                                      const SizedBox(width: 15),
-                                      Text(
-                                        'Product In:      ${_viewModel.productIn}',
-                                        style: AppText.headingThree
-                                            .copyWith(color: AppColor.primary),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.file_download_outlined,
-                                          size: 30, color: AppColor.primary),
-                                      const SizedBox(width: 15),
-                                      Text(
-                                        'Product Out:      ${_viewModel.productOut}',
-                                        style: AppText.headingThree
-                                            .copyWith(color: AppColor.primary),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(25),
-                            child: TextButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.fromLTRB(20, 10, 20, 8)),
-                                backgroundColor:
-                                MaterialStateProperty.all(AppColor.greylight),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.notifications_none_outlined,
-                                      color: AppColor.productInfo, size: 30),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      'Reminders',
-                                      style: AppText.headingThree
-                                          .copyWith(color: AppColor.primary),
-                                    ),
-                                  ),
-                                  const Expanded(
-                                    child: SizedBox(),
-                                  ),
-                                  const Icon(Icons.arrow_forward_ios,
-                                      color: AppColor.primary),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 13),
-                          Center(
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context, '/Charts');
-
-                              },
-                              style: ButtonStyle(
-                                foregroundColor:
-                                MaterialStateProperty.all(AppColor.primary),
-                                overlayColor: MaterialStateProperty.all(
-                                    AppColor.primary.withOpacity(0.1)),
-                                textStyle: MaterialStateProperty.all(
-                                  AppText.headingTwo.copyWith(
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Go to Charts',
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(
-                                width: 165,
-                                height: 65,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(context, '/viewCategories');
-                                  },
-                                  child: const Center(
-                                    child: Text('View Category',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: AppColor.secondary)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 165,
-                                height: 65,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(context, '/insertProduct');
-                                  },
-                                  child: const Center(
-                                    child: Text('Insert Product',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: AppColor.secondary)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(
-                                width: 165,
-                                height: 65,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(context, '/SupplyProduct');
-
-                                  },
-                                  child: Center(
-                                    child: Text('supply product',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: AppColor.secondary)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 165,
-                                height: 65,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                  },
-                                  child: const Center(
-                                    child: Text('Generate Barcode',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: AppColor.secondary)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+          SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                Text(
+                  'Dashboard',
+                  style: AppText.headingOne.copyWith(color: AppColor.primary),
                 ),
-              ),
-            ],
+                const SizedBox(height: 30),
+                Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
+                        decoration: BoxDecoration(
+                          color: AppColor.greylight,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.inventory,
+                                  size: 30,
+                                  color: AppColor.primary,
+                                ),
+                                const SizedBox(width: 15),
+                                Text(
+                                  'Total:               ${_viewModel.total}',
+                                  style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                const Icon(Icons.file_upload_outlined,
+                                    size: 30, color: AppColor.primary),
+                                const SizedBox(width: 15),
+                                Text(
+                                  'Product In:      ${_viewModel.productIn}',
+                                  style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              children: [
+                                const Icon(Icons.file_download_outlined,
+                                    size: 30, color: AppColor.primary),
+                                const SizedBox(width: 15),
+                                Text(
+                                  'Product Out:      ${_viewModel.productOut}',
+                                  style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(25),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/reminders'); // Updated to navigate to Reminders
+                        },
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 8)),
+                          backgroundColor: MaterialStateProperty.all(AppColor.greylight),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.notifications_none_outlined,
+                                color: AppColor.productInfo, size: 30),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Text(
+                                'Reminders',
+                                style: AppText.headingThree.copyWith(color: AppColor.primary),
+                              ),
+                            ),
+                            const Expanded(
+                              child: SizedBox(),
+                            ),
+                            const Icon(Icons.arrow_forward_ios, color: AppColor.primary),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 13),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/charts'); // Updated to navigate to Charts
+                        },
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all(AppColor.primary),
+                          overlayColor: MaterialStateProperty.all(AppColor.primary.withOpacity(0.1)),
+                          textStyle: MaterialStateProperty.all(
+                            AppText.headingTwo.copyWith(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Go to Charts'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 165,
+                          height: 65,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/viewCategories');
+                            },
+                            child: const Center(
+                              child: Text('View Category',
+                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 165,
+                          height: 65,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/insertProductss');
+                            },
+                            child: const Center(
+                              child: Text('Insert Product',
+                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 165,
+                          height: 65,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/supplyProduct');
+                            },
+                            child: Center(
+                              child: Text('Supply Product',
+                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 165,
+                          height: 65,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/generateBarcode');
+                            },
+                            child: const Center(
+                              child: Text('Generate Barcode',
+                                  style: TextStyle(fontSize: 14, color: AppColor.secondary)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -319,7 +291,6 @@ class _MyHomePageState extends State<MyHomePage>
         selectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
-
     );
   }
 }

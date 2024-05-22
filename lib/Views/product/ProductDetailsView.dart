@@ -52,7 +52,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         child: ListTile(
                           title: Text(
-                            product.name,
+                            product.productName,
                             style: TextStyle(
                               fontSize: AppText.HeadingTwo.fontSize,
                               fontWeight: AppText.HeadingTwo.fontWeight,
@@ -60,7 +60,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            'ID: ${product.id}',
+                            'ID: ${product.productId}',
                             style: TextStyle(
                               fontSize: AppText.HeadingFive.fontSize,
                               fontWeight: AppText.HeadingFive.fontWeight,
@@ -143,7 +143,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${product.expDate.toDate()}'.split(' ')[0],
+                          '${product.expDate.toLocal()}'.split(' ')[0],
                           style: TextStyle(
                             fontSize: AppText.HeadingFour.fontSize,
                             fontWeight: AppText.HeadingFour.fontWeight,

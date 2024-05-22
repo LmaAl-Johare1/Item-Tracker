@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../Models/products.dart';
 import '../../ViewModels/ProductViewModel.dart';
-import 'package:project/Models/Product.dart';
 
 class EditProductPage extends StatefulWidget {
   final Product product;
@@ -22,9 +22,9 @@ class _EditProductPageState extends State<EditProductPage> {
   @override
   void initState() {
     super.initState();
-    _productNameController.text = widget.product.name;
+    _productNameController.text = widget.product.productName;
     _quantityController.text = widget.product.quantity.toString();
-    _expDate = widget.product.expDate;
+    _expDate = widget.product.expDate as Timestamp?;
   }
 
   @override
@@ -65,10 +65,10 @@ class _EditProductPageState extends State<EditProductPage> {
                       'productName': _productNameController.text,
                       'quantity': int.parse(_quantityController.text),
                       'expDate': Timestamp.fromDate(_expDate! as DateTime),
-                      'productId': widget.product.id,
+                      'productId': widget.product.productId,
                     };
                     // Call the updateProduct method in your ViewModel
-                    context.read<ProductViewModel>().updateProduct(widget.product.id, updatedData);
+                    context.read<ProductViewModel>().updateProduct(widget.product.productId, updatedData);
                     Navigator.pop(context, true);  // Return true to indicate success
                   }
                 },
