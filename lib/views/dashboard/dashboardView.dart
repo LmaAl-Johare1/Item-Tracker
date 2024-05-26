@@ -4,7 +4,7 @@ import 'package:project/res/AppColor.dart';
 import 'package:project/services/network_service.dart';
 import '../../ViewModels/DashboardViewModel.dart';
 import '../Report/ReportView.dart';
-import '../setting/settingview.dart';
+import '../setting/SettingView.dart';
 
 class MyHomePage extends StatefulWidget {
   @override

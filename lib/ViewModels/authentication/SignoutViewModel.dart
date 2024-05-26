@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project/Views/authentication/LoginView.dart';
+
+import '../../Views/authentication/LoginView.dart';
 
 class settingviewmodel {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

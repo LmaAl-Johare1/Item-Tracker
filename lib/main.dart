@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:project/ViewModels/ViewCategoryViewModel.dart';
-import 'package:project/ViewModels/InsertProductViewModel.dart';
-import 'package:project/ViewModels/ProductViewModel.dart';
+import 'ViewModels/InsertProductViewModel.dart';
 import 'Views/Category/ViewCategoryView.dart';
-import 'Views/dashboard/dashboardView.dart';
-import 'Views/product/InsertProductView.dart';
-import 'package:project/ViewModels/SupplyProductViewModel.dart';
-import 'Views/product/SupplyProductView.dart';
+import 'Views/Reminder/ReminderView.dart';
+import 'Views/authentication/ChangePasswordView.dart';
+import 'Views/authentication/LoginView.dart';
+import 'Views/dashboard/DashboardView.dart';
 import 'Views/product/ChartsView.dart';
+import 'Views/product/InsertProductView.dart';
+import 'Views/product/SupplyProductView.dart';
+import 'Views/setting/DeleteAccountView.dart';
+import 'Views/setting/ProfileManager.dart';
+import 'Views/setting/SettingView.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,32 +25,42 @@ void main() async {
     ),
   );
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
-        ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-        ChangeNotifierProvider(create: (_) => ProductViewModel()),
+        // Add other providers here
       ],
       child: MaterialApp(
-        title: 'Inventory Management',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
         routes: {
           '/': (context) => MyHomePage(),
+          '/LoginPage': (context) => LoginScreen(),
+          '/LoginFromReset': (context) => LoginScreen(),
+          '/login': (context) => LoginScreen(),
+          '/RegisterBack': (context) => LoginScreen(),
+          '/SettingsPage' : (context) => SettingsPage(),
+          '/MyHomePage' : (context) => MyHomePage(),
+          '/Profile' : (context) => Profile(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
           '/charts': (context) => ChartView(),
           '/viewCategories': (context) => ViewCategoryView(),
+          '/changePassword': (context) => ChangePasswordView(),
+          '/deleteAccount': (context) => DeleteAccountPage(),
+          '/managerProfile': (context) => Profile(),
+          '/reminders': (context) => RemindersView(),
         },
       ),
     );
   }
 }
+

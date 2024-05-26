@@ -29,24 +29,24 @@ class ReportViewModel extends ChangeNotifier {
     }
   }
 
-  // void searchTransactions(String query) {
-  //   if (query.isEmpty) {
-  //     filteredReport = report;
-  //   } else {
-  //     filteredReport = report.where((transaction) {
-  //       return transaction.operation.toLowerCase().contains('insert product') &&
-  //           transaction.description.toLowerCase().contains(query.toLowerCase());
-  //     }).toList();
-  //   }
-  //   notifyListeners();
-  // }
-  //
-  // void filterTransactions(String operation) {
-  //   if (operation.isEmpty) {
-  //     filteredReport = report;
-  //   } else {
-  //     filteredReport = report.where((transaction) => transaction.operation.toLowerCase() == operation.toLowerCase()).toList();
-  //   }
-  //   notifyListeners();
-  // }
+// void searchTransactions(String query) {
+//   if (query.isEmpty) {
+//     filteredReport = report;
+//   } else {
+//     filteredReport = report.where((transaction) {
+//       return transaction.operation.toLowerCase().contains('insert product') &&
+//           transaction.description.toLowerCase().contains(query.toLowerCase());
+//     }).toList();
+//   }
+//   notifyListeners();
+// }
+//
+// void filterTransactions(String operation) {
+//   if (operation.isEmpty) {
+//     filteredReport = report;
+//   } else {
+//     filteredReport = report.where((transaction) => transaction.operation.toLowerCase() == operation.toLowerCase()).toList();
+//   }
+//   notifyListeners();
+// }
 }

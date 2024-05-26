@@ -59,13 +59,13 @@ class _ChartViewState extends State<ChartView> {
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
                   : Center(
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
-                        child: _selectedFilter == 'Near Sold Out'
-                            ? _buildNearSoldOutChart()
-                            : _buildExpirationDateProximityChart(),
-                      ),
-                    ),
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: _selectedFilter == 'Near Sold Out'
+                      ? _buildNearSoldOutChart()
+                      : _buildExpirationDateProximityChart(),
+                ),
+              ),
             ),
           ],
         ),

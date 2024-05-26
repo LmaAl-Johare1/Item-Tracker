@@ -32,7 +32,7 @@ class CategoryProductView extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                 Navigator.pushReplacementNamed(context, '/addProduct');
+                Navigator.pushReplacementNamed(context, '/addProduct');
               },
             ),
           ],

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import '../setting/settingview.dart';
+import '../setting/SettingView.dart';
 
 class ReportView extends StatefulWidget {
   @override

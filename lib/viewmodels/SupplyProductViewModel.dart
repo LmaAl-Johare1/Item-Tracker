@@ -46,12 +46,12 @@ class SupplyProductViewModel with ChangeNotifier {
   /// Fetches product information based on the product ID.
   Future<void> fetchProductInfo(String productId) async {
     try {
-      var data = await _networkService.fetchData(
-          'products', 'productId', productId);
+      var data =
+          await _networkService.fetchData('products', 'productId', productId);
       if (data.isNotEmpty) {
         product = Product.fromMap(data, productId);
         productInfoMessage =
-        'The inventory has ${product!.quantity} of ${product!.productName}. Please enter the quantity you want to supply.';
+            'The inventory has ${product!.quantity} of ${product!.productName}. Please enter the quantity you want to supply.';
       } else {
         productInfoMessage = 'Product not found in the inventory.';
       }
@@ -75,11 +75,10 @@ class SupplyProductViewModel with ChangeNotifier {
         final reportData = {
           'operation': 'Insert Product',
           'date': DateTime.now(),
-          'description': 'Inserted product ${product?.productName} with quantity ${product?.quantity}',
+          'description':
+              'Inserted product ${product?.productName} with quantity ${product?.quantity}',
         };
         await _networkService.sendData('Reports', reportData);
-
-
 
         int newStock = product!.quantity - suppliedQuantity;
 
@@ -94,7 +93,6 @@ class SupplyProductViewModel with ChangeNotifier {
           },
         );
 
-
         _dashboardViewModel.updateProductOut(suppliedQuantity);
 
         supplyQuantityController.clear();
@@ -106,7 +104,8 @@ class SupplyProductViewModel with ChangeNotifier {
         productInfoMessage = 'Error: $error';
       }
     } else {
-      productInfoMessage = 'No product information available to update quantity.';
+      productInfoMessage =
+          'No product information available to update quantity.';
     }
     notifyListeners();
   }
