@@ -4,6 +4,7 @@ import 'package:project/res/AppColor.dart';
 import 'package:project/services/network_service.dart';
 import '../../ViewModels/DashboardViewModel.dart';
 import '../Report/ReportView.dart';
+import '../setting/settingview.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -41,13 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (index == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
-      // Navigate to Settings
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned.fill(

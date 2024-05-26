@@ -72,6 +72,15 @@ class SupplyProductViewModel with ChangeNotifier {
           throw Exception('Supplied quantity cannot exceed available quantity');
         }
 
+        final reportData = {
+          'operation': 'Insert Product',
+          'date': DateTime.now(),
+          'description': 'Inserted product ${product?.productName} with quantity ${product?.quantity}',
+        };
+        await _networkService.sendData('Reports', reportData);
+
+
+
         int newStock = product!.quantity - suppliedQuantity;
 
         await _networkService.updateData(

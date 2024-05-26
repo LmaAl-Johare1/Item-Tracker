@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
+import '../setting/settingview.dart';
 
 class ReportView extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _ReportViewState extends State<ReportView> {
     } else if (index == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
-      // Navigate to Settings
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
   }
 

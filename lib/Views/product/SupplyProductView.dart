@@ -31,6 +31,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
