@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the loca
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/services/network_service.dart';
-import '../../ViewModels/RegisterViewModel.dart';
+import '../../ViewModels/authentication/RegisterViewModel.dart';
 import '../../utils/validators.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -256,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       onPressed: () {
         _handleFormSubmission();
-        Navigator.pushReplacementNamed(context, '/dashboardRegister');
+        Navigator.pushReplacementNamed(context, '/dashboard');
       },
       child: Text(localizations.continueText, style: AppText.ButtonText), // Changed text to localized string
     ),

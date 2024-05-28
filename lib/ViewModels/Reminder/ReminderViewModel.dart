@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../Models/Reminder.dart';
-import '../Services/network_service.dart';
+import '../../Models/Reminder.dart';
+import '../../Services/network_service.dart';
 
 class RemindersViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();

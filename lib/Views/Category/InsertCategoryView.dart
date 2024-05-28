@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import your gen
 
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/InsertCategoryViewModel.dart';
+import 'package:project/ViewModels/Category/InsertCategoryViewModel.dart';
 
 class InsertCategoryScreen extends StatelessWidget {
   @override

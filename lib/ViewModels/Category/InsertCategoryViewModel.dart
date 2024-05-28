@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Services/network_service.dart';
+import '../../Services/network_service.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();

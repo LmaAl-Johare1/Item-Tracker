@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Models/products.dart';
-import '../../ViewModels/ProductViewModel.dart';
+import '../../ViewModels/products/ProductViewModel.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the generated localization class
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import '../../ViewModels/settingviewmodel.dart';
+import '../../ViewModels/Setting/SettingViewModel.dart';
 import '../../main.dart';
 import '../dashboard/DashboardView.dart';
 

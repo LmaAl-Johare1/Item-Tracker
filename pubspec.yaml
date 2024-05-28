@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 
-يبدو أن قسم dev_dependencies في ملف pubspec.yaml الخاص بك مُرفق بقسم dependencies بشكل غير صحيح. يجب أن يكون القسم dev_dependencies في نفس المستوى مع القسم dependencies، لذا يُرجى تعديله ليكون في الموضع الصحيح. هناك تصحيح آخر يتعلق بالمسافات الفارغة أيضًا، يُفضل تصحيحها. هذا هو الشكل الصحيح للملف pubspec.yaml:
 
 
 dependencies:

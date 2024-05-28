@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Models/Reminder.dart';
-import '../../ViewModels/ReminderViewModel.dart';
+import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations

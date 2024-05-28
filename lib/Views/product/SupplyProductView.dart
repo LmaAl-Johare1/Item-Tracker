@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../ViewModels/DashboardViewModel.dart';
-import '../../ViewModels/SupplyProductViewModel.dart';
+import '../../ViewModels/Dashboard/DashboardViewModel.dart';
+import '../../ViewModels/products/SupplyProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
-import 'package:project/ViewModels/ReportViewModel.dart';
-import 'package:project/Views/dashboard/dashboardView.dart';
+import 'package:project/ViewModels/Report/ReportViewModel.dart';
+import 'package:project/Views/dashboard/DashboardView.dart';
 import 'package:provider/provider.dart';
 
 import '../../res/AppColor.dart';

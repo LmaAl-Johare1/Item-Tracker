@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Models/products.dart';
-import '../Services/network_service.dart';
+import '../../Models/products.dart';
+import '../../Services/network_service.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();

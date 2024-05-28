@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
-import '../../ViewModels/ProductViewModel.dart';
+import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import 'EditProductView.dart';

@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'ViewModels/InsertProductViewModel.dart';
-import 'ViewModels/ViewCategoryViewModel.dart';
-import 'ViewModels/ProductViewModel.dart';
+import 'ViewModels/products/InsertProductViewModel.dart';
+import 'ViewModels/Category/ViewCategoryViewModel.dart';
+import 'ViewModels/products/ProductViewModel.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/Reminder/ReminderView.dart';
@@ -20,8 +20,8 @@ import 'Views/product/EditProductView.dart';
 import 'Views/product/InsertProductView.dart';
 import 'Views/product/ProductDetailsView.dart';
 import 'Views/product/SupplyProductView.dart';
-import 'Views/profile/profile_screen.dart';
-import 'Views/setting/DeleteAccountPage.dart';
+import 'Views/profile/ProfileView.dart';
+import 'Views/setting/DeleteAccountView.dart';
 import 'Views/setting/SettingView.dart';
 import 'l10n/l10n.dart';
 
@@ -84,7 +84,7 @@ class MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         routes: {
-          '/': (context) => LoginScreen(),
+          '/': (context) => RegisterPage(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/services/network_service.dart';
-import '../../ViewModels/DashboardViewModel.dart';
+import '../../ViewModels/Dashboard/DashboardViewModel.dart';
 import '../Report/ReportView.dart';
-import '../setting/settingview.dart';
+import '../setting/SettingView.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {

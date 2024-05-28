@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // استيراد الترجمة
-import '../../ViewModels/ChartsViewModel.dart';
+import '../../ViewModels/products/ChartsViewModel.dart';
 
 class ChartView extends StatefulWidget {
   @override
