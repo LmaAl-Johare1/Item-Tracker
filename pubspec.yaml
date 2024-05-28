@@ -27,6 +27,10 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
+يبدو أن قسم dev_dependencies في ملف pubspec.yaml الخاص بك مُرفق بقسم dependencies بشكل غير صحيح. يجب أن يكون القسم dev_dependencies في نفس المستوى مع القسم dependencies، لذا يُرجى تعديله ليكون في الموضع الصحيح. هناك تصحيح آخر يتعلق بالمسافات الفارغة أيضًا، يُفضل تصحيحها. هذا هو الشكل الصحيح للملف pubspec.yaml:
+
+
 dependencies:
   flutter:
     sdk: flutter
@@ -34,8 +38,9 @@ dependencies:
   image_picker: ^0.8.4+4
   provider: ^5.0.0
   syncfusion_flutter_charts: ^25.2.5
-
-
+  flutter_localizations:
+    sdk: flutter
+  intl: 0.19.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,15 +66,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+    uses-material-design: true
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
-  uses-material-design: true
-
-  assets:
-    - assets/img/
-
+    generate: true
+    assets:
+      - lib/l10n/
+      - assets/img/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

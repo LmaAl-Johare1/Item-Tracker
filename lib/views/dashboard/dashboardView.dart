@@ -4,6 +4,8 @@ import 'package:project/res/AppColor.dart';
 import 'package:project/services/network_service.dart';
 import '../../ViewModels/DashboardViewModel.dart';
 import '../Report/ReportView.dart';
+import '../setting/settingview.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -41,12 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (index == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
-      // Navigate to Settings
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -55,12 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white,
             ),
           ),
-          SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+          SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 50),
                 Text(
-                  'Dashboard',
+                  localizations!.dashboardTitle,
                   style: AppText.headingOne.copyWith(color: AppColor.primary),
                 ),
                 const SizedBox(height: 30),
@@ -86,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 const SizedBox(width: 15),
                                 Text(
-                                  'Total:               ${_viewModel.total}',
+                                  '${localizations.total}:     ${_viewModel.total}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -98,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     size: 30, color: AppColor.primary),
                                 const SizedBox(width: 15),
                                 Text(
-                                  'Product In:      ${_viewModel.productIn}',
+                                  '${localizations.productIn}:      ${_viewModel.productIn}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -110,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     size: 30, color: AppColor.primary),
                                 const SizedBox(width: 15),
                                 Text(
-                                  'Product Out:      ${_viewModel.productOut}',
+                                  '${localizations.productOut}:    ${_viewModel.productOut}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -123,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.all(25),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/reminders'); // Updated to navigate to Reminders
+                          Navigator.pushNamed(context, '/reminders');
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 8)),
@@ -141,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Padding(
                               padding: EdgeInsets.only(left: 8),
                               child: Text(
-                                'Reminders',
+                                localizations.reminders,
                                 style: AppText.headingThree.copyWith(color: AppColor.primary),
                               ),
                             ),
@@ -157,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/charts'); // Updated to navigate to Charts
+                          Navigator.pushNamed(context, '/charts');
                         },
                         style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all(AppColor.primary),
@@ -168,10 +172,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Go to Charts'),
+                            Text(localizations.goToCharts),
                           ],
                         ),
                       ),
@@ -193,8 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () {
                               Navigator.pushReplacementNamed(context, '/viewCategories');
                             },
-                            child: const Center(
-                              child: Text('View Category',
+                            child: Center(
+                              child: Text(localizations.viewCategory,
                                   style: TextStyle(fontSize: 16, color: AppColor.secondary)),
                             ),
                           ),
@@ -212,8 +216,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () {
                               Navigator.pushReplacementNamed(context, '/insertProduct');
                             },
-                            child: const Center(
-                              child: Text('Insert Product',
+                            child: Center(
+                              child: Text(localizations.insertProduct,
                                   style: TextStyle(fontSize: 16, color: AppColor.secondary)),
                             ),
                           ),
@@ -238,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.pushReplacementNamed(context, '/supplyProduct');
                             },
                             child: Center(
-                              child: Text('Supply Product',
+                              child: Text(localizations.supplyProduct,
                                   style: TextStyle(fontSize: 16, color: AppColor.secondary)),
                             ),
                           ),
@@ -256,8 +260,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () {
                               Navigator.pushReplacementNamed(context, '/generateBarcode');
                             },
-                            child: const Center(
-                              child: Text('Generate Barcode',
+                            child: Center(
+                              child: Text(localizations.generateBarcode,
                                   style: TextStyle(fontSize: 14, color: AppColor.secondary)),
                             ),
                           ),
@@ -273,18 +277,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFFD9D9D9),
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_chart),
-            label: 'Reports',
+            label: localizations.reports,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: localizations.home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: localizations.settings,
           ),
         ],
         currentIndex: _selectedIndex,

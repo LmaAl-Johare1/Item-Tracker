@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // استيراد الترجمة
 import '../../ViewModels/ChartsViewModel.dart';
 
 class ChartView extends StatefulWidget {
@@ -10,7 +10,7 @@ class ChartView extends StatefulWidget {
 
 class _ChartViewState extends State<ChartView> {
   final ChartViewModel _viewModel = ChartViewModel();
-  String _selectedFilter = 'Near Sold Out'; // Default filter option
+  String _selectedFilter = 'Near Sold Out'; // القيمة الافتراضية للتصفية
   bool _isLoading = true;
 
   @override
@@ -31,13 +31,15 @@ class _ChartViewState extends State<ChartView> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // الحصول على الترجمة
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'Charts',
+          localizations.charts,
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
@@ -53,19 +55,19 @@ class _ChartViewState extends State<ChartView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildFilterDropdown(),
+            _buildFilterDropdown(localizations), // تمرير الترجمة
             SizedBox(height: 20),
             Expanded(
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
                   : Center(
-                      child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
-                        child: _selectedFilter == 'Near Sold Out'
-                            ? _buildNearSoldOutChart()
-                            : _buildExpirationDateProximityChart(),
-                      ),
-                    ),
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: _selectedFilter == 'Near Sold Out'
+                      ? _buildNearSoldOutChart()
+                      : _buildExpirationDateProximityChart(),
+                ),
+              ),
             ),
           ],
         ),
@@ -73,7 +75,15 @@ class _ChartViewState extends State<ChartView> {
     );
   }
 
-  Widget _buildFilterDropdown() {
+  Widget _buildFilterDropdown(AppLocalizations localizations) {
+    List<Map<String, String>> filterItems = [
+      {'value': 'Near Sold Out', 'text': localizations.nearSoldOut},
+      {'value': 'Expiration Date Proximity', 'text': localizations.expirationDateProximity},
+    ];
+
+
+
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
@@ -91,7 +101,7 @@ class _ChartViewState extends State<ChartView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Filter: ',
+            localizations.filter,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           SizedBox(width: 8),
@@ -106,13 +116,10 @@ class _ChartViewState extends State<ChartView> {
                 });
               }
             },
-            items: <String>[
-              'Near Sold Out',
-              'Expiration Date Proximity',
-            ].map<DropdownMenuItem<String>>((String value) {
+            items: filterItems.map<DropdownMenuItem<String>>((item) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: item['value']!,
+                child: Text(item['text']!),
               );
             }).toList(),
           ),
@@ -130,7 +137,8 @@ class _ChartViewState extends State<ChartView> {
         _viewModel.data, 'Product', 'Remaining Days Until Expiry');
   }
 
-  Widget _buildChart(List<SalesData> data, String xAxisTitle, String yAxisTitle) {
+  Widget _buildChart(
+      List<SalesData> data, String xAxisTitle, String yAxisTitle) {
     data = data.where((dataPoint) => dataPoint.product.isNotEmpty).toList();
 
     return SfCartesianChart(

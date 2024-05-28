@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-
 import '../../ViewModels/settingviewmodel.dart';
+import '../../main.dart';
 import '../dashboard/DashboardView.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -31,6 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
       // Already on Settings Page
         break;
     }
+  }
+
+  void _changeLanguage(Locale locale) {
+    MyAppState? appState = context.findAncestorStateOfType<MyAppState>();
+    appState?.setLocale(locale);
   }
 
   @override
@@ -166,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     textAlign: TextAlign.center,
                   ),
                   onTap: () {
-                    // Handle language change to English
+                    _changeLanguage(Locale('en'));
                   },
                 ),
                 ListTile(
@@ -180,10 +185,45 @@ class _SettingsPageState extends State<SettingsPage> {
                     textAlign: TextAlign.center,
                   ),
                   onTap: () {
-                    // Handle language change to Arabic
+                    _changeLanguage(Locale('ar'));
                   },
                 ),
               ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(22),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListTile(
+              title: Text(
+                localizations.changePassword, // Use localization key
+                style: TextStyle(
+                  fontSize: AppText.headingThree.fontSize,
+                  fontWeight: AppText.headingTwo.fontWeight,
+                  color: AppColor.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              trailing: Icon(
+                Icons.navigate_next,
+                color: AppColor.primary,
+                size: 35,
+              ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/changePassword');
+              },
             ),
           ),
           SizedBox(height: 150),

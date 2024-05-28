@@ -5,7 +5,7 @@ import 'package:project/res/AppText.dart';
 import 'package:project/ViewModels/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the generated localization class
 
 class InsertProductView extends StatefulWidget {
   @override
@@ -13,10 +13,13 @@ class InsertProductView extends StatefulWidget {
 }
 
 /// Screen for inserting a new product.
-class _InsertProductViewState  extends State<InsertProductView> {
+class _InsertProductViewState extends State<InsertProductView> {
   String? _selectedCategory;
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return ChangeNotifierProvider(
       create: (_) => InsertProductViewModel(),
       child: Scaffold(
@@ -26,7 +29,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            'Insert Product',
+            localizations.insertProduct,
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -58,7 +61,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                             children: <Widget>[
                               ListTile(
                                 leading: Icon(Icons.photo_library),
-                                title: Text('Choose from gallery'),
+                                title: Text(localizations.chooseFromGallery),
                                 onTap: () async {
                                   Navigator.pop(context);
                                   final pickedImage = await picker.getImage(source: ImageSource.gallery);
@@ -69,7 +72,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                               ),
                               ListTile(
                                 leading: Icon(Icons.photo_camera),
-                                title: Text('Take a photo'),
+                                title: Text(localizations.takeAPhoto),
                                 onTap: () async {
                                   Navigator.pop(context);
                                   final pickedImage = await picker.getImage(source: ImageSource.camera);
@@ -100,14 +103,14 @@ class _InsertProductViewState  extends State<InsertProductView> {
 
                 TextField(
                   onChanged: model.updateProductName,
-                  decoration: _inputDecoration('Product Name'),
+                  decoration: _inputDecoration(localizations.productName),
                 ),
                 SizedBox(height: 40),
 
                 TextField(
                   onChanged: model.updateProductId,
-                  controller: TextEditingController(text: model.productId ?? ''), // Set the controller to reflect the product ID
-                  decoration: _inputDecoration('Product ID').copyWith(
+                  controller: TextEditingController(text: model.productId ?? ''),
+                  decoration: _inputDecoration(localizations.productId).copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
                       onPressed: () async {
@@ -149,7 +152,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       flex: 2,
                       child: TextField(
                         controller: TextEditingController(text: model.expDate?.toString().split(' ')[0]),
-                        decoration: _inputDecoration('Exp Date'),
+                        decoration: _inputDecoration(localizations.expDate),
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
@@ -162,12 +165,15 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       ),
                     ),
                   ],
+
+
+
+
                 ),
                 SizedBox(height: 40),
 
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
-                  //hint: Text('Select Category'),
                   items: model.categories.map((category) {
                     return DropdownMenuItem(
                       value: category,
@@ -180,7 +186,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       model.updateSelectedCategory(value);
                     });
                   },
-                  decoration: InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(labelText: localizations.category),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
@@ -192,7 +198,7 @@ class _InsertProductViewState  extends State<InsertProductView> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
                     onPressed: model.saveProduct,
-                    child: Text('Save', style: AppText.ButtunText),
+                    child: Text(localizations.save, style: AppText.ButtunText),
                   ),
                 ),
               ],
@@ -203,7 +209,6 @@ class _InsertProductViewState  extends State<InsertProductView> {
     );
   }
 
-  /// Returns input decoration for text fields.
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,

@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:project/ViewModels/ViewCategoryViewModel.dart';
-import 'package:project/ViewModels/InsertProductViewModel.dart';
-import 'package:project/ViewModels/ProductViewModel.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'ViewModels/InsertProductViewModel.dart';
+import 'ViewModels/ViewCategoryViewModel.dart';
+import 'ViewModels/ProductViewModel.dart';
+import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
-import 'Views/dashboard/dashboardView.dart';
-import 'Views/product/InsertProductView.dart';
-import 'package:project/ViewModels/SupplyProductViewModel.dart';
-import 'Views/product/SupplyProductView.dart';
+import 'Views/Reminder/ReminderView.dart';
+import 'Views/authentication/ChangePasswordView.dart';
+import 'Views/authentication/LoginView.dart';
+import 'Views/authentication/RegisterView.dart';
+import 'Views/dashboard/DashboardView.dart';
+import 'Views/product/CategoryProductView.dart';
 import 'Views/product/ChartsView.dart';
+import 'Views/product/EditProductView.dart';
+import 'Views/product/InsertProductView.dart';
+import 'Views/product/ProductDetailsView.dart';
+import 'Views/product/SupplyProductView.dart';
+import 'Views/profile/profile_screen.dart';
+import 'Views/setting/DeleteAccountPage.dart';
+import 'Views/setting/SettingView.dart';
+import 'l10n/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +39,20 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  Locale _locale = Locale('en');
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -39,13 +66,41 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        locale: _locale,
+        supportedLocales: L10n.all,
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale?.languageCode &&
+                supportedLocale.countryCode == locale?.countryCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
         routes: {
-          '/': (context) => MyHomePage(),
+          '/': (context) => LoginScreen(),
+          '/LoginPage': (context) => LoginScreen(),
+          '/LoginFromReset': (context) => LoginScreen(),
+          '/login': (context) => LoginScreen(),
+          '/RegisterBack': (context) => LoginScreen(),
+          '/SettingsPage' : (context) => SettingsPage(),
+          '/MyHomePage' : (context) => MyHomePage(),
+          '/Profile' : (context) => Profile(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
           '/charts': (context) => ChartView(),
           '/viewCategories': (context) => ViewCategoryView(),
+          '/changePassword': (context) => ChangePasswordView(),
+          '/deleteAccount': (context) => DeleteAccountPage(),
+          '/managerProfile': (context) => Profile(),
+          '/reminders': (context) => RemindersView(),
         },
       ),
     );
