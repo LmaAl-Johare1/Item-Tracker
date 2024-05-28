@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../Services/network_service.dart';
+import '../../Services/network_service.dart';
 import 'package:project/Models/Category.dart';
 
 class ViewCategoryViewModel with ChangeNotifier {

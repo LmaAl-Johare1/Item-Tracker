@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../ViewModels/DashboardViewModel.dart';
-import '../../ViewModels/SupplyProductViewModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../ViewModels/Dashboard/DashboardViewModel.dart';
+import '../../ViewModels/products/SupplyProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 
@@ -28,15 +29,20 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
     super.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: AppColor.primary),
         title: Text(
-          'Supply Product',
+          localizations.supplyProduct,
           style: TextStyle(
             color: AppColor.primary,
             fontSize: AppText.HeadingOne.fontSize,
@@ -61,7 +67,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
               TextField(
                 controller: _viewModel.productIdController,
                 onChanged: _viewModel.updateProductId,
-                decoration: _inputDecoration('Product ID').copyWith(
+                decoration: _inputDecoration(localizations.productId).copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
                     onPressed: () async {
@@ -75,7 +81,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
                 _viewModel.productInfoMessage,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 18, // Custom font size
+                  fontSize: 18,
                   fontWeight: FontWeight.w300,
                   color: AppColor.FieldLabel,
                 ),
@@ -85,7 +91,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
                 controller: _viewModel.supplyQuantityController,
                 onChanged: _viewModel.updateSupplyQuantity,
                 keyboardType: TextInputType.number,
-                decoration: _inputDecoration('Quantity').copyWith(
+                decoration: _inputDecoration(localizations.quantity).copyWith(
                   labelStyle: TextStyle(
                     color: AppColor.FieldLabel,
                     fontWeight: FontWeight.bold,
@@ -104,7 +110,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
                   ),
                   onPressed: _viewModel.saveProduct,
                   child: Text(
-                    'Save',
+                    localizations.save,
                     style: TextStyle(
                       fontSize: 20,
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../ViewModels/ProductViewModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
+import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import 'EditProductView.dart';
@@ -24,10 +25,11 @@ class ProductDetailsScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text('Product Details', style: TextStyle(
-              fontSize: AppText.HeadingOne.fontSize,
-              fontWeight: AppText.HeadingOne.fontWeight,
-              color: AppColor.primary)),
+          title: Text(AppLocalizations.of(context)!.productDetails, // Use localized string
+              style: TextStyle(
+                  fontSize: AppText.HeadingOne.fontSize,
+                  fontWeight: AppText.HeadingOne.fontWeight,
+                  color: AppColor.primary)),
           centerTitle: true,
           elevation: 0, // Removes shadow under the app bar
         ),
@@ -60,7 +62,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            'ID: ${product.productId}',
+                            '${AppLocalizations.of(context)!.id}: ${product.productId}', // Use localized string
                             style: TextStyle(
                               fontSize: AppText.HeadingFive.fontSize,
                               fontWeight: AppText.HeadingFive.fontWeight,
@@ -72,7 +74,8 @@ class ProductDetailsScreen extends StatelessWidget {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProductPage(product: product),
+                                  builder: (context) =>
+                                      EditProductPage(product: product),
                                 ),
                               );
                               if (result == true) {
@@ -81,7 +84,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               }
                             },
                             child: Text(
-                              'edit',
+                              AppLocalizations.of(context)!.edit, // Use localized string
                               style: TextStyle(
                                 fontSize: AppText.HeadingFive.fontSize,
                                 fontWeight: AppText.HeadingFive.fontWeight,
@@ -96,7 +99,8 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
                       color: AppColor.secondary,
                       borderRadius: BorderRadius.circular(20),
@@ -104,7 +108,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          'Item(s):',
+                          AppLocalizations.of(context)!.items, // Use localized string
                           style: TextStyle(
                             fontSize: AppText.HeadingThree.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,
@@ -125,8 +129,10 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
                       color: AppColor.validation, // Light red background
                       borderRadius: BorderRadius.circular(20),
@@ -135,7 +141,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Exp Date:',
+                          AppLocalizations.of(context)!.expDate, // Use localized string
                           style: TextStyle(
                             fontSize: AppText.HeadingThree.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,

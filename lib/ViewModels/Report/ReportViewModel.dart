@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/Models/Report.dart';
-import '../Services/network_service.dart';
+import '../../Services/network_service.dart';
 
 class ReportViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();

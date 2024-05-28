@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:project/res/AppColor.dart';
-import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/InsertCategoryViewModel.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import your generated localization
 
-/// Screen for inserting a new product.
+import 'package:project/res/AppColor.dart';
+import 'package:project/res/AppText.dart';
+import 'package:project/ViewModels/Category/InsertCategoryViewModel.dart';
+
 class InsertCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class InsertCategoryScreen extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            'Insert Category',
+            AppLocalizations.of(context)!.insertCategory, // Localized title
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -35,8 +36,6 @@ class InsertCategoryScreen extends StatelessWidget {
             },
           ),
         ),
-
-
         body: Consumer<CategoryViewModel>(
           builder: (context, model, _) => SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -54,7 +53,7 @@ class InsertCategoryScreen extends StatelessWidget {
                             children: <Widget>[
                               ListTile(
                                 leading: Icon(Icons.photo_library),
-                                title: Text('Choose from gallery'),
+                                title: Text(AppLocalizations.of(context)!.chooseFromGallery), // Localized text
                                 onTap: () async {
                                   Navigator.pop(context);
                                   final pickedImage = await picker.getImage(source: ImageSource.gallery);
@@ -65,7 +64,7 @@ class InsertCategoryScreen extends StatelessWidget {
                               ),
                               ListTile(
                                 leading: Icon(Icons.photo_camera),
-                                title: Text('Take a photo'),
+                                title: Text(AppLocalizations.of(context)!.takeAPhoto), // Localized text
                                 onTap: () async {
                                   Navigator.pop(context);
                                   final pickedImage = await picker.getImage(source: ImageSource.camera);
@@ -80,7 +79,6 @@ class InsertCategoryScreen extends StatelessWidget {
                       },
                     );
                   },
-
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
@@ -96,7 +94,7 @@ class InsertCategoryScreen extends StatelessWidget {
                 SizedBox(height: 40),
                 TextField(
                   onChanged: model.updateCategoryName,
-                  decoration: _inputDecoration('Category Name'),
+                  decoration: _inputDecoration(AppLocalizations.of(context)!.categoryName), // Localized text
                 ),
                 SizedBox(height: 40),
                 Padding(
@@ -109,10 +107,9 @@ class InsertCategoryScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
                     onPressed: model.saveCategory,
-                    child: Text('Save', style: AppText.ButtunText),
+                    child: Text(AppLocalizations.of(context)!.save, style: AppText.ButtunText), // Localized text
                   ),
                 ),
-
               ],
             ),
           ),
@@ -121,7 +118,6 @@ class InsertCategoryScreen extends StatelessWidget {
     );
   }
 
-  /// Returns input decoration for text fields.
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,

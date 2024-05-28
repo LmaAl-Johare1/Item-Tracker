@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import '../Models/products.dart';
-import '../Services/network_service.dart';
-import 'DashboardViewModel.dart';
+import '../../Models/products.dart';
+import '../../Services/network_service.dart';
+import '../Dashboard/DashboardViewModel.dart';
 
 /// ViewModel for managing the supply of products.
 class SupplyProductViewModel with ChangeNotifier {

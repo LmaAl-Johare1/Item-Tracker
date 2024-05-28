@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import '../../ViewModels/ViewCategoryViewModel.dart';
-import '../Product/ProductDetailsView.dart';
+import '../../ViewModels/Category/ViewCategoryViewModel.dart';
+import 'ProductDetailsView.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
 
 class CategoryProductView extends StatelessWidget {
   final String categoryName;
@@ -12,6 +13,8 @@ class CategoryProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+
     return ChangeNotifierProvider(
       create: (context) => ViewCategoryViewModel()..fetchProductsByCategory(categoryName),
       child: Scaffold(
@@ -21,7 +24,7 @@ class CategoryProductView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            'Products in $categoryName',
+            '${localizations.productIn} $categoryName', // Use localized string
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -32,7 +35,7 @@ class CategoryProductView extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                 Navigator.pushReplacementNamed(context, '/addProduct');
+                Navigator.pushReplacementNamed(context, '/addProduct');
               },
             ),
           ],
@@ -40,7 +43,7 @@ class CategoryProductView extends StatelessWidget {
         body: Consumer<ViewCategoryViewModel>(
           builder: (context, model, _) {
             if (model.products.isEmpty) {
-              return Center(child: Text('No products found for this category.'));
+              return Center(child: Text(localizations.noProductsFound)); // Use localized string
             }
             return ListView.builder(
               itemCount: model.products.length,
@@ -48,7 +51,7 @@ class CategoryProductView extends StatelessWidget {
                 var product = model.products[index];
                 return ListTile(
                   title: Text(product['productName']),
-                  subtitle: Text('Quantity: ${product['quantity']}'),
+                  subtitle: Text('${localizations.quantity}: ${product['quantity']}'), // Use localized string
                   trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     final productId = product['productId'];
