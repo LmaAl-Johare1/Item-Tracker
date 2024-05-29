@@ -10,6 +10,7 @@ import 'ViewModels/products/ProductViewModel.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/Reminder/ReminderView.dart';
+import 'Views/Setting/ChangeEmailView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
 import 'Views/authentication/LoginView.dart';
 import 'Views/authentication/RegisterView.dart';
@@ -84,7 +85,7 @@ class MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         routes: {
-          '/': (context) => RegisterPage(),
+          '/': (context) => MyHomePage(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
@@ -101,6 +102,8 @@ class MyAppState extends State<MyApp> {
           '/deleteAccount': (context) => DeleteAccountPage(),
           '/managerProfile': (context) => Profile(),
           '/reminders': (context) => RemindersView(),
+          '/changeEmail': (context) => ChangeEmailView(),
+
         },
       ),
     );

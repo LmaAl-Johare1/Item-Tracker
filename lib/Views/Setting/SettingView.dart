@@ -206,9 +206,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-            child: ListTile(
+            child: ExpansionTile(
               title: Text(
-                localizations.changePassword, // Use localization key
+                'Privacy', // Plain string without localization
                 style: TextStyle(
                   fontSize: AppText.headingThree.fontSize,
                   fontWeight: AppText.headingTwo.fontWeight,
@@ -221,9 +221,65 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: AppColor.primary,
                 size: 35,
               ),
-              onTap: () {
-                Navigator.pushReplacementNamed(context, '/changePassword');
-              },
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Change Password', // Plain string without localization
+                    style: TextStyle(
+                      fontSize: AppText.headingThree.fontSize,
+                      fontWeight: AppText.headingTwo.fontWeight,
+                      color: AppColor.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  trailing: Icon(
+                    Icons.navigate_next,
+                    color: AppColor.primary,
+                    size: 35,
+                  ),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/changePassword');
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Change Email', // Plain string without localization
+                    style: TextStyle(
+                      fontSize: AppText.headingThree.fontSize,
+                      fontWeight: AppText.headingTwo.fontWeight,
+                      color: AppColor.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  trailing: Icon(
+                    Icons.navigate_next,
+                    color: AppColor.primary,
+                    size: 35,
+                  ),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/changeEmail'); // Navigate to change email page
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Delete Account', // Plain string without localization
+                    style: TextStyle(
+                      fontSize: AppText.headingThree.fontSize,
+                      fontWeight: AppText.headingTwo.fontWeight,
+                      color: AppColor.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  trailing: Icon(
+                    Icons.navigate_next,
+                    color: AppColor.primary,
+                    size: 35,
+                  ),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/deleteAccount'); // Navigate to delete account page
+                  },
+                ),
+              ],
             ),
           ),
           SizedBox(height: 150),
