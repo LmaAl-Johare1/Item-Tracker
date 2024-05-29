@@ -9,6 +9,7 @@ import 'ViewModels/Category/ViewCategoryViewModel.dart';
 import 'ViewModels/products/ProductViewModel.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
+import 'Views/GenerateBarcode/GenerateBarcodeView.dart';
 import 'Views/Reminder/ReminderView.dart';
 import 'Views/Setting/ChangeEmailView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
@@ -103,6 +104,7 @@ class MyAppState extends State<MyApp> {
           '/managerProfile': (context) => Profile(),
           '/reminders': (context) => RemindersView(),
           '/changeEmail': (context) => ChangeEmailView(),
+          '/generateBarcode': (context) => GenerateBarcodeView(),
 
         },
       ),

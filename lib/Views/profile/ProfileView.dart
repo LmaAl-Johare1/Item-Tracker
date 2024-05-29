@@ -59,39 +59,21 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          children: [
-            SizedBox(height: 10), // Adjusted height
-            Row(
-              children: [
-                Icon(
-                  Icons.navigate_before,
-                  color: AppColor.primary,
-                  size: 40,
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      localizations.profile, // Use localized string for 'Profile'
-                      style: TextStyle(
-                        fontSize: AppText.headingOne.fontSize,
-                        fontWeight: AppText.headingThree.fontWeight,
-                        color: AppColor.primary,
-                      ),
-                    ),
-                  ),
-                ),
-                Opacity(
-                  opacity: 0,
-                  child: Icon(
-                    Icons.navigate_before,
-                    color: AppColor.primary,
-                    size: 40,
-                  ),
-                ),
-              ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          },
+        ),
+        title: Center(
+          child: Text(
+            localizations.profile, // Use localized string for 'Profile'
+            style: TextStyle(
+              fontSize: AppText.headingOne.fontSize,
+              fontWeight: AppText.headingThree.fontWeight,
+              color: AppColor.primary,
             ),
-          ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -165,7 +147,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 30),
               TextField(
                 controller: _viewModel.emailController,
-                enabled: _viewModel.isEditing,
+                enabled: false, // Set email field to read-only
                 decoration: _buildInputDecoration(
                   localizations.email, // Use localized string for 'Email'
                   localizations.emailExample, // Use localized string for example

@@ -4,6 +4,7 @@ import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
 import '../../ViewModels/Setting/SettingViewModel.dart';
 import '../../main.dart';
+import '../Report/ReportView.dart';
 import '../dashboard/DashboardView.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
     });
     switch (_selectedIndex) {
       case 0:
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ReportsPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ReportView()));
         break;
       case 1:
         Navigator.pushReplacement(
@@ -304,6 +305,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFD9D9D9),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_chart),

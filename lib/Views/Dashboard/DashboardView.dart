@@ -52,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final localizations = AppLocalizations.of(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned.fill(
