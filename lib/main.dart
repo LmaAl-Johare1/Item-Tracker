@@ -29,10 +29,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyDDBlrt11AqsJqGk3Ocvu1tRqsL5Y_sE34",
-      appId: "1:27340201446:android:6ba30c884e73a965544a27",
-      messagingSenderId: "27340201446",
-      projectId: "itemtracker-dev-50418",
+      apiKey: "AIzaSyDqK1-9a5lYrpQPHYh74gvJCuR7_k6B0K0",
+      appId: "1:188054375610:android:e0d9116276a116b2f80683",
+      messagingSenderId: "188054375610",
+      projectId: "itemtracker-cfd33",
     ),
   );
 
