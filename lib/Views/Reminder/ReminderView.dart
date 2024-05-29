@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Models/Reminder.dart';
-import '../../ViewModels/ReminderViewModel.dart';
+import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
 
 class RemindersView extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class RemindersView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            'Reminders',
+            AppLocalizations.of(context)!.reminders, // استخدام الترجمة
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -48,9 +49,9 @@ class RemindersView extends StatelessWidget {
                       final reminder = viewModel.reminders[index];
                       String message;
                       if (reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5) {
-                        message = 'End date is approaching - ${reminder.productName} nearing to expiry date. Consider selling it immediately';
+                        message = '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
                       } else {
-                        message = 'Low Inventory - ${reminder.productName} nearing depletion. Consider restocking soon';
+                        message = '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
                       }
                       return Center(
                         child: Container(
@@ -90,16 +91,16 @@ class RemindersView extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5
-            ? 'End date is approaching - ${reminder.productName} nearing to expiry date'
-            : 'Low Inventory - ${reminder.productName} nearing depletion'),
-        content: Text('Consider ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5 ? 'selling it immediately' : 'restocking soon'}.'),
+            ? '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'
+            : '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
+        content: Text('${AppLocalizations.of(context)!.remainingDaysUntilExpiry} ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5 ? '${AppLocalizations.of(context)!.delete}' : '${AppLocalizations.of(context)!.product}'}'),
         actions: [
           TextButton(
             onPressed: () {
               viewModel.acknowledgeReminder(reminder.id);
               Navigator.of(context).pop();
             },
-            child: Text('OK'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),

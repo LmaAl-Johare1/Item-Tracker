@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NetworkService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<Map<String, dynamic>> fetchData(String collection, String field, String value) async {
     try {
@@ -26,7 +28,14 @@ class NetworkService {
       );
     }
   }
-
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      // You could throw a more specific error or handle it differently
+      throw Exception('Failed to send reset email: ${e.message}');
+    }
+  }
   Future<Map<String, dynamic>> sendData(String collection, Map<String, dynamic> data) async {
     try {
       DocumentReference documentReference = await _firestore.collection(collection).add(data);

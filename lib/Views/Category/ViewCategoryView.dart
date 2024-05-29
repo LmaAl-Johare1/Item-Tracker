@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../ViewModels/InsertProductViewModel.dart';
+import '../../ViewModels/products/InsertProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../product/CategoryProductView.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import AppLocalizations
 
 class ViewCategoryView extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class ViewCategoryView extends StatelessWidget {
             elevation: 0,
             iconTheme: IconThemeData(color: AppColor.primary),
             title: Text(
-              'Categories',
+              AppLocalizations.of(context)!.categories, // Localized title
               style: TextStyle(
                 color: AppColor.primary,
                 fontSize: AppText.HeadingOne.fontSize,
@@ -40,7 +41,6 @@ class ViewCategoryView extends StatelessWidget {
               ),
             ],
           ),
-
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -97,7 +97,6 @@ class ViewCategoryView extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 22), // Add padding to the right
                                   child: Icon(Icons.arrow_forward_ios),
                                 ),
-
                               ],
                             ),
                           ),

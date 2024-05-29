@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:project/ViewModels/ReportViewModel.dart';
-import 'package:project/Views/dashboard/dashboardView.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:project/ViewModels/Report/ReportViewModel.dart';
+import 'package:project/Views/dashboard/DashboardView.dart';
 import 'package:provider/provider.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import '../setting/SettingView.dart';
+import '../Setting/SettingView.dart';
 
 class ReportView extends StatefulWidget {
   @override
@@ -31,6 +32,8 @@ class _ReportViewState extends State<ReportView> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+
     return ChangeNotifierProvider(
       create: (_) => ReportViewModel()..fetchTransactions(),
       child: Scaffold(
@@ -40,7 +43,7 @@ class _ReportViewState extends State<ReportView> {
           elevation: 0,
           automaticallyImplyLeading: false,
           title: Text(
-            'Reports',
+            localizations.reports, // Use the reports localization key
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -74,8 +77,8 @@ class _ReportViewState extends State<ReportView> {
                         //   Provider.of<ReportViewModel>(context, listen: false)
                         //       .searchTransactions(value);
                         // },
-                        decoration: const InputDecoration(
-                          hintText: 'Search',
+                        decoration: InputDecoration(
+                          hintText: localizations.search, // Use the search localization key
                           prefixIcon: Icon(Icons.search),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15.0),
@@ -129,16 +132,16 @@ class _ReportViewState extends State<ReportView> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   backgroundColor: Colors.white,
-                                  title: Text('Transaction Details'),
+                                  title: Text(localizations.transactionDetails), // Use the transactionDetails localization key
                                   content: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text('Operation: ${transaction.operation}'),
+                                      Text('${localizations.operation}: ${transaction.operation}'), // Use the operation localization key
                                       SizedBox(height: 8.0),
-                                      Text('Date: ${transaction.date}'),
+                                      Text('${localizations.date}: ${transaction.date}'), // Use the date localization key
                                       SizedBox(height: 8.0),
-                                      Text('Description: ${transaction.description}'),
+                                      Text('${localizations.description}: ${transaction.description}'), // Use the description localization key
                                     ],
                                   ),
                                   actions: [
@@ -146,7 +149,7 @@ class _ReportViewState extends State<ReportView> {
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text('Close'),
+                                      child: Text(localizations.close), // Use the close localization key
                                     ),
                                   ],
                                 );
@@ -163,11 +166,11 @@ class _ReportViewState extends State<ReportView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Operation: ${transaction.operation}',
+                                  '${localizations.operation}: ${transaction.operation}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 8.0),
-                                Text('Date: ${transaction.date}'),
+                                Text('${localizations.date}: ${transaction.date}'),
                                 const Align(
                                   alignment: Alignment.bottomRight,
                                 ),
@@ -185,18 +188,18 @@ class _ReportViewState extends State<ReportView> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Color(0xFFD9D9D9),
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.insert_chart),
-              label: 'Reports',
+              label: localizations.reports,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: localizations.home,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: 'Settings',
+              label: localizations.settings,
             ),
           ],
           currentIndex: _selectedIndex,

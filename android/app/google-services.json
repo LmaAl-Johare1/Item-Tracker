@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "27340201446",
-    "project_id": "itemtracker-dev-50418",
-    "storage_bucket": "itemtracker-dev-50418.appspot.com"
+    "project_number": "188054375610",
+    "project_id": "itemtracker-cfd33",
+    "storage_bucket": "itemtracker-cfd33.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:27340201446:android:6ba30c884e73a965544a27",
+        "mobilesdk_app_id": "1:188054375610:android:e0d9116276a116b2f80683",
         "android_client_info": {
           "package_name": "com.company.itemtracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "188054375610-40udeftci3p4soc90m0a7f8l2o5sodc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDBlrt11AqsJqGk3Ocvu1tRqsL5Y_sE34"
+          "current_key": "AIzaSyDqK1-9a5lYrpQPHYh74gvJCuR7_k6B0K0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188054375610-40udeftci3p4soc90m0a7f8l2o5sodc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
