@@ -70,7 +70,7 @@
   "product":"product",
   "remainingDaysUntilExpiry": "remaining Days Until Expiry",
   "noProductsFound":"no Products Found",
-  "register":"register",
+  "Register":"Register",
   "passwordValidation":"password Validation",
   "confirmPassword":"confirm Password",
   "accountRole":"account Role",
