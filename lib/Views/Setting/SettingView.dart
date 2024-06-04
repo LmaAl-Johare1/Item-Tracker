@@ -7,6 +7,7 @@ import '../../main.dart';
 import '../Report/ReportView.dart';
 import '../dashboard/DashboardView.dart';
 
+/// The settings page where users can view and modify their settings.
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -16,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   int _selectedIndex = 2;
   final settingviewmodel _authService = settingviewmodel();
 
+  /// Handles bottom navigation item taps.
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -29,11 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
             context, MaterialPageRoute(builder: (context) => MyHomePage()));
         break;
       case 2:
-      // Already on Settings Page
         break;
     }
   }
 
+  /// Changes the app's language.
   void _changeLanguage(Locale locale) {
     MyAppState? appState = context.findAncestorStateOfType<MyAppState>();
     appState?.setLocale(locale);
@@ -41,11 +43,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           localizations.settings,
           style: TextStyle(
@@ -59,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          SizedBox(height: 0),
+          SizedBox(height: 20),
           Container(
             margin: EdgeInsets.all(22),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -76,6 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ListTile(
+              leading: Icon(Icons.person, color: AppColor.primary),
               title: Text(
                 localizations.profile,
                 style: TextStyle(
@@ -83,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   fontWeight: AppText.headingTwo.fontWeight,
                   color: AppColor.primary,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
               trailing: Icon(
                 Icons.navigate_next,
@@ -111,6 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ListTile(
+              leading: Icon(Icons.add, color: AppColor.primary),
               title: Text(
                 localizations.addAccount,
                 style: TextStyle(
@@ -118,7 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   fontWeight: AppText.headingTwo.fontWeight,
                   color: AppColor.primary,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
               trailing: Icon(
                 Icons.navigate_next,
@@ -146,6 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ExpansionTile(
+              leading: Icon(Icons.language, color: AppColor.primary),
               title: Text(
                 localizations.language,
                 style: TextStyle(
@@ -153,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   fontWeight: AppText.headingTwo.fontWeight,
                   color: AppColor.primary,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
               trailing: Icon(
                 Icons.navigate_next,
@@ -208,14 +214,15 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             child: ExpansionTile(
+              leading: Icon(Icons.lock, color: AppColor.primary),
               title: Text(
-                'Privacy', // Plain string without localization
+                'Privacy',
                 style: TextStyle(
                   fontSize: AppText.headingThree.fontSize,
                   fontWeight: AppText.headingTwo.fontWeight,
                   color: AppColor.primary,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
               trailing: Icon(
                 Icons.navigate_next,
@@ -225,13 +232,13 @@ class _SettingsPageState extends State<SettingsPage> {
               children: <Widget>[
                 ListTile(
                   title: Text(
-                    'Change Password', // Plain string without localization
+                    'Change Password',
                     style: TextStyle(
                       fontSize: AppText.headingThree.fontSize,
                       fontWeight: AppText.headingTwo.fontWeight,
                       color: AppColor.primary,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
@@ -244,13 +251,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 ListTile(
                   title: Text(
-                    'Change Email', // Plain string without localization
+                    'Change Email',
                     style: TextStyle(
                       fontSize: AppText.headingThree.fontSize,
                       fontWeight: AppText.headingTwo.fontWeight,
                       color: AppColor.primary,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
@@ -258,18 +265,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     size: 35,
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/changeEmail'); // Navigate to change email page
+                    Navigator.pushReplacementNamed(context, '/changeEmail');
                   },
                 ),
                 ListTile(
                   title: Text(
-                    'Delete Account', // Plain string without localization
+                    'Delete Account',
                     style: TextStyle(
                       fontSize: AppText.headingThree.fontSize,
                       fontWeight: AppText.headingTwo.fontWeight,
                       color: AppColor.primary,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
@@ -277,31 +284,45 @@ class _SettingsPageState extends State<SettingsPage> {
                     size: 35,
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/deleteAccount'); // Navigate to delete account page
+                    Navigator.pushReplacementNamed(context, '/deleteAccount');
                   },
                 ),
               ],
             ),
           ),
-          SizedBox(height: 150),
-          ListTile(
-            title: Text(
-              localizations.logout, // Use the logout localization key
-              style: TextStyle(
-                fontSize: AppText.headingTwo.fontSize,
-                fontWeight: AppText.headingTwo.fontWeight,
-                color: AppColor.validation,
+          SizedBox(height: 20),
+          Container(
+            margin: EdgeInsets.all(22),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ListTile(
+              leading: Icon(Icons.logout, color: AppColor.primary, size: 40),
+              title: Text(
+                localizations.logout,
+                style: TextStyle(
+                  fontSize: AppText.headingTwo.fontSize,
+                  fontWeight: AppText.headingTwo.fontWeight,
+                  color: AppColor.validation,
+                ),
+                textAlign: TextAlign.left,
               ),
+              onTap: () {
+                _authService.signOut(context);
+              },
             ),
-            leading: Icon(
-              Icons.logout,
-              color: AppColor.productInfo,
-              size: 40,
-            ),
-            onTap: () {
-              _authService.signOut(context);
-            },
           ),
+          SizedBox(height: 50),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

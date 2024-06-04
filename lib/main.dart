@@ -112,6 +112,7 @@ class MyAppState extends State<MyApp> {
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Setting': (context) => SettingsPage(),
 
+          '/signup': (context) => RegisterPage(),
 
 
         },
