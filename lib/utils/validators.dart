@@ -28,4 +28,9 @@ class Validators {
   static bool isFieldEmpty(String field) {
     return field.trim().isEmpty;
   }
+
+
+  static bool isFieldEmptyOrNull(String? field) {
+    return field == null || field.trim().isEmpty;
+  }
 }
