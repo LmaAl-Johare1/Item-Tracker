@@ -1,13 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../ViewModels/authentication/LoginViewModel.dart';
-import '../../models/login.dart';
+import 'package:provider/provider.dart';
+import '../../ViewModels/Authentication/LoginViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import '../dashboard/DashboardView.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../res/AppText.dart'; // Import generated localizations
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -51,22 +49,46 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: TextField(
-                    controller: _emailController,
-                    decoration: _buildInputDecoration(localizations.email),
-                  ),
-                ),
-                SizedBox(height: 35),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: _buildInputDecoration(localizations.password),
+                  child: Consumer<LoginViewModel>(
+                    builder: (context, model, child) {
+                      return Column(
+                        children: [
+                          TextField(
+                            controller: _emailController,
+                            decoration: _buildInputDecoration(
+                              localizations.email,
+                              model.emailError,
+                            ),
+                            onChanged: (value) {
+                              model.setEmail(value);
+                            },
+                          ),
+                          if (model.emailError != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                            ),
+                          SizedBox(height: 35),
+                          TextField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: _buildInputDecoration(
+                              localizations.password,
+                              model.passwordError,
+                            ),
+                            onChanged: (value) {
+                              model.setPassword(value);
+                            },
+                          ),
+                          if (model.passwordError != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -118,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  InputDecoration _buildInputDecoration(String labelText) {
+  InputDecoration _buildInputDecoration(String labelText, String? errorText) {
     return InputDecoration(
       labelText: labelText,
       labelStyle: TextStyle(
@@ -142,46 +164,26 @@ class _LoginScreenState extends State<LoginScreen> {
       contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       alignLabelWithHint: true,
       floatingLabelBehavior: FloatingLabelBehavior.always,
+      errorText: errorText,
     );
   }
 
   void _handleLogin(BuildContext context) async {
-    // Retrieve localized strings
-    final localizations = AppLocalizations.of(context)!;
+    final model = Provider.of<LoginViewModel>(context, listen: false);
+    model.setEmail(_emailController.text);
+    model.setPassword(_passwordController.text);
 
-    final loginData = LoginModel(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
+    await model.login();
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: loginData.email,
-        password: loginData.password,
-      );
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-      );
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(localizations.error),
-            content: Text('${localizations.failedToLogin}: $e'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+    if (model.emailError == null && model.passwordError == null) {
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } else {
+      _showSnackBar(model.emailError ?? model.passwordError ?? 'Error');
     }
+  }
+
+  void _showSnackBar(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

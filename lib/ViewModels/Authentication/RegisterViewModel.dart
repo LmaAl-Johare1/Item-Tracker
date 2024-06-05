@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:project/services/network_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
-/// ViewModel for the registration screen.
-///
-/// Handles user inputs, prepares user data, and sends it to the network service.
+import '../../Services/network_service.dart';
+import '../../utils/validators.dart';
+
 class RegisterViewModel extends ChangeNotifier {
   final NetworkService _networkService;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -19,6 +18,10 @@ class RegisterViewModel extends ChangeNotifier {
   String _phoneNumber = '';
   String _businessAddress = '';
 
+  String? _emailError;
+  String? _passwordError;
+  String? _confirmPasswordError;
+
   /// Getters for the form fields
   String get email => _email;
   String get password => _password;
@@ -27,6 +30,11 @@ class RegisterViewModel extends ChangeNotifier {
   String get businessName => _businessName;
   String get phoneNumber => _phoneNumber;
   String get businessAddress => _businessAddress;
+
+  /// Getters for the error messages
+  String? get emailError => _emailError;
+  String? get passwordError => _passwordError;
+  String? get confirmPasswordError => _confirmPasswordError;
 
   /// Sets the email field.
   void setEmail(String email) {
@@ -70,22 +78,65 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Validates the form fields and updates error messages.
+  bool validateFields() {
+    bool isValid = true;
+
+    if (!Validators.validateEmail(_email)) {
+      _emailError = 'Invalid email format';
+      isValid = false;
+    } else {
+      _emailError = null;
+    }
+
+    if (!Validators.validatePassword(_password)) {
+      _passwordError = 'Password must contain at least one uppercase, one lowercase, and be at least 6 characters long';
+      isValid = false;
+    } else {
+      _passwordError = null;
+    }
+
+    if (!Validators.validatePasswordMatch(_password, _confirmPassword)) {
+      _confirmPasswordError = 'Passwords do not match';
+      isValid = false;
+    } else {
+      _confirmPasswordError = null;
+    }
+
+    notifyListeners();
+    return isValid;
+  }
+
+  /// Checks if the email already exists in the database.
+  Future<bool> checkEmailExists() async {
+    return await _networkService.emailExists(_email);
+  }
+
   /// Sends registration data to the server.
   ///
   /// Throws an error if sending data fails.
   Future<void> signUp() async {
-    try {
-      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _email,
-        password: _password,
-      );
+    if (validateFields()) {
+      bool emailExists = await checkEmailExists();
+      if (emailExists) {
+        _emailError = 'Email already exists';
+        notifyListeners();
+        return;
+      }
 
-      // User registration successful, now prepare user data to send to the server
-      final userData = _prepareUserData(userCredential.user!.uid);
-      await _networkService.sendData('Users', userData);
-    } catch (e) {
-      print('Error signing up: $e');
-      rethrow; // Rethrow the exception for upper layers to handle
+      try {
+        final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        // User registration successful, now prepare user data to send to the server
+        final userData = _prepareUserData(userCredential.user!.uid);
+        await _networkService.sendData('Users', userData);
+      } catch (e) {
+        print('Error signing up: $e');
+        rethrow; // Rethrow the exception for upper layers to handle
+      }
     }
   }
 
@@ -94,7 +145,8 @@ class RegisterViewModel extends ChangeNotifier {
     final userData = {
       'userId': userId, // Include the user ID obtained from Firebase Authentication
       'email': _email,
-      'user_rule': _selectedRole,
+      'user_role': _selectedRole,
+      'password': _password,
     };
 
     // Include additional fields for Manager role

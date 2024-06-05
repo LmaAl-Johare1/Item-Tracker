@@ -81,5 +81,6 @@
   "reminders":"Reminders",
   "categoryName":"category Name",
   "insertCategory":"insert Category",
-  "categories":"categories"
+  "categories":"categories",
+  "noAccountsFound" : "no Accounts Found  "
 }

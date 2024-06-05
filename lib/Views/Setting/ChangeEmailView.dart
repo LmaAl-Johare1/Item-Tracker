@@ -48,19 +48,26 @@ class ChangeEmailView extends StatelessWidget {
                   child: Column(
                     children: [
                       if (model.emails.isNotEmpty)
-                        DropdownButton<String>(
-                          hint: Text('Choose email'),
-                          value: model.selectedEmail,
-                          onChanged: (String? newValue) {
-                            model.selectedEmail = newValue;
-                            model.notifyListeners();
-                          },
-                          items: model.emails.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56, // Adjust height to match the TextField height
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              hint: Text('Choose email'),
+                              value: model.selectedEmail,
+                              onChanged: (String? newValue) {
+                                model.selectedEmail = newValue;
+                                model.notifyListeners();
+                              },
+                              items: model.emails.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              isExpanded: true, // Ensure dropdown is full width
+                            ),
+                          ),
                         ),
                       if (model.emails.isEmpty)
                         CircularProgressIndicator(),
@@ -102,27 +109,51 @@ class ChangeEmailView extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            model.changeEmail();
+                            await model.changeEmail();
+                            if (model.successMessage.isNotEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    title: Text('Success'),
+                                    content: Text(model.successMessage),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.pushReplacementNamed(context, '/SettingsPage');
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else if (model.errorMessage.isNotEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    title: Text('Error'),
+                                    content: Text(model.errorMessage),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Text('Save', style: AppText.ButtonText),
                         ),
                       ),
-                      if (model.successMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            model.successMessage,
-                            style: TextStyle(color: Colors.green),
-                          ),
-                        ),
-                      if (model.errorMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
                     ],
                   ),
                 );

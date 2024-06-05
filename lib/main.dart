@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project/ViewModels/Authentication/ResetPasswordViewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project/ViewModels/Authentication/LoginViewModel.dart';
 
+import 'ViewModels/Setting/DeleteAccountViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
 import 'ViewModels/products/ProductViewModel.dart';
+import 'Views/Authentication/ResetPasswordView.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/GenerateBarcode/GenerateBarcodeView.dart';
@@ -44,29 +48,40 @@ void main() async {
 class MyApp extends StatefulWidget {
   @override
   MyAppState createState() => MyAppState();
-
 }
 
 class MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
 
-  void setLocale(Locale locale) {
+  void setLocale(Locale value) {
     setState(() {
-      _locale = locale;
+      _locale = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-
       providers: [
-        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
-        ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-        ChangeNotifierProvider(create: (_) => ProductViewModel()),
+        ChangeNotifierProvider<LoginViewModel>(
+          create: (_) => LoginViewModel(),
+        ),
+        ChangeNotifierProvider<ResetPasswordViewModel>(
+          create: (_) => ResetPasswordViewModel(),
+        ),
+        ChangeNotifierProvider<InsertProductViewModel>(
+          create: (_) => InsertProductViewModel(),
+        ),
+        ChangeNotifierProvider<ViewCategoryViewModel>(
+          create: (_) => ViewCategoryViewModel(),
+        ),
+        ChangeNotifierProvider<ProductViewModel>(
+          create: (_) => ProductViewModel(),
+        ),
+        ChangeNotifierProvider<DeleteAccountViewModel>(
+          create: (_) => DeleteAccountViewModel(),
+        ),
       ],
-
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Inventory Management',
@@ -90,15 +105,17 @@ class MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
+        initialRoute: '/',
         routes: {
-          '/': (context) => MyHomePage(),
+          '/': (context) => ChangeEmailView(),
+          '/resetPassword': (context) => ResetPassword(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
           '/RegisterBack': (context) => LoginScreen(),
-          '/SettingsPage' : (context) => SettingsPage(),
-          '/MyHomePage' : (context) => MyHomePage(),
-          '/Profile' : (context) => Profile(),
+          '/SettingsPage': (context) => SettingsPage(),
+          '/MyHomePage': (context) => MyHomePage(),
+          '/Profile': (context) => Profile(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
@@ -111,8 +128,6 @@ class MyAppState extends State<MyApp> {
           '/changeEmail': (context) => ChangeEmailView(),
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Setting': (context) => SettingsPage(),
-
-
         },
       ),
     );

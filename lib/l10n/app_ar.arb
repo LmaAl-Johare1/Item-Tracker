@@ -81,6 +81,7 @@
   "reminders": "تذكيرات",
    "categoryName":"اسم فئة",
    "insertCategory":"إدراج فئة",
-   "categories": "الفئات"
+   "categories": "الفئات",
+  "noAccountsFound": "لا يوجد حساب"
 
 }
