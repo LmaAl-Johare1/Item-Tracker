@@ -1,27 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import '../../../Services/network_service.dart';
+import 'package:flutter/cupertino.dart';
 
+import '../../Services/network_service.dart';
+import 'ProductData.dart';
+
+/// View model class for managing chart data.
 class ChartViewModel extends ChangeNotifier {
-  List<SalesData> _data = [];
+  List<ProductData> _data = [];
   bool _isDataLoaded = false;
   final NetworkService _networkService = NetworkService();
 
-  List<SalesData> get data => _data;
+  /// Getter for accessing the chart data.
+  List<ProductData> get data => _data;
+
+  /// Getter for checking if the data is loaded.
   bool get isDataLoaded => _isDataLoaded;
 
+  /// Loads data based on the provided filter.
   Future<void> loadData(String filter) async {
     try {
       List<Map<String, dynamic>> fetchedData = await _networkService.fetchAll('products');
 
-      // Clear existing data
       _data.clear();
 
       if (filter == 'Near Sold Out') {
         fetchedData = _filterByNearSoldOut(fetchedData);
-        _data = fetchedData.map((item) => SalesData(item['productName'], item['quantity'])).toList();
+        _data = fetchedData.map((item) => ProductData(item['productName'], item['quantity'], 0)).toList();
       } else if (filter == 'Expiration Date Proximity') {
-        _data = _filterByExpirationDateProximity(fetchedData);
+        _data = _calculateRemainingDays(fetchedData);
       }
 
       _isDataLoaded = true;
@@ -31,50 +37,27 @@ class ChartViewModel extends ChangeNotifier {
     }
   }
 
+  /// Filters products that are near sold out.
   List<Map<String, dynamic>> _filterByNearSoldOut(List<Map<String, dynamic>> products) {
     return products.where((product) => product['quantity'] < 10).toList();
   }
 
-  List<SalesData> _filterByExpirationDateProximity(List<Map<String, dynamic>> products) {
-    DateTime now = DateTime.now();
-
-    return products.where((product) {
+  /// Calculates remaining days for products based on expiration date.
+  List<ProductData> _calculateRemainingDays(List<Map<String, dynamic>> products) {
+    return products.map((product) {
       try {
-        Timestamp timestamp = product['expDate']; // Assuming 'expDate' is the field containing the expiration date
+        Timestamp timestamp = product['expDate'];
 
-        // Convert Timestamp to DateTime
         DateTime expirationDate = timestamp.toDate();
 
-        // Calculate remaining days
-        Duration difference = expirationDate.difference(now);
+        Duration difference = expirationDate.difference(DateTime.now());
         int remainingDays = difference.inDays;
 
-        // Debug print for verification
-        debugPrint('Product: ${product['productName']}, Expiration Date: $expirationDate, Now: $now, Remaining Days: $remainingDays');
-
-        // Include Product if remaining days is within the desired range
-        return remainingDays > 0 && remainingDays <= 8;
+        return ProductData(product['productName'], 0, remainingDays);
       } catch (e) {
         debugPrint('Error processing Product ${product['productName']}: $e');
-        return false;
+        return ProductData('', 0, 0);
       }
-    }).map((product) {
-      Timestamp timestamp = product['expDate'];
-      DateTime expirationDate = timestamp.toDate();
-      int remainingDays = expirationDate.difference(DateTime.now()).inDays;
-      return SalesData(product['productName'], remainingDays);
     }).toList();
-  }
-}
-
-class SalesData {
-  SalesData(this.product, this.value);
-
-  final String product;
-  final int value;
-
-  @override
-  String toString() {
-    return '{Product: $product, Value: $value}';
   }
 }

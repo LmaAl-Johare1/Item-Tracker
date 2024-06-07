@@ -20,7 +20,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
     _viewModel.addListener(() {
       setState(() {});
     });
-    _viewModel.scanProduct();
+    // _viewModel.scanProduct(); // Optional: remove or keep as needed
   }
 
   @override
@@ -28,8 +28,6 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
     _viewModel.removeListener(() {});
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

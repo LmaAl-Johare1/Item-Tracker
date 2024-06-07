@@ -24,7 +24,7 @@ class CategoryProductView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            '${localizations.productIn} $categoryName', // Use localized string
+            '${localizations.products} ', // Use localized string
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,

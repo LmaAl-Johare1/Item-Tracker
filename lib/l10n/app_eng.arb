@@ -67,7 +67,7 @@
   "nearSoldOut": "Near Sold Out",
   "expirationDateProximity": "Expiration Date Proximity",
   "quantity":"quantity",
-  "product":"product",
+  "products":"products",
   "remainingDaysUntilExpiry": "remaining Days Until Expiry",
   "noProductsFound":"no Products Found",
   "register":"register",

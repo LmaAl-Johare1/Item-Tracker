@@ -38,6 +38,7 @@ class RemindersViewModel extends ChangeNotifier {
       String productName = productData['name'];
       DateTime? expDate = (productData['expDate'] as Timestamp?)?.toDate();
 
+      // Check if the product is near sold out
       if (currentStock <= 10) {
         Reminder newReminder = Reminder(
           id: '',
@@ -51,7 +52,8 @@ class RemindersViewModel extends ChangeNotifier {
         await fetchReminders();
       }
 
-      if (expDate != null && expDate.difference(DateTime.now()).inDays <= 5) {
+      // Check if the expiration date is within 10 days
+      if (expDate != null && expDate.difference(DateTime.now()).inDays <= 10) {
         Reminder newReminder = Reminder(
           id: '',
           productId: productId,

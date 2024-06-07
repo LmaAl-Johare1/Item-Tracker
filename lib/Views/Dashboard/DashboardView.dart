@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
@@ -15,6 +16,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late MyHomePageViewModel _viewModel;
   final NetworkService _networkService = NetworkService();
+  Timer? _resetTimer;
 
   @override
   void initState() {
@@ -29,6 +31,19 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       setState(() {});
     }
+
+    _resetTimer = Timer.periodic(Duration(hours: 24), (Timer timer) {
+      if (DateTime.now().difference(_viewModel.lastReset).inHours >= 24) {
+        _viewModel.resetProductOutCounter();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _resetTimer?.cancel();
+    _viewModel.removeListener(() {});
+    super.dispose();
   }
 
   int _selectedIndex = 1;
@@ -83,44 +98,72 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.inventory,
-                                  size: 30,
-                                  color: AppColor.primary,
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.inventory,
+                                      size: 30,
+                                      color: AppColor.primary,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.total,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 15),
                                 Text(
-                                  '${localizations.total}:     ${_viewModel.total}',
+                                  '${_viewModel.total}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 20),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(Icons.file_upload_outlined,
-                                    size: 30, color: AppColor.primary),
-                                const SizedBox(width: 15),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.file_upload_outlined,
+                                        size: 30, color: AppColor.primary),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.productIn,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  '${localizations.productIn}:      ${_viewModel.productIn}',
+                                  '${_viewModel.productIn}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(Icons.file_download_outlined,
-                                    size: 30, color: AppColor.primary),
-                                const SizedBox(width: 15),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.file_download_outlined,
+                                        size: 30, color: AppColor.primary),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.productOut,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  '${localizations.productOut}:    ${_viewModel.productOut}',
+                                  '${_viewModel.productOut}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
                           ],
+
                         ),
                       ),
                     ),
@@ -196,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/viewCategories');
+                              Navigator.pushReplacementNamed(context, '/Category');
                             },
                             child: Center(
                               child: Text(localizations.viewCategory,

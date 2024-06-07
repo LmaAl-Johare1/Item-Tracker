@@ -40,11 +40,11 @@ class GenerateBarcodeView extends StatelessWidget {
               children: [
                 Center(
                   child: SizedBox(
-                    width: 200, // Adjust the width as per your requirement
-                    height: 200, // Adjust the height as per your requirement
+                    width: 200,
+                    height: 200,
                     child: Image.asset(
                       'assets/img/barcode.png',
-                      fit: BoxFit.cover, // Adjust the fit as per your requirement
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -65,9 +65,8 @@ class GenerateBarcodeView extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        'Choose how many barcode you want to generate',
+                        'Choose how many barcodes you want to generate',
                         style: TextStyle(fontSize: 18),
-
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -111,8 +110,9 @@ class GenerateBarcodeView extends StatelessWidget {
                       if (viewModel.barcodeCount > 0) {
                         viewModel.generateBarcodes();
                         Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => BarcodeDisplayView(viewModel.generatedBarcodes)),
-
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BarcodeDisplayView(viewModel.generatedBarcodes)),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -123,7 +123,6 @@ class GenerateBarcodeView extends StatelessWidget {
                         );
                       }
                     },
-
                     child: Text('Generate', style: AppText.ButtunText),
                   ),
                 ),

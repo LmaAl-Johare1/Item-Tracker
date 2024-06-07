@@ -67,7 +67,7 @@
   "nearSoldOut": "قريب من النفاد",
   "expirationDateProximity": "القرب من تاريخ الانتهاء",
   "quantity":"الكمية",
-  "product":"المنتج",
+  "products":"المنتج",
   "remainingDaysUntilExpiry": "الأيام المتبقية حتى الانتهاء",
   "noProductsFound":"لم يتم العثور على منتجات",
   "register":"تسجيل",

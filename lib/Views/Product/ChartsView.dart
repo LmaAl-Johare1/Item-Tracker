@@ -1,8 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // استيراد الترجمة
-import '../../ViewModels/products/ChartsViewModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../ViewModels/Products/ChartsViewModel.dart';
+import '../../res/AppColor.dart';
+import '../../res/AppText.dart';
+import '../../ViewModels/Products/ProductData.dart';
 
+/// This widget represents a view for displaying charts. It allows users to select
+/// different filters to visualize data in different chart types such as column
+/// and line charts. The data for the charts is fetched from a remote server
+/// using the [ChartViewModel] class.
 class ChartView extends StatefulWidget {
   @override
   _ChartViewState createState() => _ChartViewState();
@@ -10,7 +19,7 @@ class ChartView extends StatefulWidget {
 
 class _ChartViewState extends State<ChartView> {
   final ChartViewModel _viewModel = ChartViewModel();
-  String _selectedFilter = 'Near Sold Out'; // القيمة الافتراضية للتصفية
+  String _selectedFilter = 'Near Sold Out'; // Default filter value
   bool _isLoading = true;
 
   @override
@@ -31,23 +40,26 @@ class _ChartViewState extends State<ChartView> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // الحصول على الترجمة
+    final localizations = AppLocalizations.of(context)!; // Get translation
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: true,
         title: Text(
           localizations.charts,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: AppColor.primary,
+            fontSize: AppText.HeadingOne.fontSize,
+            fontWeight: AppText.HeadingOne.fontWeight,
+          ),
         ),
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/dashboard');
           },
-          color: Colors.black,
         ),
       ),
       backgroundColor: Colors.white,
@@ -55,7 +67,7 @@ class _ChartViewState extends State<ChartView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildFilterDropdown(localizations), // تمرير الترجمة
+            _buildFilterDropdown(localizations),
             SizedBox(height: 20),
             Expanded(
               child: _isLoading
@@ -75,14 +87,15 @@ class _ChartViewState extends State<ChartView> {
     );
   }
 
+  /// Builds the dropdown widget for selecting filters.
   Widget _buildFilterDropdown(AppLocalizations localizations) {
     List<Map<String, String>> filterItems = [
       {'value': 'Near Sold Out', 'text': localizations.nearSoldOut},
-      {'value': 'Expiration Date Proximity', 'text': localizations.expirationDateProximity},
+      {
+        'value': 'Expiration Date Proximity',
+        'text': localizations.expirationDateProximity
+      },
     ];
-
-
-
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -102,7 +115,11 @@ class _ChartViewState extends State<ChartView> {
         children: [
           Text(
             localizations.filter,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColor.primary,
+            ),
           ),
           SizedBox(width: 8),
           DropdownButton<String>(
@@ -119,7 +136,10 @@ class _ChartViewState extends State<ChartView> {
             items: filterItems.map<DropdownMenuItem<String>>((item) {
               return DropdownMenuItem<String>(
                 value: item['value']!,
-                child: Text(item['text']!),
+                child: Text(
+                  item['text']!,
+                  style: TextStyle(color: AppColor.primary),
+                ),
               );
             }).toList(),
           ),
@@ -128,40 +148,97 @@ class _ChartViewState extends State<ChartView> {
     );
   }
 
+  /// Builds the chart for products near sold out.
   Widget _buildNearSoldOutChart() {
-    return _buildChart(_viewModel.data, 'Product', 'Quantity');
+    return _buildColumnChart(
+        _viewModel.data.cast<ProductData>(), 'Product', 'Quantity');
   }
 
-  Widget _buildExpirationDateProximityChart() {
-    return _buildChart(
-        _viewModel.data, 'Product', 'Remaining Days Until Expiry');
-  }
-
-  Widget _buildChart(
-      List<SalesData> data, String xAxisTitle, String yAxisTitle) {
-    data = data.where((dataPoint) => dataPoint.product.isNotEmpty).toList();
+  /// Builds the column chart.
+  Widget _buildColumnChart(List<ProductData> data, String xAxisTitle,
+      String yAxisTitle) {
+    data = data.where((dataPoint) => dataPoint.productName.isNotEmpty).toList();
 
     return SfCartesianChart(
-      legend: Legend(isVisible: false),
+      legend: Legend(isVisible: true, position: LegendPosition.bottom),
       tooltipBehavior: TooltipBehavior(enable: true),
       series: <CartesianSeries>[
-        ColumnSeries<SalesData, String>(
+        ColumnSeries<ProductData, String>(
           dataSource: data,
-          xValueMapper: (SalesData sales, _) => sales.product,
-          yValueMapper: (SalesData sales, _) => sales.value.toDouble(),
+          xValueMapper: (ProductData product, _) => product.productName,
+          yValueMapper: (ProductData product, _) => product.quantity.toDouble(),
           dataLabelSettings: DataLabelSettings(isVisible: true),
           name: 'Product',
+          color: AppColor.primary,
         ),
       ],
       primaryXAxis: CategoryAxis(
         title: AxisTitle(
-            text: xAxisTitle,
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          text: xAxisTitle,
+          textStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: AppColor.grey,
+          ),
+        ),
       ),
       primaryYAxis: NumericAxis(
         title: AxisTitle(
-            text: yAxisTitle,
-            textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          text: yAxisTitle,
+          textStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: AppColor.grey,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the chart for expiration date proximity.
+  Widget _buildExpirationDateProximityChart() {
+    return _buildLineChart(
+        _viewModel.data.cast<ProductData>(), 'Product', 'Remaining Days');
+  }
+
+  /// Builds the line chart.
+  Widget _buildLineChart(List<ProductData> data, String xAxisTitle,
+      String yAxisTitle) {
+    data = data.where((dataPoint) => dataPoint.productName.isNotEmpty && dataPoint.remainingDays > 0).toList();
+
+    return SfCartesianChart(
+      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries>[
+        LineSeries<ProductData, String>(
+          dataSource: data,
+          xValueMapper: (ProductData product, _) => product.productName
+          ,
+          yValueMapper: (ProductData product, _) => product.remainingDays.toDouble(),
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+          name: 'Remaining Days',
+          color: AppColor.primary,
+        ),
+      ],
+      primaryXAxis: CategoryAxis(
+        title: AxisTitle(
+          text: xAxisTitle,
+          textStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: AppColor.grey,
+          ),
+        ),
+      ),
+      primaryYAxis: NumericAxis(
+        title: AxisTitle(
+          text: yAxisTitle,
+          textStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: AppColor.grey,
+          ),
+        ),
       ),
     );
   }

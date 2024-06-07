@@ -107,7 +107,7 @@ class MyAppState extends State<MyApp> {
         },
         initialRoute: '/',
         routes: {
-          '/': (context) => ChangeEmailView(),
+          '/': (context) => MyHomePage(),
           '/resetPassword': (context) => ResetPassword(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
@@ -120,7 +120,7 @@ class MyAppState extends State<MyApp> {
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
           '/charts': (context) => ChartView(),
-          '/viewCategories': (context) => ViewCategoryView(),
+          '/Category': (context) => ViewCategoryView(),
           '/changePassword': (context) => ChangePasswordView(),
           '/deleteAccount': (context) => DeleteAccountPage(),
           '/managerProfile': (context) => Profile(),
@@ -128,6 +128,9 @@ class MyAppState extends State<MyApp> {
           '/changeEmail': (context) => ChangeEmailView(),
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Setting': (context) => SettingsPage(),
+          '/signup': (context) => RegisterPage(),
+          '/addCategory': (context) => InsertCategoryScreen(),
+
         },
       ),
     );
