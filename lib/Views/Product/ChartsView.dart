@@ -45,7 +45,6 @@ class _ChartViewState extends State<ChartView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
         title: Text(
           localizations.charts,
           style: TextStyle(
@@ -56,7 +55,7 @@ class _ChartViewState extends State<ChartView> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+          icon: Icon(Icons.arrow_back, color: AppColor.primary),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/dashboard');
           },

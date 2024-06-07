@@ -43,6 +43,26 @@ class NetworkService {
     }
   }
 
+  Future<void> checkAndUpdateProduct(String productId, Map<String, dynamic> data) async {
+    try {
+      print('Checking if product exists with ID: $productId');
+      final existingProduct = await fetchData('products', 'productId', productId);
+      if (existingProduct.isNotEmpty) {
+        // Product with same ID exists, update quantity
+        int newQuantity = existingProduct['quantity'] + data['quantity'];
+        data['quantity'] = newQuantity; // Update quantity in data
+        await updateData('products', 'productId', productId, data);
+        print('Product with ID $productId exists, quantity updated');
+      } else {
+        // Product with same ID doesn't exist, create new document
+        await sendData('products', data);
+        print('Product with ID $productId does not exist, new product added');
+      }
+    } catch (e) {
+      print('Failed to check and update product: $e');
+    }
+  }
+
   Future<Map<String, dynamic>> sendData(String collection, Map<String, dynamic> data) async {
     try {
       print('Attempting to send data to collection: $collection');
