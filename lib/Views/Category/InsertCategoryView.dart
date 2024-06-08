@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -96,6 +95,14 @@ class InsertCategoryScreen extends StatelessWidget {
                   onChanged: model.updateCategoryName,
                   decoration: _inputDecoration(AppLocalizations.of(context)!.categoryName), // Localized text
                 ),
+                if (model.errorMessage != null) // Display error message if exists
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      model.errorMessage!,
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                    ),
+                  ),
                 SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
