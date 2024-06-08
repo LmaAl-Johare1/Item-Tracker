@@ -54,8 +54,8 @@
   "delete": "Delete",
   "productDetails": "Product Details",
   "id": "ID",
-  "items": "Item(s)",
-  "expDate": "Exp Date",
+  "items": "Item(s):",
+  "expDate": "Exp Date:",
   "chooseFromGallery": "Choose from gallery",
   "takeAPhoto": "Take a photo",
   "productName":"product Name",
@@ -70,7 +70,7 @@
   "product":"product",
   "remainingDaysUntilExpiry": "remaining Days Until Expiry",
   "noProductsFound":"no Products Found",
-  "register": "Register",
+  "register":"register",
   "passwordValidation":"password Validation",
   "confirmPassword":"confirm Password",
   "accountRole":"account Role",
@@ -81,5 +81,6 @@
   "reminders":"Reminders",
   "categoryName":"category Name",
   "insertCategory":"insert Category",
-  "categories":"categories"
+  "categories":"categories",
+  "profileStuffs":"Profile Stuff"
 }

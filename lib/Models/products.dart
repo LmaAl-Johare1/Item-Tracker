@@ -5,12 +5,14 @@ class Product {
   final String productName;
   final int quantity;
   final DateTime expDate;
+  final String imagePath;
 
   Product({
     required this.productId,
     required this.productName,
     required this.quantity,
     required this.expDate,
+    required this.imagePath,
   });
 
   factory Product.fromMap(Map<String, dynamic> data, String productId) {
@@ -18,7 +20,8 @@ class Product {
       productId: productId,
       productName: data['productName'] ?? 'Unknown Product',
       quantity: data['quantity'] ?? 0,
-      expDate: (data['expDate'] as Timestamp).toDate(), // Convert Timestamp to DateTime
+      expDate: (data['expDate'] as Timestamp).toDate(),
+      imagePath: data['imagePath'] ?? '', // Assuming imagePath is stored as a URL
     );
   }
 
@@ -27,6 +30,7 @@ class Product {
       'productName': productName,
       'quantity': quantity,
       'expDate': expDate,
+      'imagePath': imagePath,
     };
   }
 }
