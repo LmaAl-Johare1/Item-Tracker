@@ -23,7 +23,7 @@ class CategoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCategory() async {
+  Future<void> saveCategory(BuildContext context) async {
     if (_name == null || _name!.isEmpty) {
       _errorMessage = "Please enter a valid category name";
       notifyListeners();
@@ -38,7 +38,9 @@ class CategoryViewModel extends ChangeNotifier {
     try {
       await _networkService.sendData('Categories', data);
       resetFields();
-      print('Category inserted successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Category inserted successfully')),
+      );
     } catch (error) {
       print('Failed to insert Category: $error');
     }
@@ -46,7 +48,7 @@ class CategoryViewModel extends ChangeNotifier {
 
   void resetFields() {
     _imagePath = null;
-    _name = '';
+    _name = null;
     notifyListeners();
   }
 }

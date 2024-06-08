@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -113,7 +114,7 @@ class InsertCategoryScreen extends StatelessWidget {
                       minimumSize: Size(204, 55),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
-                    onPressed: model.saveCategory,
+                    onPressed: () => model.saveCategory(context),
                     child: Text(AppLocalizations.of(context)!.save, style: AppText.ButtunText), // Localized text
                   ),
                 ),

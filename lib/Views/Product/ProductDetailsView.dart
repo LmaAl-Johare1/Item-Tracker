@@ -41,7 +41,7 @@ class ProductDetailsScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
             final product = viewModel.product!;
-            final imagePath = product.imagePath ?? 'assets/img/default.png'; // Provide a default value
+            final imagePath = product.imagePath ?? 'assets/img/defualt.png'; // Provide a default value
 
             return SingleChildScrollView(
               child: Column(
@@ -54,6 +54,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
+
                       elevation: 5,
                       child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -87,13 +88,13 @@ class ProductDetailsScreen extends StatelessWidget {
                               imagePath,
                               fit: BoxFit.cover,
                             )
-                                : (imagePath != 'assets/img/default.png'
+                                : (imagePath != 'assets/img/defualt.png'
                                 ? Image.file(
                               File(imagePath),
                               fit: BoxFit.cover,
                             )
                                 : Image.asset(
-                              'assets/img/default.png',
+                              'assets/img/defualt.png',
                               fit: BoxFit.cover,
                             )),
                           ),
@@ -168,9 +169,9 @@ class ProductDetailsScreen extends StatelessWidget {
                         Text(
                           AppLocalizations.of(context)!.expDate,
                           style: TextStyle(
-                            fontSize: AppText.HeadingFour.fontSize,
+                            fontSize: AppText.HeadingThree.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,
-                            color: AppColor.secondary,
+                            color: Colors.white,
                           ),
                         ),
                         Text(
@@ -178,7 +179,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: AppText.HeadingFour.fontSize,
                             fontWeight: AppText.HeadingFour.fontWeight,
-                            color: AppColor.secondary,
+                            color: Colors.white,
                           ),
                         ),
                       ],
