@@ -1,17 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'EditProductView.dart';
+import 'EditProductView.dart'; // Updated import statement
 
 class ProductDetailsScreen extends StatelessWidget {
   final String productId;
 
-  ProductDetailsScreen({required this.productId}) {
-    print('ProductDetailsScreen initialized with productId: $productId');
-  }
+  ProductDetailsScreen({required this.productId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +21,19 @@ class ProductDetailsScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+            icon: Icon(Icons.arrow_back, color: AppColor.primary),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(AppLocalizations.of(context)!.productDetails, // Use localized string
-              style: TextStyle(
-                  fontSize: AppText.HeadingOne.fontSize,
-                  fontWeight: AppText.HeadingOne.fontWeight,
-                  color: AppColor.primary)),
+          title: Text(
+            AppLocalizations.of(context)!.productDetails,
+            style: TextStyle(
+              fontSize: AppText.HeadingOne.fontSize,
+              fontWeight: AppText.HeadingOne.fontWeight,
+              color: AppColor.primary,
+            ),
+          ),
           centerTitle: true,
-          elevation: 0, // Removes shadow under the app bar
+          elevation: 0,
         ),
         body: Consumer<ProductViewModel>(
           builder: (context, viewModel, child) {
@@ -39,9 +41,12 @@ class ProductDetailsScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
             final product = viewModel.product!;
+            final imagePath = product.imagePath ?? 'assets/img/default.png'; // Provide a default value
+
             return SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Card(
@@ -53,38 +58,61 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(5),
                         child: ListTile(
-                          title: Text(
-                            product.productName,
-                            style: TextStyle(
-                              fontSize: AppText.HeadingTwo.fontSize,
-                              fontWeight: AppText.HeadingTwo.fontWeight,
-                              color: AppColor.primary,
-                            ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.productName,
+                                style: TextStyle(
+                                  fontSize: AppText.HeadingTwo.fontSize,
+                                  fontWeight: AppText.HeadingTwo.fontWeight,
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                              Text(
+                                '${AppLocalizations.of(context)!.id}: ${product.productId}',
+                                style: TextStyle(
+                                  fontSize: AppText.HeadingFive.fontSize,
+                                  fontWeight: AppText.HeadingFive.fontWeight,
+                                  color: AppColor.productInfo,
+                                ),
+                              ),
+                            ],
                           ),
-                          subtitle: Text(
-                            '${AppLocalizations.of(context)!.id}: ${product.productId}', // Use localized string
-                            style: TextStyle(
-                              fontSize: AppText.HeadingFive.fontSize,
-                              fontWeight: AppText.HeadingFive.fontWeight,
-                              color: AppColor.productInfo,
-                            ),
+                          leading: Container(
+                            width: 50,
+                            height: 50,
+                            child: imagePath.startsWith('http')
+                                ? Image.network(
+                              imagePath,
+                              fit: BoxFit.cover,
+                            )
+                                : (imagePath != 'assets/img/default.png'
+                                ? Image.file(
+                              File(imagePath),
+                              fit: BoxFit.cover,
+                            )
+                                : Image.asset(
+                              'assets/img/default.png',
+                              fit: BoxFit.cover,
+                            )),
                           ),
                           trailing: TextButton(
                             onPressed: () async {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditProductPage(product: product),
+                                  builder: (context) => EditProductView(
+                                    product: product,
+                                  ),
                                 ),
                               );
                               if (result == true) {
-                                // Refresh product details after edit
                                 viewModel.fetchProduct(productId);
                               }
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.edit, // Use localized string
+                              AppLocalizations.of(context)!.edit,
                               style: TextStyle(
                                 fontSize: AppText.HeadingFive.fontSize,
                                 fontWeight: AppText.HeadingFive.fontWeight,
@@ -99,8 +127,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
                       color: AppColor.secondary,
                       borderRadius: BorderRadius.circular(20),
@@ -108,7 +135,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          AppLocalizations.of(context)!.items, // Use localized string
+                          AppLocalizations.of(context)!.items,
                           style: TextStyle(
                             fontSize: AppText.HeadingThree.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,
@@ -129,27 +156,25 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 10),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 25),
+                    margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
-                      color: AppColor.validation, // Light red background
+                      color: AppColor.Exdate,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          AppLocalizations.of(context)!.expDate, // Use localized string
+                          AppLocalizations.of(context)!.expDate,
                           style: TextStyle(
-                            fontSize: AppText.HeadingThree.fontSize,
+                            fontSize: AppText.HeadingFour.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,
                             color: AppColor.secondary,
                           ),
                         ),
                         Text(
-                          '${product.expDate.toLocal()}'.split(' ')[0],
+                          '${product.expDate.toDate().toLocal()}'.split(' ')[0],
                           style: TextStyle(
                             fontSize: AppText.HeadingFour.fontSize,
                             fontWeight: AppText.HeadingFour.fontWeight,

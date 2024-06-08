@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+            icon: Icon(Icons.arrow_back, color: AppColor.primary),
             onPressed: (){
               Navigator.pushReplacementNamed(context, '/RegisterBack');
             },

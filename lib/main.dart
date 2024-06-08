@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/ViewModels/Authentication/LoginViewModel.dart';
-
+import 'ViewModels/Dashboard/DashboardViewModel.dart';
+import 'ViewModels/Report/ReportViewModel.dart';
 import 'ViewModels/Setting/DeleteAccountViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
@@ -14,6 +15,9 @@ import 'Views/Authentication/ResetPasswordView.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/GenerateBarcode/GenerateBarcodeView.dart';
+import 'Views/Profile/AdminProfileView.dart';
+import 'Views/Profile/EditProfileView.dart';
+import 'Views/Profile/StuffProfileView.dart';
 import 'Views/Reminder/ReminderView.dart';
 import 'Views/Setting/ChangeEmailView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
@@ -42,7 +46,12 @@ void main() async {
     ),
   );
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MyHomePageViewModel()..initialize(), // Ensure initial values are fetched
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -81,6 +90,9 @@ class MyAppState extends State<MyApp> {
         ChangeNotifierProvider<DeleteAccountViewModel>(
           create: (_) => DeleteAccountViewModel(),
         ),
+        ChangeNotifierProvider<ReportViewModel>(
+          create: (_) => ReportViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -115,7 +127,7 @@ class MyAppState extends State<MyApp> {
           '/RegisterBack': (context) => LoginScreen(),
           '/SettingsPage': (context) => SettingsPage(),
           '/MyHomePage': (context) => MyHomePage(),
-          '/Profile': (context) => Profile(),
+          '/Profile': (context) => ProfileAdmin(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),

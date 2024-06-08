@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/Setting');
           },

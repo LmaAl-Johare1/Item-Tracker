@@ -27,7 +27,7 @@ class RemindersView extends StatelessWidget {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard');
             },
@@ -93,7 +93,7 @@ class RemindersView extends StatelessWidget {
         title: Text(reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10
             ? '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'
             : '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
-        content: Text('${AppLocalizations.of(context)!.remainingDaysUntilExpiry} ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10 ? '${AppLocalizations.of(context)!.delete}' : '${AppLocalizations.of(context)!.products}'}'),
+        content: Text('${AppLocalizations.of(context)!.remainingDaysUntilExpiry} ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10 ? '${AppLocalizations.of(context)!.delete}' : '${AppLocalizations.of(context)!.product}'}'),
         actions: [
           TextButton(
             onPressed: () {

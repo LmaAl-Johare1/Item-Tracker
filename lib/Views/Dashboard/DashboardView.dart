@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/services/network_service.dart';
+import 'package:provider/provider.dart';
+import '../../Models/Reminder.dart';
 import '../../ViewModels/Dashboard/DashboardViewModel.dart';
+import '../Reminder/ReminderView.dart';
 import '../Report/ReportView.dart';
 import '../setting/SettingView.dart';
+import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,35 +18,56 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late MyHomePageViewModel _viewModel;
-  final NetworkService _networkService = NetworkService();
   Timer? _resetTimer;
+  late RemindersViewModel _remindersViewModel;
 
   @override
   void initState() {
     super.initState();
 
-    _viewModel = MyHomePageViewModel();
-
-    if (_viewModel.total == 0 && _viewModel.productIn == 0 && _viewModel.productOut == 0) {
-      _viewModel.updateProductInCount();
-      _viewModel.listenForProductInsertions();
-      _viewModel.checkAndAggregateQuantities();
-    } else {
-      setState(() {});
-    }
+    _remindersViewModel = RemindersViewModel();
 
     _resetTimer = Timer.periodic(Duration(hours: 24), (Timer timer) {
-      if (DateTime.now().difference(_viewModel.lastReset).inHours >= 24) {
-        _viewModel.resetProductOutCounter();
+      final viewModel = Provider.of<MyHomePageViewModel>(context, listen: false);
+      if (DateTime.now().difference(viewModel.lastReset).inHours >= 24) {
+        viewModel.resetProductOutCounter();
       }
     });
+
+    _checkReminders();
+  }
+
+  void _checkReminders() async {
+    await _remindersViewModel.fetchReminders();
+    _remindersViewModel.reminders.forEach((reminder) {
+      if (reminder.currentStock <= 5) {
+        _showNotification(reminder);
+      }
+    });
+  }
+
+  void _showNotification(Reminder reminder) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${reminder.productName} is low on stock!',
+        ),
+        action: SnackBarAction(
+          label: 'View',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RemindersView()),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   @override
   void dispose() {
     _resetTimer?.cancel();
-    _viewModel.removeListener(() {});
     super.dispose();
   }
 
@@ -65,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
+    final viewModel = Provider.of<MyHomePageViewModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -115,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                                 Text(
-                                  '${_viewModel.total}',
+                                  '${viewModel.total}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -136,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                                 Text(
-                                  '${_viewModel.productIn}',
+                                  '${viewModel.productIn}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -157,13 +183,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 ),
                                 Text(
-                                  '${_viewModel.productOut}',
+                                  '${viewModel.productOut}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
                           ],
-
                         ),
                       ),
                     ),
@@ -171,7 +196,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.all(25),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/reminders');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RemindersView()),
+                          );
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 8)),
@@ -243,7 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.viewCategory,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -262,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.insertProduct,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -287,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.supplyProduct,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -306,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.generateBarcode,
-                                  style: TextStyle(fontSize: 14, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),

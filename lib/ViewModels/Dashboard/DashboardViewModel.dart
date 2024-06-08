@@ -41,6 +41,12 @@ class MyHomePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> initialize() async {
+    await updateProductInCount();
+    listenForProductInsertions();
+    checkAndAggregateQuantities();
+  }
+
   Future<void> updateProductInCount() async {
     try {
       int totalQuantity = 0;

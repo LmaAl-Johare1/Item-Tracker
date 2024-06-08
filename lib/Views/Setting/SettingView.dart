@@ -60,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
+
       body: ListView(
         children: <Widget>[
           SizedBox(height: 20),
@@ -218,7 +219,7 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text(
                 'Privacy',
                 style: TextStyle(
-                  fontSize: AppText.headingThree.fontSize,
+                  fontSize: AppText.headingTwo.fontSize,
                   fontWeight: AppText.headingTwo.fontWeight,
                   color: AppColor.primary,
                 ),
@@ -234,16 +235,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(
                     'Change Password',
                     style: TextStyle(
-                      fontSize: AppText.headingThree.fontSize,
-                      fontWeight: AppText.headingTwo.fontWeight,
-                      color: AppColor.primary,
+                      fontSize: AppText.HeadingFour.fontSize,
+                      fontWeight: AppText.headingFour.fontWeight,
+                      color: AppColor.grey,
                     ),
                     textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
                     color: AppColor.primary,
-                    size: 35,
+                    size: 25,
                   ),
                   onTap: () {
                     Navigator.pushReplacementNamed(context, '/changePassword');
@@ -253,16 +254,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(
                     'Change Email',
                     style: TextStyle(
-                      fontSize: AppText.headingThree.fontSize,
-                      fontWeight: AppText.headingTwo.fontWeight,
-                      color: AppColor.primary,
+                      fontSize: AppText.headingFour.fontSize,
+                      fontWeight: AppText.headingFour.fontWeight,
+                      color: AppColor.grey,
                     ),
                     textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
                     color: AppColor.primary,
-                    size: 35,
+                    size: 25,
                   ),
                   onTap: () {
                     Navigator.pushReplacementNamed(context, '/changeEmail');
@@ -272,16 +273,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(
                     'Delete Account',
                     style: TextStyle(
-                      fontSize: AppText.headingThree.fontSize,
-                      fontWeight: AppText.headingTwo.fontWeight,
-                      color: AppColor.primary,
+                      fontSize: AppText.headingFour.fontSize,
+                      fontWeight: AppText.headingFour.fontWeight,
+                      color: AppColor.grey,
                     ),
                     textAlign: TextAlign.left,
                   ),
                   trailing: Icon(
                     Icons.navigate_next,
                     color: AppColor.primary,
-                    size: 35,
+                    size: 25,
                   ),
                   onTap: () {
                     Navigator.pushReplacementNamed(context, '/deleteAccount');
@@ -290,7 +291,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
           Container(
             margin: EdgeInsets.all(22),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -325,6 +325,8 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(height: 50),
         ],
       ),
+
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFFD9D9D9),
         items: <BottomNavigationBarItem>[

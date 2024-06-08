@@ -54,7 +54,7 @@
   "delete": "حذف",
   "productDetails": "تفاصيل المنتج",
   "id": "المعرف",
-  "items": "العناصر",
+  "items": ":العناصر",
   "expDate": "تاريخ الانتهاء",
   "chooseFromGallery": "اختيار من المعرض",
   "takeAPhoto": "التقاط صورة",
@@ -67,7 +67,7 @@
   "nearSoldOut": "قريب من النفاد",
   "expirationDateProximity": "القرب من تاريخ الانتهاء",
   "quantity":"الكمية",
-  "products":"المنتج",
+  "product":"المنتج",
   "remainingDaysUntilExpiry": "الأيام المتبقية حتى الانتهاء",
   "noProductsFound":"لم يتم العثور على منتجات",
   "register":"تسجيل",
@@ -79,9 +79,16 @@
   "admin":"مسؤول",
   "staff":"موظف",
   "reminders": "تذكيرات",
-   "categoryName":"اسم فئة",
-   "insertCategory":"إدراج فئة",
-   "categories": "الفئات",
-  "noAccountsFound": "لا يوجد حساب"
+  "categoryName":"اسم فئة",
+  "insertCategory":"إدراج فئة",
+  "categories": "الفئات",
+  "profileStuffs":"صفحه الموظف",
+  "noDateChosen": "لم يتم اختيار تاريخ",
+  "chooseDate": "اختر تاريخ",
+  "enterValidCategoryName": "ادخل اسم فئة صالح",
+
+  "deleteCategory": "حذف فئة ",
+  "Save" : "حفظ"
+
 
 }

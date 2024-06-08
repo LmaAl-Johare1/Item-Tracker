@@ -56,7 +56,7 @@ class _ChartViewState extends State<ChartView> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+          icon: Icon(Icons.arrow_back, color: AppColor.primary),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/dashboard');
           },

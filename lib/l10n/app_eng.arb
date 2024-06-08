@@ -54,8 +54,8 @@
   "delete": "Delete",
   "productDetails": "Product Details",
   "id": "ID",
-  "items": "Item(s)",
-  "expDate": "Exp Date",
+  "items": "Item(s):",
+  "expDate": "Exp Date:",
   "chooseFromGallery": "Choose from gallery",
   "takeAPhoto": "Take a photo",
   "productName":"product Name",
@@ -67,7 +67,7 @@
   "nearSoldOut": "Near Sold Out",
   "expirationDateProximity": "Expiration Date Proximity",
   "quantity":"quantity",
-  "products":"products",
+  "product":"product",
   "remainingDaysUntilExpiry": "remaining Days Until Expiry",
   "noProductsFound":"no Products Found",
   "register":"register",
@@ -82,5 +82,12 @@
   "categoryName":"category Name",
   "insertCategory":"insert Category",
   "categories":"categories",
-  "noAccountsFound" : "no Accounts Found  "
+  "profileStuffs":"Profile Stuff",
+  "noDateChosen": "No date chosen!",
+  "chooseDate": "Choose Date",
+  "enterValidCategoryName": "enter Valid Category Name",
+  "deleteCategory": "delete Category",
+  "confirmDeleteCategory": "confirm Delete Category",
+  "cancel" : "Cancel",
+  "Save" : "Save"
 }

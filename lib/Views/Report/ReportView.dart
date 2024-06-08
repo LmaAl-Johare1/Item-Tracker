@@ -30,6 +30,20 @@ class _ReportViewState extends State<ReportView> {
     }
   }
 
+  Future<void> _showDatePicker(BuildContext context) async {
+    final viewModel = Provider.of<ReportViewModel>(context, listen: false);
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (selectedDate != null) {
+      viewModel.filterTransactionsByDate(selectedDate);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
@@ -60,6 +74,7 @@ class _ReportViewState extends State<ReportView> {
                 children: [
                   Expanded(
                     child: Container(
+                      height: 50, // Ensure the container has a fixed height
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10.0),
@@ -72,11 +87,10 @@ class _ReportViewState extends State<ReportView> {
                           ),
                         ],
                       ),
-                      child:  TextField(
-                        // onChanged: (value) {
-                        //   Provider.of<ReportViewModel>(context, listen: false)
-                        //       .searchTransactions(value);
-                        // },
+                      child: TextField(
+                        onChanged: (value) {
+                          Provider.of<ReportViewModel>(context, listen: false).searchTransactions(value);
+                        },
                         decoration: InputDecoration(
                           hintText: localizations.search, // Use the search localization key
                           prefixIcon: Icon(Icons.search),
@@ -88,10 +102,12 @@ class _ReportViewState extends State<ReportView> {
                   ),
                   SizedBox(width: 10),
                   GestureDetector(
-                    // onTap: () {
-                    //    _showFilterDialog(context);
-                    // },
+                    onTap: () {
+                      _showDatePicker(context);
+                    },
                     child: Container(
+                      height: 50, // Ensure the container has a fixed height
+                      width: 50, // Ensure the container has a fixed width
                       padding: EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -139,7 +155,7 @@ class _ReportViewState extends State<ReportView> {
                                     children: [
                                       Text('${localizations.operation}: ${transaction.operation}'), // Use the operation localization key
                                       SizedBox(height: 8.0),
-                                      Text('${localizations.date}: ${transaction.date}'), // Use the date localization key
+                                      Text('${localizations.date}: ${transaction.date.toLocal()}'), // Use the date localization key
                                       SizedBox(height: 8.0),
                                       Text('${localizations.description}: ${transaction.description}'), // Use the description localization key
                                     ],
@@ -170,7 +186,7 @@ class _ReportViewState extends State<ReportView> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 8.0),
-                                Text('${localizations.date}: ${transaction.date}'),
+                                Text('${localizations.date}: ${transaction.date.toLocal()}'),
                                 const Align(
                                   alignment: Alignment.bottomRight,
                                 ),

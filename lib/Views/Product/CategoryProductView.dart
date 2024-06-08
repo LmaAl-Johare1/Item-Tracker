@@ -1,10 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../../ViewModels/Category/ViewCategoryViewModel.dart';
-import 'ProductDetailsView.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'ProductDetailsView.dart'; // Import the localization
 
 class CategoryProductView extends StatelessWidget {
   final String categoryName;
@@ -24,7 +26,7 @@ class CategoryProductView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            '${localizations.products} ', // Use localized string
+            '${localizations.productIn} $categoryName', // Use localized string
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -50,6 +52,7 @@ class CategoryProductView extends StatelessWidget {
               itemBuilder: (context, index) {
                 var product = model.products[index];
                 return ListTile(
+                  leading: _buildImage(product['imagePath']),
                   title: Text(product['productName']),
                   subtitle: Text('${localizations.quantity}: ${product['quantity']}'), // Use localized string
                   trailing: Icon(Icons.arrow_forward_ios),
@@ -68,6 +71,41 @@ class CategoryProductView extends StatelessWidget {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildImage(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) {
+      return _placeholderImage();
+    }
+
+    final file = File(imagePath);
+    if (!file.existsSync()) {
+      return _placeholderImage();
+    }
+
+    return ClipOval(
+      child: Image(
+        image: imagePath.startsWith('http')
+            ? NetworkImage(imagePath)
+            : FileImage(file) as ImageProvider,
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _placeholderImage() {
+    return ClipOval(
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+        ),
+        child: Icon(Icons.image, color: Colors.white),
       ),
     );
   }

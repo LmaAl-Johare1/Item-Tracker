@@ -24,8 +24,8 @@ class ChangePasswordView extends StatelessWidget {
                   child: Text(
                     localizations.changePassword, // Use localized string
                     style: TextStyle(
-                      fontSize: AppText.headingThree.fontSize,
-                      fontWeight: AppText.headingThree.fontWeight,
+                      fontSize: AppText.headingOne.fontSize,
+                      fontWeight: AppText.headingOne.fontWeight,
                       color: AppColor.primary,
                     ),
                   ),

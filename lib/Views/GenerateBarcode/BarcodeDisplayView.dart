@@ -28,7 +28,7 @@ class BarcodeDisplayView extends StatelessWidget {
         iconTheme: IconThemeData(color: AppColor.primary),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
