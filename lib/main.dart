@@ -5,13 +5,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/ViewModels/Authentication/LoginViewModel.dart';
+import 'Services/network_service.dart';
 import 'ViewModels/Dashboard/DashboardViewModel.dart';
 import 'ViewModels/Report/ReportViewModel.dart';
 import 'ViewModels/Setting/DeleteAccountViewModel.dart';
+import 'ViewModels/WelcomeScreenViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
 import 'ViewModels/products/ProductViewModel.dart';
 import 'Views/Authentication/ResetPasswordView.dart';
+import 'Views/Authentication/VerifyEmailView.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/GenerateBarcode/GenerateBarcodeView.dart';
@@ -20,6 +23,7 @@ import 'Views/Profile/EditProfileView.dart';
 import 'Views/Profile/StuffProfileView.dart';
 import 'Views/Reminder/ReminderView.dart';
 import 'Views/Setting/ChangeEmailView.dart';
+import 'Views/WelcomeScreenView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
 import 'Views/authentication/LoginView.dart';
 import 'Views/authentication/RegisterView.dart';
@@ -93,6 +97,9 @@ class MyAppState extends State<MyApp> {
         ChangeNotifierProvider<ReportViewModel>(
           create: (_) => ReportViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SplashViewModel(NetworkService()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -119,7 +126,9 @@ class MyAppState extends State<MyApp> {
         },
         initialRoute: '/',
         routes: {
-          '/': (context) => MyHomePage(),
+          '/': (context) => WelcomeScreen(),
+          '/VerifyEmailView': (context) => VerifyEmailView(),
+          '/changePassword': (context) => ChangePasswordView(),
           '/resetPassword': (context) => ResetPassword(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
@@ -133,7 +142,6 @@ class MyAppState extends State<MyApp> {
           '/supplyProduct': (context) => SupplyProductPage(),
           '/charts': (context) => ChartView(),
           '/Category': (context) => ViewCategoryView(),
-          '/changePassword': (context) => ChangePasswordView(),
           '/deleteAccount': (context) => DeleteAccountPage(),
           '/managerProfile': (context) => Profile(),
           '/reminders': (context) => RemindersView(),

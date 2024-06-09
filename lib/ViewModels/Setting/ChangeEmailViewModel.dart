@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project/Services/network_service.dart';
 
 class ChangeEmailViewModel extends ChangeNotifier {
@@ -39,17 +40,26 @@ class ChangeEmailViewModel extends ChangeNotifier {
       successMessage = '';
     } else {
       try {
-        // Update the email in the database
-        await networkService.updateData(
-          'Users',
-          'email',
-          selectedEmail!, // Field and value to find the document
-          {'email': newEmailController.text}, // New data to update
-        );
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null && user.email == selectedEmail) {
+          // Update the email in Firebase Authentication
+          await user.updateEmail(newEmailController.text);
 
-        successMessage = 'Email has been changed successfully';
-        errorMessage = '';
-        fetchEmails(); // Refresh the email list
+          // Update the email in Firestore
+          await networkService.updateData(
+            'Users',
+            'email',
+            selectedEmail!, // Field and value to find the document
+            {'email': newEmailController.text}, // New data to update
+          );
+
+          successMessage = 'Email has been changed successfully';
+          errorMessage = '';
+          fetchEmails(); // Refresh the email list
+        } else {
+          errorMessage = 'Selected email does not match the authenticated user email';
+          successMessage = '';
+        }
       } catch (e) {
         errorMessage = 'Failed to change email: $e';
         successMessage = '';

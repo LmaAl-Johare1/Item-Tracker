@@ -13,6 +13,12 @@ class ChangePasswordViewModel extends ChangeNotifier {
     try {
       User? user = _auth.currentUser;
 
+      if (user == null) {
+        errorMessage = 'No user is currently signed in.';
+        notifyListeners();
+        return false;
+      }
+
       String currentPassword = currentPasswordController.text;
       String newPassword = newPasswordController.text;
       String confirmPassword = confirmPasswordController.text;
@@ -23,14 +29,14 @@ class ChangePasswordViewModel extends ChangeNotifier {
         return false;
       }
 
-      AuthCredential credential = EmailAuthProvider.credential(email: user!.email!, password: currentPassword);
+      AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: currentPassword);
       await user.reauthenticateWithCredential(credential);
 
       await user.updatePassword(newPassword);
 
       return true;
     } catch (e) {
-      errorMessage = "Error changing password: $e";
+      errorMessage = "Error changing password: ${e.toString()}";
       notifyListeners();
       return false;
     }

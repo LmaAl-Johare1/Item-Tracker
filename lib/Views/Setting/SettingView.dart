@@ -247,7 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     size: 25,
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/changePassword');
+                    Navigator.pushReplacementNamed(context, '/VerifyEmailView');
                   },
                 ),
                 ListTile(

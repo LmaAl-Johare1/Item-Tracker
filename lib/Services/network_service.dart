@@ -191,15 +191,12 @@ class NetworkService {
 
   Future<bool> emailExists(String email) async {
     try {
-      print('Checking if email exists: $email');
       var result = await _firestore
           .collection('Users')
           .where('email', isEqualTo: email)
           .limit(1)
           .get();
-      bool exists = result.docs.isNotEmpty;
-      print('Email $email exists: $exists');
-      return exists; // True if there is at least one document
+      return result.docs.isNotEmpty;
     } catch (e, stackTrace) {
       print('Failed to check email existence: $e');
       print('Stack trace: $stackTrace');
@@ -209,7 +206,6 @@ class NetworkService {
           stackTrace: stackTrace);
     }
   }
-
   Future<void> updatePassword(String email, String newPassword) async {
     try {
       User? user = _firebaseAuth.currentUser;
