@@ -156,12 +156,14 @@ class InsertProductViewModel with ChangeNotifier {
       return success;
     }
 
-    await uploadImage(context);
+    if (_imageFile != null) {
+      await uploadImage(context);
 
-    if (_imageUrl == null) {
-      _productNameError = "Failed to upload image. Please try again.";
-      notifyListeners();
-      return success;
+      if (_imageUrl == null) {
+        _productNameError = "Failed to upload image. Please try again.";
+        notifyListeners();
+        return success;
+      }
     }
 
     Map<String, dynamic> data = {
