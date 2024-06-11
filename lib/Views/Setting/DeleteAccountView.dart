@@ -48,20 +48,31 @@ class DeleteAccountPage extends StatelessWidget {
                     ] else ...[
                       Container(
                         width: double.infinity,
-                        color: Colors.white,
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          value: viewModel.selectedAccount.isNotEmpty ? viewModel.selectedAccount : null,
-                          hint: Text(localizations.chooseAccount),
-                          items: viewModel.emails.map((String email) {
-                            return DropdownMenuItem<String>(
-                              value: email,
-                              child: Text(email),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            viewModel.setSelectedAccount(newValue!);
-                          },
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColor.grey.withOpacity(0.99),
+                            width: 2,
+                          ),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            dropdownColor: Colors.white, // Set dropdown background color to white
+                            isExpanded: true,
+                            value: viewModel.selectedAccount.isNotEmpty ? viewModel.selectedAccount : null,
+                            hint: Text(localizations.chooseAccount),
+                            items: viewModel.emails.map((String email) {
+                              return DropdownMenuItem<String>(
+                                value: email,
+                                child: Text(email),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              viewModel.setSelectedAccount(newValue!);
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -105,7 +116,7 @@ class DeleteAccountPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColor.validation,
                         ),
                       ),
                     ),

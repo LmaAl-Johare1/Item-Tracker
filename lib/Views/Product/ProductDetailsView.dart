@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'EditProductView.dart';
+import 'EditProductView.dart'; // Updated import statement
 
 class ProductDetailsScreen extends StatelessWidget {
   final String productId;
@@ -103,8 +103,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProductView(
-                                    product: product,
+                                  builder: (context) => EditProductView(product: product,
                                   ),
                                 ),
                               );

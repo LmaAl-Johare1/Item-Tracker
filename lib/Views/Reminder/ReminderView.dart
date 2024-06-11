@@ -10,7 +10,7 @@ class RemindersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RemindersViewModel()..fetchReminders(),
+      create: (context) => RemindersViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -35,7 +35,7 @@ class RemindersView extends StatelessWidget {
         ),
         body: Column(
           children: [
-            SizedBox(height: 20), // Added SizedBox
+            SizedBox(height: 20),
             Expanded(
               child: Consumer<RemindersViewModel>(
                 builder: (context, viewModel, child) {
@@ -47,12 +47,7 @@ class RemindersView extends StatelessWidget {
                     itemCount: viewModel.reminders.length,
                     itemBuilder: (context, index) {
                       final reminder = viewModel.reminders[index];
-                      String message;
-                      if (reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10) {
-                        message = '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
-                      } else {
-                        message = '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
-                      }
+                      String message = '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
                       return Center(
                         child: Container(
                           width: 350,
@@ -90,10 +85,8 @@ class RemindersView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10
-            ? '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'
-            : '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
-        content: Text('${AppLocalizations.of(context)!.remainingDaysUntilExpiry} ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 10 ? '${AppLocalizations.of(context)!.delete}' : '${AppLocalizations.of(context)!.product}'}'),
+        title: Text('${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
+        content: Text('Do you want to acknowledge this reminder?'),
         actions: [
           TextButton(
             onPressed: () {

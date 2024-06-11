@@ -13,7 +13,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final RegisterViewModel _registerViewModel = RegisterViewModel(NetworkService());
-  String _selectedRole = 'Admin'; // Default role is Admin
+  String _selectedRole = 'Admin';
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
@@ -68,208 +68,202 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => _registerViewModel,
-    child: Scaffold(
-    backgroundColor: Colors.white,
-    appBar: AppBar(
-    leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: AppColor.primary),
-    onPressed: (){
-    Navigator.pushReplacementNamed(context, '/RegisterBack');
-    },
-    ),
-    title: Text(
-    localizations.register,
-    style: TextStyle(
-    fontSize: AppText.headingOne.fontSize,
-    fontWeight: AppText.headingOne.fontWeight,
-    color: AppColor.primary,
-    ),
-    ),
-    backgroundColor: Colors.white,
-    centerTitle: true,
-    ),
-    body: SingleChildScrollView(
-    padding: EdgeInsets.symmetric(horizontal: 37, vertical: 18),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-    Consumer<RegisterViewModel>(
-    builder: (context, model, child) {
-    return Column(
-    children: [
-    TextField(
-    controller: _emailController,
-    decoration: InputDecoration(
-    labelText: localizations.email,
-    labelStyle: TextStyle(
-    color: AppColor.FieldLabel,
-    fontWeight: FontWeight.bold,
-    ),
-    border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.emailError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.emailError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-    floatingLabelBehavior: FloatingLabelBehavior.always,
-    errorText: model.emailError,
-    ),
-    onChanged: (value) {
-    model.setEmail(value);
-    },
-    ),
-    SizedBox(height: 45),
-    TextField(
-    controller: _passwordController,
-    obscureText: _isPasswordObscured,
-    decoration: InputDecoration(
-    labelText: localizations.password,
-    labelStyle: TextStyle(
-    color: AppColor.FieldLabel,
-    fontWeight: FontWeight.bold,
-    ),
-    border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.passwordError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.passwordError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-    floatingLabelBehavior: FloatingLabelBehavior.always,
-    suffixIcon: IconButton(
-    icon: Icon(
-    _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
-    color: Colors.grey,
-    ),
-    onPressed: () {
-    setState(() {
-    _isPasswordObscured = !_isPasswordObscured;
-    });
-    },
-    ),
-    errorText: model.passwordError,
-    ),
-    onChanged: (value) {
-    model.setPassword(value);
-    },
-    ),
-    SizedBox(height: 45),
-    TextField(
-    controller: _confirmPasswordController,
-    obscureText: _isConfirmPasswordObscured,
-    decoration: InputDecoration(
-    labelText: localizations.confirmPassword,
-    labelStyle: TextStyle(
-    color: AppColor.FieldLabel,
-    fontWeight: FontWeight.bold,
-    ),
-    border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.confirmPasswordError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(5),
-    borderSide: BorderSide(
-    color: model.confirmPasswordError == null ? AppColor.primary : Colors.red,
-    width: 2,
-    ),
-    ),
-    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-    floatingLabelBehavior: FloatingLabelBehavior.always,
-    suffixIcon: IconButton(
-    icon: Icon(
-    _isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
-    color: Colors.grey,
-    ),
-    onPressed: () {
-    setState(() {
-    _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
-    });
-    },
-    ),
-    errorText: model.confirmPasswordError,
-    ),
-    onChanged: (value) {
-    model.setConfirmPassword(value);
-    },
-    ),
-      SizedBox(height: 45),
-      Text(localizations.accountRole, style: TextStyle(
-        fontSize: AppText.headingsix.fontSize,
-        fontWeight: AppText.headingsix.fontWeight,
-      )),
-      ListTile(
-        title: Text(localizations.admin),
-        leading: Radio<String>(
-          value: 'Admin',
-          groupValue: _selectedRole,
-          onChanged: (value) {
-            setState(() {
-              _selectedRole = value!;
-            });
-          },
-          activeColor: AppColor.primary,
+      create: (_) => _registerViewModel,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppColor.primary),
+            onPressed: (){
+              Navigator.pushReplacementNamed(context, '/RegisterBack');
+            },
+          ),
+          title: Text(
+            localizations.register,
+            style: TextStyle(
+              fontSize: AppText.headingOne.fontSize,
+              fontWeight: AppText.headingOne.fontWeight,
+              color: AppColor.primary,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 37, vertical: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Consumer<RegisterViewModel>(
+                builder: (context, model, child) {
+                  return Column(
+                    children: [
+                      TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: localizations.email,
+                          labelStyle: TextStyle(
+                            color: AppColor.FieldLabel,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.emailError == null ? AppColor.primary : Colors.red, // Change border color based on email validation
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.emailError == null ? AppColor.primary : Colors.red, // Change border color based on email validation
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          errorText: model.emailError,
+                        ),
+                        onChanged: (value) {
+                          model.setEmail(value);
+                        },
+                      ),
+                      SizedBox(height: 45),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: _isPasswordObscured,
+                        decoration: InputDecoration(
+                          labelText: localizations.password,
+                          labelStyle: TextStyle(
+                            color: AppColor.FieldLabel,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.passwordError == null ? AppColor.primary : Colors.red, // Change border color based on password validation
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.passwordError == null ? AppColor.primary : Colors.red, // Change border color based on password validation
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordObscured = !_isPasswordObscured;
+                              });
+                            },
+                          ),
+                          errorText: model.passwordError,
+                        ),
+                        onChanged: (value) {
+                          model.setPassword(value);
+                        },
+                      ),
+                      SizedBox(height: 45),
+                      TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: _isConfirmPasswordObscured,
+                        decoration: InputDecoration(
+                          labelText: localizations.confirmPassword,
+                          labelStyle: TextStyle(
+                            color: AppColor.FieldLabel,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.confirmPasswordError == null ? AppColor.primary : Colors.red, // Change border color based on confirm password validation
+                              width: 2,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              color: model.confirmPasswordError == null ? AppColor.primary : Colors.red, // Change border color based on confirm password validation
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+                              });
+                            },
+                          ),
+                          errorText: model.confirmPasswordError,
+                        ),
+                        onChanged: (value) {
+                          model.setConfirmPassword(value);
+                        },
+                      ),
+                      SizedBox(height: 45),
+                      Text(localizations.accountRole, style: TextStyle(
+                        fontSize: AppText.headingsix.fontSize,
+                        fontWeight: AppText.headingsix.fontWeight,
+                      )),
+                      ListTile(
+                        title: Text(localizations.admin), // Use localized string
+                        leading: Radio<String>(
+                          value: 'Admin',
+                          groupValue: model.selectedRole,
+                          onChanged: (value) {
+                            model.setSelectedRole(value!);
+                          },
+                          activeColor: AppColor.primary,
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(localizations.manager), // Use localized string
+                        leading: Radio<String>(
+                          value: 'Manager',
+                          groupValue: model.selectedRole,
+                          onChanged: (value) {
+                            model.setSelectedRole(value!);
+                          },
+                          activeColor: AppColor.primary,
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(localizations.staff), // Use localized string
+                        leading: Radio<String>(
+                          value: 'Staff',
+                          groupValue: model.selectedRole,
+                          onChanged: (value) {
+                            model.setSelectedRole(value!);
+                          },
+                          activeColor: AppColor.primary,
+                        ),
+                      ),
+                      if (model.selectedRole != 'Manager')
+                        buildContinueButton(),
+                      if (model.selectedRole == 'Manager')
+                        managerFields(model),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
-      ListTile(
-        title: Text(localizations.manager),
-        leading: Radio<String>(
-          value: 'Manager',
-          groupValue: _selectedRole,
-          onChanged: (value) {
-            setState(() {
-              _selectedRole = value!;
-            });
-          },
-          activeColor: AppColor.primary,
-        ),
-      ),
-      ListTile(
-        title: Text(localizations.staff),
-        leading: Radio<String>(
-          value: 'Staff',
-          groupValue: _selectedRole,
-          onChanged: (value) {
-            setState(() {
-              _selectedRole = value!;
-            });
-          },
-          activeColor: AppColor.primary,
-        ),
-      ),
-      if (_selectedRole != 'Manager')
-        buildContinueButton(),
-      if (_selectedRole == 'Manager')
-        managerFields(model),
-    ],
-    );
-    },
-    ),
-    ],
-    ),
-    ),
-    ),
     );
   }
 
@@ -302,7 +296,7 @@ class _RegisterPageState extends State<RegisterPage> {
         TextField(
           controller: _businessNameController,
           decoration: InputDecoration(
-            labelText: localizations.businessName,
+            labelText: localizations.businessName, // Use localized string
             labelStyle: TextStyle(
               color: AppColor.FieldLabel,
               fontWeight: FontWeight.bold,
@@ -332,7 +326,7 @@ class _RegisterPageState extends State<RegisterPage> {
         TextField(
           controller: _phoneNumberController,
           decoration: InputDecoration(
-            labelText: localizations.phoneNumber,
+            labelText: localizations.phoneNumber, // Use localized string
             labelStyle: TextStyle(
               color: AppColor.FieldLabel,
               fontWeight: FontWeight.bold,
@@ -362,7 +356,7 @@ class _RegisterPageState extends State<RegisterPage> {
         TextField(
           controller: _businessAddressController,
           decoration: InputDecoration(
-            labelText: localizations.businessAddress,
+            labelText: localizations.businessAddress, // Use localized string
             labelStyle: TextStyle(
               color: AppColor.FieldLabel,
               fontWeight: FontWeight.bold,
@@ -394,4 +388,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-

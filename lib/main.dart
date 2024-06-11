@@ -9,7 +9,11 @@ import 'Services/PermissionChecker.dart';
 import 'Services/UserService.dart';
 import 'Services/network_service.dart';
 import 'ViewModels/Authentication/LoginViewModel.dart';
+import 'ViewModels/Authentication/ResetPasswordViewModel.dart';
 import 'ViewModels/Dashboard/DashboardViewModel.dart';
+import 'ViewModels/Report/ReportViewModel.dart';
+import 'ViewModels/Setting/DeleteAccountViewModel.dart';
+import 'ViewModels/WelcomeScreenViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
 import 'ViewModels/products/ProductViewModel.dart';
@@ -42,10 +46,16 @@ void main() async {
       appId: "1:188054375610:android:e0d9116276a116b2f80683",
       messagingSenderId: "188054375610",
       projectId: "itemtracker-cfd33",
+      storageBucket: 'itemtracker-cfd33.appspot.com',
     ),
   );
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MyHomePageViewModel()..initialize(), // Ensure initial values are fetched
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -58,12 +68,12 @@ class MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
   late final NetworkService _networkService;
   late final UserService _userService;
-  late final PermissionChecker _permissionChecker; // Instantiate PermissionChecker
+  late final PermissionChecker _permissionChecker;
 
   MyApp() {
     _networkService = NetworkService();
     _userService = UserService();
-    _permissionChecker = PermissionChecker(_userService); // Initialize PermissionChecker
+    _permissionChecker = PermissionChecker(_userService);
   }
   void setLocale(Locale locale) {
     setState(() {
@@ -82,11 +92,30 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
-        ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
-        ChangeNotifierProvider(create: (_) => ProductViewModel()),
-        ChangeNotifierProvider(create: (_) => MyHomePageViewModel()),
-        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider<LoginViewModel>(
+          create: (_) => LoginViewModel(),
+        ),
+        ChangeNotifierProvider<ResetPasswordViewModel>(
+          create: (_) => ResetPasswordViewModel(),
+        ),
+        ChangeNotifierProvider<InsertProductViewModel>(
+          create: (_) => InsertProductViewModel(),
+        ),
+        ChangeNotifierProvider<ViewCategoryViewModel>(
+          create: (_) => ViewCategoryViewModel(),
+        ),
+        ChangeNotifierProvider<ProductViewModel>(
+          create: (_) => ProductViewModel(),
+        ),
+        ChangeNotifierProvider<DeleteAccountViewModel>(
+          create: (_) => DeleteAccountViewModel(),
+        ),
+        ChangeNotifierProvider<ReportViewModel>(
+          create: (_) => ReportViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SplashViewModel(NetworkService()),
+        ),
         Provider.value(value: _userService),
       ],
       child: MaterialApp(

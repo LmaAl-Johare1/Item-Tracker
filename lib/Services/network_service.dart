@@ -49,7 +49,7 @@ class NetworkService {
     try {
       print('Attempting to send data to collection: $collection');
       DocumentReference documentReference =
-          await _firestore.collection(collection).add(data);
+      await _firestore.collection(collection).add(data);
       print('Data sent successfully with document ID: ${documentReference.id}');
       return {...data, 'documentId': documentReference.id};
     } catch (e, stackTrace) {
@@ -67,7 +67,7 @@ class NetworkService {
     try {
       print('Checking if product exists with ID: $productId');
       final existingProduct =
-          await fetchData('products', 'productId', productId);
+      await fetchData('products', 'productId', productId);
       if (existingProduct.isNotEmpty) {
         // Product with same ID exists, update quantity
         int newQuantity = existingProduct['quantity'] + data['quantity'];
@@ -191,15 +191,12 @@ class NetworkService {
 
   Future<bool> emailExists(String email) async {
     try {
-      print('Checking if email exists: $email');
       var result = await _firestore
           .collection('Users')
           .where('email', isEqualTo: email)
           .limit(1)
           .get();
-      bool exists = result.docs.isNotEmpty;
-      print('Email $email exists: $exists');
-      return exists; // True if there is at least one document
+      return result.docs.isNotEmpty;
     } catch (e, stackTrace) {
       print('Failed to check email existence: $e');
       print('Stack trace: $stackTrace');
@@ -209,7 +206,6 @@ class NetworkService {
           stackTrace: stackTrace);
     }
   }
-
   Future<void> updatePassword(String email, String newPassword) async {
     try {
       User? user = _firebaseAuth.currentUser;
@@ -257,7 +253,7 @@ class NetworkService {
   Future<Map<String, dynamic>> fetchProductById(String productId) async {
     try {
       DocumentSnapshot doc =
-          await _firestore.collection('products').doc(productId).get();
+      await _firestore.collection('products').doc(productId).get();
       if (doc.exists) {
         return doc.data() as Map<String, dynamic>;
       } else {

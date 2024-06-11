@@ -16,9 +16,12 @@ class ReportViewModel extends ChangeNotifier {
       final data = await _networkService.fetchAll('Reports');
       if (data.isNotEmpty) {
         report = data.map((e) => Report.fromMap(e)).toList();
-        await _fetchProductNames();
+
+        // Sort the reports by date in descending order (latest first)
+        report.sort((a, b) => b.date.compareTo(a.date));
+
         filteredReport = report;
-        print('Fetched reports: $report'); // Debug print
+        print('Fetched and sorted reports: $report'); // Debug print
       } else {
         print('No data in Reports collection');
       }
@@ -30,31 +33,18 @@ class ReportViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchProductNames() async {
-    for (var report in report) {
-      try {
-        final productData = await _networkService.fetchProductById(report.id);
-        report.productName = productData['name'] ?? 'Unknown Product';
-      } catch (e) {
-        print("Error fetching product name for report ${report.id}: $e");
-        report.productName = 'Unknown Product';
-      }
-    }
-    notifyListeners();
-  }
-
   void searchTransactions(String query) {
     if (query.isEmpty) {
       filteredReport = report;
     } else {
       filteredReport = report.where((report) {
-        final productNameLower = report.productName.toLowerCase();
         final operationLower = report.operation.toLowerCase();
+        final productNameLower = report.productName.toLowerCase();
         final searchLower = query.toLowerCase();
-
-        return productNameLower.contains(searchLower) || operationLower.contains(searchLower);
+        return operationLower.contains(searchLower) || productNameLower.contains(searchLower);
       }).toList();
     }
+    print('Search results: $filteredReport'); // Debug print
     notifyListeners();
   }
 
@@ -64,6 +54,7 @@ class ReportViewModel extends ChangeNotifier {
           report.date.month == selectedDate.month &&
           report.date.day == selectedDate.day;
     }).toList();
+    print('Filtered reports by date: $filteredReport'); // Debug print
     notifyListeners();
   }
 }

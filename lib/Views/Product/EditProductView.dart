@@ -69,10 +69,7 @@ class _EditProductViewState extends State<EditProductView> {
                                   title: Text(AppLocalizations.of(context)!.chooseFromGallery),
                                   onTap: () async {
                                     Navigator.pop(context);
-                                    final pickedImage = await picker.getImage(source: ImageSource.gallery);
-                                    if (pickedImage != null) {
-                                      model.updateImagePath(pickedImage.path);
-                                    }
+                                    await model.pickImage(ImageSource.gallery);
                                   },
                                 ),
                                 ListTile(
@@ -80,10 +77,7 @@ class _EditProductViewState extends State<EditProductView> {
                                   title: Text(AppLocalizations.of(context)!.takeAPhoto),
                                   onTap: () async {
                                     Navigator.pop(context);
-                                    final pickedImage = await picker.getImage(source: ImageSource.camera);
-                                    if (pickedImage != null) {
-                                      model.updateImagePath(pickedImage.path);
-                                    }
+                                    await model.pickImage(ImageSource.camera);
                                   },
                                 ),
                               ],
@@ -98,10 +92,12 @@ class _EditProductViewState extends State<EditProductView> {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: model.imagePath != null && model.imagePath!.isNotEmpty
-                          ? Image.file(File(model.imagePath!))
-                          : Image.asset('assets/img/defualt.png'), // Provide default image
                       alignment: Alignment.center,
+                      child: model.imagePath != null && model.imagePath!.isNotEmpty
+                          ? (model.imagePath!.startsWith('http')
+                          ? Image.network(model.imagePath!)
+                          : Image.file(File(model.imagePath!)))
+                          : Image.asset('assets/img/defualt.png'), // Provide default image
                     ),
                   ),
                   SizedBox(height: 40),
@@ -178,7 +174,7 @@ class _EditProductViewState extends State<EditProductView> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          model.saveProduct();
+                          model.saveProduct(context);
                           Navigator.pop(context, true); // Return true to indicate success
                         }
                       },

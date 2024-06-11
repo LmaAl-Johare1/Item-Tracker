@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/ViewModels/Report/ReportViewModel.dart';
 import 'package:project/Views/dashboard/DashboardView.dart';
 import 'package:provider/provider.dart';
+import 'package:project/Models/Report.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../Setting/SettingView.dart';
+import 'DataSearch.dart';
 
 class ReportView extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class ReportView extends StatefulWidget {
 
 class _ReportViewState extends State<ReportView> {
   int _selectedIndex = 0;
+  final TextEditingController _searchController = TextEditingController();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -41,12 +44,19 @@ class _ReportViewState extends State<ReportView> {
 
     if (selectedDate != null) {
       viewModel.filterTransactionsByDate(selectedDate);
+      print('Filtered by date: $selectedDate');
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) { // Ensure the build method is implemented
+    final localizations = AppLocalizations.of(context)!;
 
     return ChangeNotifierProvider(
       create: (_) => ReportViewModel()..fetchTransactions(),
@@ -57,7 +67,7 @@ class _ReportViewState extends State<ReportView> {
           elevation: 0,
           automaticallyImplyLeading: false,
           title: Text(
-            localizations.reports, // Use the reports localization key
+            localizations.reports,
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -65,66 +75,54 @@ class _ReportViewState extends State<ReportView> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                final viewModel = Provider.of<ReportViewModel>(context, listen: false);
+                await viewModel.fetchTransactions();
+                showSearch(context: context, delegate: DataSearch(viewModel.report));
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 50, // Ensure the container has a fixed height
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        onChanged: (value) {
-                          Provider.of<ReportViewModel>(context, listen: false).searchTransactions(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: localizations.search, // Use the search localization key
-                          prefixIcon: Icon(Icons.search),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(15.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      _showDatePicker(context);
-                    },
-                    child: Container(
-                      height: 50, // Ensure the container has a fixed height
-                      width: 50, // Ensure the container has a fixed width
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Icon(Icons.filter_list),
-                    ),
-                  ),
-                ],
+                // children: [
+                //   Expanded(
+                //     child: Container(
+                //       height: 50,
+                //
+                //     ),
+                //   ),
+                //   SizedBox(width: 10),
+                //   // GestureDetector(
+                //   //   onTap: () {
+                //   //     _showDatePicker(context);
+                //   //   },
+                //   //   child: Container(
+                //   //     height: 50,
+                //   //     width: 50,
+                //   //     padding: EdgeInsets.all(10.0),
+                //   //     decoration: BoxDecoration(
+                //   //       color: Colors.white,
+                //   //       borderRadius: BorderRadius.circular(10.0),
+                //   //       boxShadow: [
+                //   //         BoxShadow(
+                //   //           color: Colors.grey.withOpacity(0.5),
+                //   //           spreadRadius: 2,
+                //   //           blurRadius: 5,
+                //   //           offset: Offset(0, 3),
+                //   //         ),
+                //   //       ],
+                //   //     ),
+                //   //     child: Icon(Icons.filter_list),
+                //   //   ),
+                //   // ),
+                // ],
               ),
             ),
             SizedBox(height: 20),
@@ -133,6 +131,15 @@ class _ReportViewState extends State<ReportView> {
                 builder: (context, viewModel, child) {
                   if (viewModel.isLoading) {
                     return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (viewModel.filteredReport.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "noReportsFound",
+                        style: TextStyle(color: Colors.grey, fontSize: 18),
+                      ),
+                    );
                   }
 
                   return ListView.builder(
@@ -148,16 +155,16 @@ class _ReportViewState extends State<ReportView> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   backgroundColor: Colors.white,
-                                  title: Text(localizations.transactionDetails), // Use the transactionDetails localization key
+                                  title: Text(localizations.transactionDetails),
                                   content: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text('${localizations.operation}: ${transaction.operation}'), // Use the operation localization key
+                                      Text('${localizations.operation}: ${transaction.operation}'),
                                       SizedBox(height: 8.0),
-                                      Text('${localizations.date}: ${transaction.date.toLocal()}'), // Use the date localization key
+                                      Text('${localizations.date}: ${transaction.date.toLocal()}'),
                                       SizedBox(height: 8.0),
-                                      Text('${localizations.description}: ${transaction.description}'), // Use the description localization key
+                                      Text('${localizations.description}: ${transaction.description}'),
                                     ],
                                   ),
                                   actions: [
@@ -165,7 +172,7 @@ class _ReportViewState extends State<ReportView> {
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text(localizations.close), // Use the close localization key
+                                      child: Text(localizations.close),
                                     ),
                                   ],
                                 );
@@ -187,9 +194,6 @@ class _ReportViewState extends State<ReportView> {
                                 ),
                                 SizedBox(height: 8.0),
                                 Text('${localizations.date}: ${transaction.date.toLocal()}'),
-                                const Align(
-                                  alignment: Alignment.bottomRight,
-                                ),
                               ],
                             ),
                           ),

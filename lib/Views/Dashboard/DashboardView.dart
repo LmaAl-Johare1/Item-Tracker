@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
-import 'package:project/services/network_service.dart';
+import 'package:project/Services/network_service.dart';
 import 'package:provider/provider.dart';
 import '../../Models/Reminder.dart';
 import '../../ViewModels/Dashboard/DashboardViewModel.dart';
@@ -19,50 +19,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Timer? _resetTimer;
-  late RemindersViewModel _remindersViewModel;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
+    _startResetTimer();
+  }
 
-    _remindersViewModel = RemindersViewModel();
-
+  void _startResetTimer() {
     _resetTimer = Timer.periodic(Duration(hours: 24), (Timer timer) {
       final viewModel = Provider.of<MyHomePageViewModel>(context, listen: false);
       if (DateTime.now().difference(viewModel.lastReset).inHours >= 24) {
         viewModel.resetProductOutCounter();
       }
     });
-
-    _checkReminders();
-  }
-
-  void _checkReminders() async {
-    await _remindersViewModel.fetchReminders();
-    _remindersViewModel.reminders.forEach((reminder) {
-      if (reminder.currentStock <= 5) {
-        _showNotification(reminder);
-      }
-    });
-  }
-
-  void _showNotification(Reminder reminder) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '${reminder.productName} is low on stock!',
-        ),
-        action: SnackBarAction(
-          label: 'View',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RemindersView()),
-            );
-          },
-        ),
-      ),
-    );
   }
 
   @override
@@ -70,8 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _resetTimer?.cancel();
     super.dispose();
   }
-
-  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ReportView()));
     } else if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
