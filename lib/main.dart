@@ -93,7 +93,9 @@ class MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         routes: {
-          '/': (context) => LoginScreen(),
+
+          '/': (context) => MyHomePage(),
+
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
@@ -117,6 +119,7 @@ class MyAppState extends State<MyApp> {
           '/EditProfile': (context) => EditProfile(),
 
 
+          '/signup': (context) => RegisterPage(),
 
 
         },
