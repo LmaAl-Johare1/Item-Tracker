@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../ViewModels/Products/ProductViewModel.dart';
+import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'EditProductView.dart';
+import 'EditProductView.dart'; // Updated import statement
 
 class ProductDetailsScreen extends StatelessWidget {
   final String productId;
@@ -21,7 +21,7 @@ class ProductDetailsScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+            icon: Icon(Icons.arrow_back, color: AppColor.primary),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
@@ -41,6 +41,8 @@ class ProductDetailsScreen extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
             final product = viewModel.product!;
+            final imagePath = product.imagePath ?? 'assets/img/defualt.png'; // Provide a default value
+
             return SingleChildScrollView(
               child: Column(
                 children: <Widget>[
@@ -52,6 +54,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
+
                       elevation: 5,
                       child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -80,23 +83,27 @@ class ProductDetailsScreen extends StatelessWidget {
                           leading: Container(
                             width: 50,
                             height: 50,
-                            child: product.imagePath.startsWith('http')
+                            child: imagePath.startsWith('http')
                                 ? Image.network(
-                              product.imagePath,
+                              imagePath,
                               fit: BoxFit.cover,
                             )
-                                : Image.file(
-                              File(product.imagePath),
+                                : (imagePath != 'assets/img/defualt.png'
+                                ? Image.file(
+                              File(imagePath),
                               fit: BoxFit.cover,
-                            ),
+                            )
+                                : Image.asset(
+                              'assets/img/defualt.png',
+                              fit: BoxFit.cover,
+                            )),
                           ),
                           trailing: TextButton(
                             onPressed: () async {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProductView(
-                                    productId: productId,
+                                  builder: (context) => EditProductView(product: product,
                                   ),
                                 ),
                               );
@@ -120,8 +127,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
                       color: AppColor.secondary,
                       borderRadius: BorderRadius.circular(20),
@@ -150,10 +156,8 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 10),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 25),
+                    margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                     decoration: BoxDecoration(
                       color: AppColor.Exdate,
                       borderRadius: BorderRadius.circular(20),
@@ -164,17 +168,17 @@ class ProductDetailsScreen extends StatelessWidget {
                         Text(
                           AppLocalizations.of(context)!.expDate,
                           style: TextStyle(
-                            fontSize: AppText.HeadingFour.fontSize,
+                            fontSize: AppText.HeadingThree.fontSize,
                             fontWeight: AppText.HeadingThree.fontWeight,
-                            color: AppColor.secondary,
+                            color: Colors.white,
                           ),
                         ),
                         Text(
-                          '${product.expDate.toLocal()}'.split(' ')[0],
+                          '${product.expDate.toDate().toLocal()}'.split(' ')[0],
                           style: TextStyle(
                             fontSize: AppText.HeadingFour.fontSize,
                             fontWeight: AppText.HeadingFour.fontWeight,
-                            color: AppColor.secondary,
+                            color: Colors.white,
                           ),
                         ),
                       ],

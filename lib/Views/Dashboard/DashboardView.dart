@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project/res/AppText.dart';
 import 'package:project/res/AppColor.dart';
-import 'package:project/services/network_service.dart';
+import 'package:project/Services/network_service.dart';
+import 'package:provider/provider.dart';
+import '../../Models/Reminder.dart';
 import '../../ViewModels/Dashboard/DashboardViewModel.dart';
+import '../Reminder/ReminderView.dart';
 import '../Report/ReportView.dart';
 import '../setting/SettingView.dart';
+import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -13,25 +18,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late MyHomePageViewModel _viewModel;
-  final NetworkService _networkService = NetworkService();
+  Timer? _resetTimer;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-
-    _viewModel = MyHomePageViewModel();
-
-    if (_viewModel.total == 0 && _viewModel.productIn == 0 && _viewModel.productOut == 0) {
-      _viewModel.updateProductInCount();
-      _viewModel.listenForProductInsertions();
-      _viewModel.checkAndAggregateQuantities();
-    } else {
-      setState(() {});
-    }
+    _startResetTimer();
   }
 
-  int _selectedIndex = 1;
+  void _startResetTimer() {
+    _resetTimer = Timer.periodic(Duration(hours: 24), (Timer timer) {
+      final viewModel = Provider.of<MyHomePageViewModel>(context, listen: false);
+      if (DateTime.now().difference(viewModel.lastReset).inHours >= 24) {
+        viewModel.resetProductOutCounter();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _resetTimer?.cancel();
+    super.dispose();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -41,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ReportView()));
     } else if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
@@ -50,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
+    final viewModel = Provider.of<MyHomePageViewModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -83,39 +93,66 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.inventory,
-                                  size: 30,
-                                  color: AppColor.primary,
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.inventory,
+                                      size: 30,
+                                      color: AppColor.primary,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.total,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 15),
                                 Text(
-                                  '${localizations.total}:     ${_viewModel.total}',
+                                  '${viewModel.total}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 20),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(Icons.file_upload_outlined,
-                                    size: 30, color: AppColor.primary),
-                                const SizedBox(width: 15),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.file_upload_outlined,
+                                        size: 30, color: AppColor.primary),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.productIn,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  '${localizations.productIn}:      ${_viewModel.productIn}',
+                                  '${viewModel.productIn}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(Icons.file_download_outlined,
-                                    size: 30, color: AppColor.primary),
-                                const SizedBox(width: 15),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.file_download_outlined,
+                                        size: 30, color: AppColor.primary),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      localizations.productOut,
+                                      style: AppText.headingThree.copyWith(color: AppColor.primary),
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  '${localizations.productOut}:    ${_viewModel.productOut}',
+                                  '${viewModel.productOut}',
                                   style: AppText.headingThree.copyWith(color: AppColor.primary),
                                 ),
                               ],
@@ -128,7 +165,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.all(25),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/reminders');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RemindersView()),
+                          );
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 8)),
@@ -196,11 +236,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/viewCategories');
+                              Navigator.pushReplacementNamed(context, '/Category');
                             },
                             child: Center(
                               child: Text(localizations.viewCategory,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -219,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.insertProduct,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -244,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.supplyProduct,
-                                  style: TextStyle(fontSize: 16, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),
@@ -263,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             child: Center(
                               child: Text(localizations.generateBarcode,
-                                  style: TextStyle(fontSize: 14, color: AppColor.secondary)),
+                                  style: TextStyle(fontSize: 14, color: Colors.white)),
                             ),
                           ),
                         ),

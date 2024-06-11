@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../Services/UserService.dart';
+import '../../Services/network_service.dart'; // Import your user service class
 
 class ProfileViewModel extends ChangeNotifier {
   final TextEditingController businessNameController = TextEditingController();
@@ -7,25 +10,37 @@ class ProfileViewModel extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  final UserService _userService = UserService();
+  final NetworkService _networkService = NetworkService(); // Instance of NetworkService
+
   bool isEditing = false;
 
   Future<void> fetchUserData() async {
     try {
-      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('Users').where('user_rule', isEqualTo: 'Manager').get();
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        final userId = currentUser.uid;
+        final userRole = await _userService.fetchUserRole(userId);
 
-      if (usersSnapshot.docs.isNotEmpty) {
-        DocumentSnapshot firstManagerDoc = usersSnapshot.docs.first;
-        Map<String, dynamic> userData = firstManagerDoc.data() as Map<String, dynamic>;
+        if (userRole == 'Manager') {
+          final managerData = await _networkService.fetchData('Users', 'user_role', 'Manager');
 
-        businessNameController.text = userData['businessName'] ?? '';
-        businessAddressController.text = userData['businessAddress'] ?? '';
-        phoneController.text = userData['phoneNumber'] ?? '';
-        emailController.text = userData['email'] ?? '';
+          if (managerData != null) {
+            businessNameController.text = managerData['businessName'] ?? '';
+            businessAddressController.text = managerData['businessAddress'] ?? '';
+            phoneController.text = managerData['phoneNumber'] ?? '';
+            emailController.text = managerData['email'] ?? '';
+          } else {
+            print('No data found for manager');
+          }
+        } else {
+          print('Current user is not a manager');
+        }
       } else {
-        print('No users with the role "Manager" found.');
+        print('No user logged in');
       }
     } catch (error) {
-      print('Error fetching user data: $error');
+      print('Error fetching manager data: $error');
     }
   }
 
@@ -33,6 +48,4 @@ class ProfileViewModel extends ChangeNotifier {
     isEditing = !isEditing;
     notifyListeners();
   }
-
-
 }

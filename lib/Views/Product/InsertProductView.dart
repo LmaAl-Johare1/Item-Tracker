@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/products/InsertProductViewModel.dart';
+import 'package:project/ViewModels/Products/InsertProductViewModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 /// View for inserting a new product.
 class InsertProductView extends StatelessWidget {
@@ -14,7 +13,6 @@ class InsertProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
       create: (_) => InsertProductViewModel(),
       child: _InsertProductView(),
@@ -80,9 +78,11 @@ class _InsertProductViewState extends State<_InsertProductView> {
                             title: Text(localizations.chooseFromGallery),
                             onTap: () async {
                               Navigator.pop(context);
-                              final pickedImage = await picker.getImage(source: ImageSource.gallery);
+                              final pickedImage = await picker.getImage(
+                                  source: ImageSource.gallery);
                               if (pickedImage != null) {
                                 _viewModel.updateImagePath(pickedImage.path);
+                                await _viewModel.pickImage(ImageSource.gallery);
                               }
                             },
                           ),
@@ -91,9 +91,11 @@ class _InsertProductViewState extends State<_InsertProductView> {
                             title: Text(localizations.takeAPhoto),
                             onTap: () async {
                               Navigator.pop(context);
-                              final pickedImage = await picker.getImage(source: ImageSource.camera);
+                              final pickedImage = await picker.getImage(
+                                  source: ImageSource.camera);
                               if (pickedImage != null) {
                                 _viewModel.updateImagePath(pickedImage.path);
+                                await _viewModel.pickImage(ImageSource.camera);
                               }
                             },
                           ),
@@ -110,8 +112,8 @@ class _InsertProductViewState extends State<_InsertProductView> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
-                child: _viewModel.imagePath != null
-                    ? Image.file(File(_viewModel.imagePath!))
+                child: _viewModel.imageFile != null
+                    ? Image.file(_viewModel.imageFile!)
                     : Icon(Icons.camera_alt, size: 50, color: Colors.grey[700]),
               ),
             ),
@@ -120,16 +122,20 @@ class _InsertProductViewState extends State<_InsertProductView> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 onChanged: _viewModel.updateProductName,
-                decoration: _inputDecoration(localizations.productName, _viewModel.productNameError),
+                decoration: _inputDecoration(
+                    localizations.productName, _viewModel.productNameError),
               ),
             ),
-            SizedBox(height: _viewModel.productNameError != null ? 20: 40),
+            SizedBox(height: _viewModel.productNameError != null ? 20 : 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 onChanged: _viewModel.updateProductId,
-                controller: TextEditingController(text: _viewModel.productId ?? ''),
-                decoration: _inputDecoration(localizations.productId,_viewModel.productIdError).copyWith(
+                controller:
+                TextEditingController(text: _viewModel.productId ?? ''),
+                decoration: _inputDecoration(
+                    localizations.productId, _viewModel.productIdError)
+                    .copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
                     onPressed: () async {
@@ -139,9 +145,7 @@ class _InsertProductViewState extends State<_InsertProductView> {
                 ),
               ),
             ),
-
             SizedBox(height: _viewModel.productIdError != null ? 20 : 40),
-            // Adjusted spacing
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -161,9 +165,9 @@ class _InsertProductViewState extends State<_InsertProductView> {
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
                             controller: TextEditingController(
-                                text: _viewModel.quantity.toString()
+                              text: _viewModel.quantity.toString(),
                             )..selection = TextSelection.collapsed(
-                                offset: _viewModel.quantity.toString().length
+                              offset: _viewModel.quantity.toString().length,
                             ),
                             onChanged: (value) {
                               int? newQuantity = int.tryParse(value);
@@ -185,9 +189,10 @@ class _InsertProductViewState extends State<_InsertProductView> {
                     flex: 2,
                     child: TextField(
                       controller: TextEditingController(
-                          text: _viewModel.expDate?.toString().split(' ')[0]
+                        text: _viewModel.expDate?.toString().split(' ')[0],
                       ),
-                      decoration: _inputDecoration(localizations.expDate, _viewModel.expDateError),
+                      decoration: _inputDecoration(
+                          localizations.expDate, _viewModel.expDateError),
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -195,7 +200,8 @@ class _InsertProductViewState extends State<_InsertProductView> {
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
                         );
-                        if (pickedDate != null) _viewModel.updateExpDate(pickedDate);
+                        if (pickedDate != null)
+                          _viewModel.updateExpDate(pickedDate);
                       },
                     ),
                   ),
@@ -207,7 +213,7 @@ class _InsertProductViewState extends State<_InsertProductView> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   _viewModel.quantityError!,
-                  style: TextStyle(color: Colors.red,fontSize :12 ),
+                  style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
               ),
             SizedBox(height: _viewModel.expDateError != null ? 20 : 40),
@@ -228,7 +234,8 @@ class _InsertProductViewState extends State<_InsertProductView> {
                     _viewModel.updateSelectedCategory(value);
                   });
                 },
-                decoration: _inputDecoration(localizations.category, _viewModel.categoryError),
+                decoration: _inputDecoration(
+                    localizations.category, _viewModel.categoryError),
               ),
             ),
             SizedBox(height: _viewModel.categoryError != null ? 20 : 40),
@@ -244,8 +251,10 @@ class _InsertProductViewState extends State<_InsertProductView> {
                   ),
                 ),
                 onPressed: () async {
-                  bool success = await _viewModel.saveProduct();
-                  String message = success ? 'Product inserted successfully' : 'Failed to insert product';
+                  bool success = await _viewModel.saveProduct(context);
+                  String message = success
+                      ? 'Product inserted successfully'
+                      : 'Failed to insert product';
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(message),
@@ -256,7 +265,6 @@ class _InsertProductViewState extends State<_InsertProductView> {
                 child: Text(localizations.save, style: AppText.ButtunText),
               ),
             ),
-
           ],
         ),
       ),
@@ -267,7 +275,8 @@ class _InsertProductViewState extends State<_InsertProductView> {
   InputDecoration _inputDecoration(String label, String? errorText) {
     return InputDecoration(
       labelText: label,
-      labelStyle: TextStyle(color: AppColor.FieldLabel, fontWeight: FontWeight.bold),
+      labelStyle:
+      TextStyle(color: AppColor.FieldLabel, fontWeight: FontWeight.bold),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide(color: AppColor.primary, width: 2),
@@ -276,10 +285,10 @@ class _InsertProductViewState extends State<_InsertProductView> {
         borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide(color: AppColor.primary, width: 2),
       ),
-      contentPadding: EdgeInsets.symmetric(vertical: 10 ,horizontal: 12),
+      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       errorText: errorText,
-      errorStyle: TextStyle(color: Colors.red, fontSize :12 ),
+      errorStyle: TextStyle(color: Colors.red, fontSize: 12),
     );
   }
 }

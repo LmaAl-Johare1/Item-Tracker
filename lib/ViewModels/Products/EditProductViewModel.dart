@@ -1,139 +1,112 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
+
+import '../../Models/products.dart';
+import '../../Services/network_service.dart';
 
 class EditProductViewModel extends ChangeNotifier {
-  String? imagePath;
-  String? productName;
-  String? productId;
-  int quantity = 1;
-  DateTime? expDate;
-  String? selectedCategory;
+  final NetworkService _networkService = NetworkService();
+  late Product product;
 
-  List<String> categories = [];
+  EditProductViewModel(this.product) {
+    productNameController.text = product.productName;
+    quantityController.text = product.quantity.toString();
+    expDate = product.expDate.toDate();
+    imagePath = product.imagePath; // Initialize imagePath
+  }
 
   final TextEditingController productNameController = TextEditingController();
-  final TextEditingController productIdController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
-  final TextEditingController expDateController = TextEditingController();
+  DateTime? expDate;
+  String? imagePath; // Make imagePath nullable
+  File? _imageFile;
+  String? _imageUrl;
 
-  EditProductViewModel(String initialProductId) {
-    productId = initialProductId;
-    loadProductData(initialProductId);
-    loadCategories();
-  }
-
-  @override
-  void dispose() {
-    productNameController.dispose();
-    productIdController.dispose();
-    quantityController.dispose();
-    expDateController.dispose();
-    super.dispose();
-  }
-
-  Future<void> loadProductData(String productId) async {
-    if (productId.isEmpty) {
-      print('Product ID is empty');
-      return;
-    }
-
+  Future<void> updateProduct(String productId, Map<String, dynamic> updatedData) async {
     try {
-      DocumentSnapshot productDoc = await FirebaseFirestore.instance
-          .collection('products')
-          .doc(productId)
-          .get();
-
-      if (productDoc.exists) {
-        Map<String, dynamic> productData = productDoc.data() as Map<String, dynamic>;
-
-        productName = productData['productName'];
-        this.productId = productData['productId'];
-        quantity = productData['quantity'];
-        expDate = (productData['expDate'] as Timestamp).toDate();
-        selectedCategory = productData['category'];
-        imagePath = productData['imagePath'];
-
-        productNameController.text = productName ?? '';
-        productIdController.text = this.productId ?? '';
-        quantityController.text = quantity.toString();
-        expDateController.text = expDate?.toLocal().toString().split(' ')[0] ?? '';
-
-        notifyListeners();
-      } else {
-        print('Product not found');
+      // Fetch the document based on productId
+      final productData = await _networkService.fetchData('products', 'productId', productId);
+      if (productData.isEmpty) {
+        return;
       }
-    } catch (e) {
-      print('Error loading product data: $e');
+
+      // Update the document
+      await _networkService.updateData('products', 'productId', productId, updatedData);
+
+      // Verify the update
+      final updatedProductData = await _networkService.fetchData('products', 'productId', productId);
+      if (updatedProductData.isNotEmpty) {
+        product = Product.fromMap(updatedProductData, productId);
+        notifyListeners();
+      }
+    } catch (error) {
+      print('Error updating Product: $error');
     }
   }
 
-  Future<void> loadCategories() async {
-    try {
-      QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
-          .collection('Categories')
-          .get();
-
-      categories = categorySnapshot.docs
-          .map((doc) => doc['name'] as String)
-          .toList();
-
-      notifyListeners();
-    } catch (e) {
-      print('Error loading categories: $e');
-    }
+  void updateProductName(String value) {
+    product.productName = value;
+    notifyListeners();
   }
 
-  Future<void> updateImagePath(String path) async {
+  void updateQuantity(String value) {
+    product.quantity = int.parse(value);
+    notifyListeners();
+  }
+
+  void updateExpDate(DateTime? date) {
+    expDate = date;
+    notifyListeners();
+  }
+
+  void updateImagePath(String path) {
     imagePath = path;
     notifyListeners();
   }
 
-  void updateProductName(String name) {
-    productName = name;
-    notifyListeners();
-  }
-
-  void updateProductId(String id) {
-    productId = id;
-    notifyListeners();
-  }
-
-  void incrementQuantity() {
-    quantity++;
-    notifyListeners();
-  }
-
-  void decrementQuantity() {
-    if (quantity > 1) {
-      quantity--;
+  Future<void> pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: source);
+    if (pickedImage != null) {
+      _imageFile = File(pickedImage.path);
+      imagePath = pickedImage.path; // Update imagePath with local path
       notifyListeners();
     }
   }
 
-  void updateExpDate(DateTime date) {
-    expDate = date;
-    expDateController.text = expDate!.toLocal().toString().split(' ')[0];
-    notifyListeners();
-  }
-
-  void updateSelectedCategory(String? category) {
-    selectedCategory = category;
-    notifyListeners();
-  }
-
-  Future<void> saveProduct() async {
+  Future<void> uploadImage(BuildContext context) async {
+    if (_imageFile == null) return;
     try {
-      await FirebaseFirestore.instance.collection('products').doc(productId).update({
-        'productName': productName,
-        'productId': productId,
-        'quantity': quantity,
-        'expDate': expDate,
-        'category': selectedCategory,
-        'imagePath': imagePath,
-      });
-      print('Product updated successfully');
-    } catch (e) {
-      print('Error saving product: $e');
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String fileName = path.basename(_imageFile!.path);
+      Reference ref = storage.ref().child('product_images/$fileName');
+      UploadTask uploadTask = ref.putFile(_imageFile!);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      _imageUrl = await taskSnapshot.ref.getDownloadURL();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Image uploaded successfully'),
+      ));
+      notifyListeners();
+    } catch (ex) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(ex.toString()),
+      ));
     }
+  }
+
+  Future<void> saveProduct(BuildContext context) async {
+    await uploadImage(context);
+
+    Map<String, dynamic> updatedData = {
+      'productName': productNameController.text,
+      'quantity': int.parse(quantityController.text),
+      'expDate': Timestamp.fromDate(expDate!),
+      'imagePath': _imageUrl ?? imagePath, // Use uploaded image URL if available
+    };
+    await updateProduct(product.productId, updatedData);
   }
 }

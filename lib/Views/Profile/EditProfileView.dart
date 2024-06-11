@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../ViewModels/EditProfileViewModel.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
+
+import '../../ViewModels/Profile/EditProfileViewModel.dart';
 
 class EditProfile extends StatelessWidget {
   @override
@@ -10,7 +11,9 @@ class EditProfile extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => EditProfileViewModel(),
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text(
             'Profile',
             style: TextStyle(

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import your generated localization
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:project/res/AppColor.dart';
-import 'package:project/res/AppText.dart';
-import 'package:project/ViewModels/Category/InsertCategoryViewModel.dart';
+import '../../res/AppColor.dart';
+import '../../ViewModels/Category/InsertCategoryViewModel.dart';
+import '../../res/AppText.dart';
 
 class InsertCategoryScreen extends StatelessWidget {
   @override
@@ -30,9 +30,9 @@ class InsertCategoryScreen extends StatelessWidget {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/CategoryfromInsert');
+              Navigator.pushReplacementNamed(context, '/Category');
             },
           ),
         ),
@@ -44,40 +44,7 @@ class InsertCategoryScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    final picker = ImagePicker();
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SafeArea(
-                          child: Wrap(
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.photo_library),
-                                title: Text(AppLocalizations.of(context)!.chooseFromGallery), // Localized text
-                                onTap: () async {
-                                  Navigator.pop(context);
-                                  final pickedImage = await picker.getImage(source: ImageSource.gallery);
-                                  if (pickedImage != null) {
-                                    model.updateImagePath(pickedImage.path);
-                                  }
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.photo_camera),
-                                title: Text(AppLocalizations.of(context)!.takeAPhoto), // Localized text
-                                onTap: () async {
-                                  Navigator.pop(context);
-                                  final pickedImage = await picker.getImage(source: ImageSource.camera);
-                                  if (pickedImage != null) {
-                                    model.updateImagePath(pickedImage.path);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
+                    await model.pickImage();
                   },
                   child: Container(
                     height: 150,
@@ -85,8 +52,8 @@ class InsertCategoryScreen extends StatelessWidget {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: model.imagePath != null
-                        ? Image.file(File(model.imagePath!))
+                    child: model.imageFile != null
+                        ? Image.file(model.imageFile!)
                         : Icon(Icons.camera_alt, size: 50, color: Colors.grey[700]),
                     alignment: Alignment.center,
                   ),
@@ -96,6 +63,14 @@ class InsertCategoryScreen extends StatelessWidget {
                   onChanged: model.updateCategoryName,
                   decoration: _inputDecoration(AppLocalizations.of(context)!.categoryName), // Localized text
                 ),
+                if (model.errorMessage != null) // Display error message if exists
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      model.errorMessage!,
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                    ),
+                  ),
                 SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
@@ -106,7 +81,7 @@ class InsertCategoryScreen extends StatelessWidget {
                       minimumSize: Size(204, 55),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                     ),
-                    onPressed: model.saveCategory,
+                    onPressed: () => model.saveCategory(context),
                     child: Text(AppLocalizations.of(context)!.save, style: AppText.ButtunText), // Localized text
                   ),
                 ),

@@ -107,11 +107,23 @@ class RegisterViewModel extends ChangeNotifier {
     return isValid;
   }
 
+  /// Checks if the email already exists in the database.
+  Future<bool> checkEmailExists() async {
+    return await _networkService.emailExists(_email);
+  }
+
   /// Sends registration data to the server.
   ///
   /// Throws an error if sending data fails.
   Future<void> signUp() async {
     if (validateFields()) {
+      bool emailExists = await checkEmailExists();
+      if (emailExists) {
+        _emailError = 'Email already exists';
+        notifyListeners();
+        return;
+      }
+
       try {
         final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: _email,
@@ -134,6 +146,7 @@ class RegisterViewModel extends ChangeNotifier {
       'userId': userId, // Include the user ID obtained from Firebase Authentication
       'email': _email,
       'user_role': _selectedRole,
+      'password': _password,
     };
 
     // Include additional fields for Manager role

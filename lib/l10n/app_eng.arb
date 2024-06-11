@@ -82,5 +82,12 @@
   "categoryName":"category Name",
   "insertCategory":"insert Category",
   "categories":"categories",
-  "profileStuffs":"Profile Stuff"
+  "profileStuffs":"Profile Stuff",
+  "noDateChosen": "No date chosen!",
+  "chooseDate": "Choose Date",
+  "enterValidCategoryName": "enter Valid Category Name",
+  "deleteCategory": "delete Category",
+  "confirmDeleteCategory": "confirm Delete Category",
+  "cancel" : "Cancel",
+  "save" : "Save"
 }

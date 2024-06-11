@@ -1,14 +1,21 @@
 class Category {
   final String name;
-  final String imageUrl;
+  final String? imagePath;
 
-  Category({required this.name, required this.imageUrl});
+  Category({required this.name, this.imagePath});
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      name: json['name'] as String? ?? 'No Category',  // Fallback to 'No Category' if 'name' is null
-      imageUrl: json['imageUrl'] as String? ?? 'assets/img/defualt.png',  // Ensure the path is spelled correctly
+      name: json['name'] ?? 'Unnamed Category',
+      imagePath: json['imagePath'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'imagePath': imagePath,
+    };
   }
 }
 

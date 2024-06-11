@@ -1,46 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../Services/network_service.dart';
+import '../../ViewModels/Setting/DeleteAccountViewModel.dart';
 
-class DeleteAccountPage extends StatefulWidget {
-  @override
-  _DeleteAccountPageState createState() => _DeleteAccountPageState();
-}
-
-class _DeleteAccountPageState extends State<DeleteAccountPage> {
-  final TextEditingController _accountController = TextEditingController();
-  final NetworkService _networkService = NetworkService();
-  String _message = '';
-
-  void _deleteAccount() async {
-    String account = _accountController.text.trim();
-    if (account.isEmpty) {
-      setState(() {
-        _message = AppLocalizations.of(context)!.accountFieldEmpty; // Use localized string
-      });
-      return;
-    }
-
-    bool accountExists = await _networkService.emailExists(account);
-    if (!accountExists) {
-      setState(() {
-        _message = AppLocalizations.of(context)!.invalidAccount; // Use localized string
-      });
-      return;
-    }
-
-    await _networkService.deleteData('Users', account);
-    setState(() {
-      _message = AppLocalizations.of(context)!.accountDeleted; // Use localized string
-    });
-  }
-
+class DeleteAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -49,7 +18,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
         elevation: 0,
         iconTheme: IconThemeData(color: AppColor.primary),
         title: Text(
-          localizations.deleteAccount, // Use localized string
+          localizations.deleteAccount,
           style: TextStyle(
             color: AppColor.primary,
             fontSize: AppText.headingOne.fontSize,
@@ -58,73 +27,146 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, '/dashboard');
+            Navigator.pushReplacementNamed(context, '/Setting');
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Column(
-            children: [
-              SizedBox(height: 60),  // Add space between AppBar and TextField
-              TextField(
-                controller: _accountController,
-                decoration: InputDecoration(
-                  labelText: localizations.chooseAccount, // Use localized string
-                  labelStyle: const TextStyle(
-                    color: AppColor.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(
-                      color: AppColor.primary.withOpacity(0.99),
-                      width: 2,
+      body: ChangeNotifierProvider<DeleteAccountViewModel>(
+        create: (_) => DeleteAccountViewModel()..fetchEmails(),
+        child: Consumer<DeleteAccountViewModel>(
+          builder: (context, viewModel, child) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    if (viewModel.emails.isEmpty) ...[
+                      CircularProgressIndicator(),
+                    ] else ...[
+                      Container(
+                        width: double.infinity,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: AppColor.grey.withOpacity(0.99),
+                            width: 2,
+                          ),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            dropdownColor: Colors.white, // Set dropdown background color to white
+                            isExpanded: true,
+                            value: viewModel.selectedAccount.isNotEmpty ? viewModel.selectedAccount : null,
+                            hint: Text(localizations.chooseAccount),
+                            items: viewModel.emails.map((String email) {
+                              return DropdownMenuItem<String>(
+                                value: email,
+                                child: Text(email),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              viewModel.setSelectedAccount(newValue!);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: 250),
+                    Center(
+                      child: TextButton(
+                        onPressed: () async {
+                          String password = await _showPasswordDialog(context);
+                          if (password.isNotEmpty) {
+                            await viewModel.deleteAccount(password);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(localizations.deleteAccount),
+                                  content: Text(viewModel.message),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: Text(
+                          localizations.delete,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppText.ButtonText.fontSize,
+                            fontWeight: AppText.ButtonText.fontWeight,
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 64, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          backgroundColor: AppColor.validation,
+                        ),
+                      ),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(
-                      color: AppColor.primary.withOpacity(0.99),
-                      width: 2,
+                    SizedBox(height: 20),
+                    Text(
+                      viewModel.message,
+                      style: TextStyle(
+                        color: AppColor.validation,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-              SizedBox(height: 250),  // Space between TextField and Button
-              TextButton(
-                onPressed: _deleteAccount,
-                child: Text(
-                  localizations.delete, // Use localized string
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: AppText.ButtonText.fontSize,
-                    fontWeight: AppText.ButtonText.fontWeight,
-                  ),
-                ),
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 64, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                _message,
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
+  }
+
+  Future<String> _showPasswordDialog(BuildContext context) async {
+    TextEditingController _passwordController = TextEditingController();
+    return await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Enter Password'),
+          content: TextField(
+            controller: _passwordController,
+            obscureText: true,
+            decoration: InputDecoration(hintText: 'Password'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop('');
+              },
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(_passwordController.text);
+              },
+            ),
+          ],
+        );
+      },
+    ) ?? '';
   }
 }

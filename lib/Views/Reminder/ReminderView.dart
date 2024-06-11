@@ -4,13 +4,13 @@ import '../../Models/Reminder.dart';
 import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RemindersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RemindersViewModel()..fetchReminders(),
+      create: (context) => RemindersViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -18,7 +18,7 @@ class RemindersView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            AppLocalizations.of(context)!.reminders, // استخدام الترجمة
+            AppLocalizations.of(context)!.reminders,
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
@@ -27,7 +27,7 @@ class RemindersView extends StatelessWidget {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard');
             },
@@ -35,7 +35,7 @@ class RemindersView extends StatelessWidget {
         ),
         body: Column(
           children: [
-            SizedBox(height: 20), // Added SizedBox
+            SizedBox(height: 20),
             Expanded(
               child: Consumer<RemindersViewModel>(
                 builder: (context, viewModel, child) {
@@ -47,12 +47,7 @@ class RemindersView extends StatelessWidget {
                     itemCount: viewModel.reminders.length,
                     itemBuilder: (context, index) {
                       final reminder = viewModel.reminders[index];
-                      String message;
-                      if (reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5) {
-                        message = '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
-                      } else {
-                        message = '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
-                      }
+                      String message = '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}';
                       return Center(
                         child: Container(
                           width: 350,
@@ -90,10 +85,8 @@ class RemindersView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5
-            ? '${AppLocalizations.of(context)!.expirationDateProximity} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'
-            : '${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
-        content: Text('${AppLocalizations.of(context)!.remainingDaysUntilExpiry} ${reminder.expDate != null && reminder.expDate!.difference(DateTime.now()).inDays <= 5 ? '${AppLocalizations.of(context)!.delete}' : '${AppLocalizations.of(context)!.product}'}'),
+        title: Text('${AppLocalizations.of(context)!.productOut} - ${reminder.productName} ${AppLocalizations.of(context)!.nearSoldOut}'),
+        content: Text('Do you want to acknowledge this reminder?'),
         actions: [
           TextButton(
             onPressed: () {

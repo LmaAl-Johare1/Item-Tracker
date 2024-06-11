@@ -33,8 +33,9 @@ class SupplyProductViewModel with ChangeNotifier {
     }
   }
 
-  void updateProductId(String value) {
+  void updateProductId(String value) async {
     scannedProductId = value;
+    await fetchProductInfo(value); // Fetch product info when the ID is updated
     notifyListeners();
   }
 
@@ -61,7 +62,7 @@ class SupplyProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Saves the supplied Product quantity to the database.
+  /// Saves the supplied Product quantity to the database and sends a report.
   Future<void> saveProduct() async {
     if (product != null) {
       suppliedQuantity = int.tryParse(supplyQuantityController.text) ?? 0;
@@ -85,13 +86,21 @@ class SupplyProductViewModel with ChangeNotifier {
           },
         );
 
-
+        // Update dashboard
         _dashboardViewModel.updateProductOut(suppliedQuantity);
 
+        // Prepare and send the report
+        final reportData = {
+          'operation': 'Supply Product',
+          'date': DateTime.now(),
+          'description': 'Supplied product ${product!.productName} with quantity $suppliedQuantity',
+        };
+        await _networkService.sendData('Reports', reportData);
+
+        // Clear the controllers and reset state
         supplyQuantityController.clear();
         productIdController.clear();
         scannedProductId = '';
-
         productInfoMessage = 'Product supplied successfully';
       } catch (error) {
         productInfoMessage = 'Error: $error';

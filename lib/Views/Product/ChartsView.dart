@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../ViewModels/Products/ProductData.dart';
 import '../../ViewModels/Products/ChartsViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
+import '../../ViewModels/Products/ProductData.dart';
 
 /// This widget represents a view for displaying charts. It allows users to select
 /// different filters to visualize data in different chart types such as column
@@ -40,11 +40,12 @@ class _ChartViewState extends State<ChartView> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // Get translation
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         title: Text(
           localizations.charts,
           style: TextStyle(
@@ -206,19 +207,19 @@ class _ChartViewState extends State<ChartView> {
     data = data.where((dataPoint) => dataPoint.productName.isNotEmpty && dataPoint.remainingDays > 0).toList();
 
     return SfCartesianChart(
-        legend: Legend(isVisible: true, position: LegendPosition.bottom),
-    tooltipBehavior: TooltipBehavior(enable: true),
-    series: <CartesianSeries>[
-    LineSeries<ProductData, String>(
-    dataSource: data,
-    xValueMapper: (ProductData product, _) => product.productName
-      ,
-      yValueMapper: (ProductData product, _) => product.remainingDays.toDouble(),
-      dataLabelSettings: DataLabelSettings(isVisible: true),
-      name: 'Remaining Days',
-      color: AppColor.primary,
-    ),
-    ],
+      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <CartesianSeries>[
+        LineSeries<ProductData, String>(
+          dataSource: data,
+          xValueMapper: (ProductData product, _) => product.productName
+          ,
+          yValueMapper: (ProductData product, _) => product.remainingDays.toDouble(),
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+          name: 'Remaining Days',
+          color: AppColor.primary,
+        ),
+      ],
       primaryXAxis: CategoryAxis(
         title: AxisTitle(
           text: xAxisTitle,

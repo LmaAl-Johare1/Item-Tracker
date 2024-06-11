@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
+
 import '../../Services/network_service.dart';
 
 class CategoryViewModel extends ChangeNotifier {
@@ -6,9 +11,15 @@ class CategoryViewModel extends ChangeNotifier {
 
   String? _imagePath;
   String? _name;
+  String? _errorMessage;
+  File? _imageFile;
+  String? _imageUrl;
 
   String? get imagePath => _imagePath;
   String? get name => _name;
+  String? get errorMessage => _errorMessage;
+  File? get imageFile => _imageFile;
+  String? get imageUrl => _imageUrl;
 
   void updateImagePath(String path) {
     _imagePath = path;
@@ -17,27 +28,77 @@ class CategoryViewModel extends ChangeNotifier {
 
   void updateCategoryName(String name) {
     _name = name;
+    _errorMessage = null; // Reset the error message when updating the name
     notifyListeners();
   }
 
-  Future<void> saveCategory() async {
+  Future<void> pickImage() async {
+    var pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      _imageFile = File(pickedImage.path);
+      notifyListeners();
+    }
+  }
+
+  Future<void> uploadImage(BuildContext context) async {
+    if (_imageFile == null) return;
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String fileName = path.basename(_imageFile!.path);
+      Reference ref = storage.ref().child('category_images/$fileName');
+      UploadTask uploadTask = ref.putFile(_imageFile!);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      _imageUrl = await taskSnapshot.ref.getDownloadURL();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Image uploaded successfully'),
+      ));
+      notifyListeners();
+    } catch (ex) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(ex.toString()),
+      ));
+    }
+  }
+
+  Future<void> saveCategory(BuildContext context) async {
+    if (_name == null || _name!.isEmpty) {
+      _errorMessage = "Please enter a valid category name";
+      notifyListeners();
+      return;
+    }
+
+    await uploadImage(context);
+
+    if (_imageUrl == null) {
+      _errorMessage = "Failed to upload image. Please try again.";
+      notifyListeners();
+      return;
+    }
+
     Map<String, dynamic> data = {
-      'imagePath': _imagePath,
+      'imagePath': _imageUrl,
       'name': _name,
     };
 
     try {
-      await NetworkService().sendData('Categories', data);
+      await _networkService.sendData('Categories', data);
+      print('Category saved successfully');
       resetFields();
-      print('Category inserted successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Category inserted successfully')),
+      );
     } catch (error) {
       print('Failed to insert Category: $error');
+      _errorMessage = "Failed to save category. Please try again later.";
+      notifyListeners();
     }
   }
-  /// Reset all fields to their initial values.
+
   void resetFields() {
     _imagePath = null;
-    _name = '';
+    _name = null;
+    _imageFile = null;
+    _imageUrl = null;
     notifyListeners();
   }
 }

@@ -24,8 +24,8 @@ class ChangePasswordView extends StatelessWidget {
                   child: Text(
                     localizations.changePassword, // Use localized string
                     style: TextStyle(
-                      fontSize: AppText.headingThree.fontSize,
-                      fontWeight: AppText.headingThree.fontWeight,
+                      fontSize: AppText.headingOne.fontSize,
+                      fontWeight: AppText.headingOne.fontWeight,
                       color: AppColor.primary,
                     ),
                   ),
@@ -82,7 +82,7 @@ class ChangePasswordView extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      _saveChanges(context);
+                      await _saveChanges(context);
                     },
                     child: Text(localizations.save, style: AppText.ButtonText), // Use localized string
                   ),
@@ -95,7 +95,7 @@ class ChangePasswordView extends StatelessWidget {
     );
   }
 
-  void _saveChanges(BuildContext context) async {
+  Future<void> _saveChanges(BuildContext context) async {
     var viewModel = Provider.of<ChangePasswordViewModel>(context, listen: false);
     bool success = await viewModel.changePassword();
     if (success) {

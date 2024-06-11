@@ -5,8 +5,8 @@ import '../../Services/network_service.dart';
 class ReportViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
   List<Report> report = [];
-  bool isLoading = false;
   List<Report> filteredReport = [];
+  bool isLoading = false;
 
   Future<void> fetchTransactions() async {
     isLoading = true;
@@ -16,8 +16,12 @@ class ReportViewModel extends ChangeNotifier {
       final data = await _networkService.fetchAll('Reports');
       if (data.isNotEmpty) {
         report = data.map((e) => Report.fromMap(e)).toList();
+
+        // Sort the reports by date in descending order (latest first)
+        report.sort((a, b) => b.date.compareTo(a.date));
+
         filteredReport = report;
-        print('Fetched reports: $report'); // Debug print
+        print('Fetched and sorted reports: $report'); // Debug print
       } else {
         print('No data in Reports collection');
       }
@@ -29,24 +33,28 @@ class ReportViewModel extends ChangeNotifier {
     }
   }
 
-// void searchTransactions(String query) {
-//   if (query.isEmpty) {
-//     filteredReport = report;
-//   } else {
-//     filteredReport = report.where((transaction) {
-//       return transaction.operation.toLowerCase().contains('insert Product') &&
-//           transaction.description.toLowerCase().contains(query.toLowerCase());
-//     }).toList();
-//   }
-//   notifyListeners();
-// }
-//
-// void filterTransactions(String operation) {
-//   if (operation.isEmpty) {
-//     filteredReport = report;
-//   } else {
-//     filteredReport = report.where((transaction) => transaction.operation.toLowerCase() == operation.toLowerCase()).toList();
-//   }
-//   notifyListeners();
-// }
+  void searchTransactions(String query) {
+    if (query.isEmpty) {
+      filteredReport = report;
+    } else {
+      filteredReport = report.where((report) {
+        final operationLower = report.operation.toLowerCase();
+        final productNameLower = report.productName.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return operationLower.contains(searchLower) || productNameLower.contains(searchLower);
+      }).toList();
+    }
+    print('Search results: $filteredReport'); // Debug print
+    notifyListeners();
+  }
+
+  void filterTransactionsByDate(DateTime selectedDate) {
+    filteredReport = report.where((report) {
+      return report.date.year == selectedDate.year &&
+          report.date.month == selectedDate.month &&
+          report.date.day == selectedDate.day;
+    }).toList();
+    print('Filtered reports by date: $filteredReport'); // Debug print
+    notifyListeners();
+  }
 }

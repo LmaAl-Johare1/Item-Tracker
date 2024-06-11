@@ -44,6 +44,9 @@ class CategoryProductView extends StatelessWidget {
         ),
         body: Consumer<ViewCategoryViewModel>(
           builder: (context, model, _) {
+            if (model.errorMessage != null) {
+              return Center(child: Text(model.errorMessage!));
+            }
             if (model.products.isEmpty) {
               return Center(child: Text(localizations.noProductsFound)); // Use localized string
             }
@@ -80,19 +83,15 @@ class CategoryProductView extends StatelessWidget {
       return _placeholderImage();
     }
 
-    final file = File(imagePath);
-    if (!file.existsSync()) {
-      return _placeholderImage();
-    }
-
     return ClipOval(
       child: Image(
-        image: imagePath.startsWith('http')
-            ? NetworkImage(imagePath)
-            : FileImage(file) as ImageProvider,
+        image: NetworkImage(imagePath),
         width: 50,
         height: 50,
         fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _placeholderImage();
+        },
       ),
     );
   }

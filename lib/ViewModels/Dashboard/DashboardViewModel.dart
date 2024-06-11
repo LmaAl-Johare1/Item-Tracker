@@ -7,12 +7,14 @@ class MyHomePageViewModel extends ChangeNotifier {
   int _productIn = 0;
   int _productOut = 0;
   int _totalSupplied = 0;
+  DateTime _lastReset = DateTime.now();
   final NetworkService _networkService = NetworkService();
 
   int get total => _total;
   int get productIn => _productIn;
   int get productOut => _productOut;
   int get totalSupplied => _totalSupplied;
+  DateTime get lastReset => _lastReset;
 
   set total(int value) {
     _total = value;
@@ -32,6 +34,17 @@ class MyHomePageViewModel extends ChangeNotifier {
   set totalSupplied(int value) {
     _totalSupplied = value;
     notifyListeners();
+  }
+
+  set lastReset(DateTime value) {
+    _lastReset = value;
+    notifyListeners();
+  }
+
+  Future<void> initialize() async {
+    await updateProductInCount();
+    listenForProductInsertions();
+    checkAndAggregateQuantities();
   }
 
   Future<void> updateProductInCount() async {
@@ -125,6 +138,13 @@ class MyHomePageViewModel extends ChangeNotifier {
   void updateProductOut(int suppliedQuantity) {
     _productOut += suppliedQuantity;
     _productIn -= suppliedQuantity;
+    _totalSupplied += suppliedQuantity;
+    notifyListeners();
+  }
+
+  void resetProductOutCounter() {
+    _productOut = 0;
+    _lastReset = DateTime.now();
     notifyListeners();
   }
 }

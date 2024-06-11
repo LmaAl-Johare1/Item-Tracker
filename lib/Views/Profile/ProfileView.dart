@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/Setting');
           },
@@ -151,8 +151,8 @@ class _ProfileState extends State<Profile> {
                 controller: _viewModel.emailController,
                 enabled: false, // Set email field to read-only
                 decoration: _buildInputDecoration(
-                  localizations.email, // Use localized string for 'Email'
-                  localizations.emailExample, // Use localized string for example
+                  localizations.email,
+                  localizations.emailExample,
                 ),
               ),
               SizedBox(height: 30),
