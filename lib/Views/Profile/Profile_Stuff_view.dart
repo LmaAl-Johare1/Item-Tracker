@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
-import '../../ViewModels/Profile/AdminProfileViewModel.dart';
+import '../../ViewModels/ProfileStaffViewModel.dart'; // Corrected import
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
+import 'Profile_Stuff_view.dart';
 
-class ProfileAdmin extends StatefulWidget {
+class ProfileStuff extends StatefulWidget {
   @override
-  _ProfileAdminState createState() => _ProfileAdminState();
+  _ProfileStuffState createState() => _ProfileStuffState(); // Corrected class name
 }
 
-class _ProfileAdminState extends State<ProfileAdmin> {
-  late Profileadminviewmodel _viewModel;
+class _ProfileStuffState extends State<ProfileStuff> { // Corrected class name
+  late ProfileStaffViewModel _viewModel; // Corrected ViewModel name
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Profileadminviewmodel();
-    _viewModel.fetchUserData();
+    _viewModel = ProfileStaffViewModel(); // Corrected ViewModel name
+    _viewModel.fetchUserData(); // Fetch user data
   }
 
   InputDecoration _buildInputDecoration(String labelText, String placeholder) {
@@ -49,7 +50,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -62,14 +63,14 @@ class _ProfileAdminState extends State<ProfileAdmin> {
           },
         ),
         title: Text(
-          localizations.admin,
+          localizations.profileStuffs, // Use localized string for 'Profile'
           style: TextStyle(
             fontSize: AppText.headingOne.fontSize,
             fontWeight: AppText.headingThree.fontWeight,
             color: AppColor.primary,
           ),
         ),
-        centerTitle: true,
+        centerTitle: true, // Align the title in the center
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -77,24 +78,24 @@ class _ProfileAdminState extends State<ProfileAdmin> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 40),
+              SizedBox(height: 40), // Reduced height
               Text(
-                localizations.personalInformation,
+                localizations.personalInformation, // Use localized string for 'Personal Information'
                 style: TextStyle(
                   color: AppColor.secondary,
                   fontSize: AppText.headingTwo.fontSize,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 20), // Reduced height
               Column(
                 children: [
-                  SizedBox(height: 30),
+                  SizedBox(height: 30), // Added height for spacing
                   TextField(
                     controller: _viewModel.emailController,
-                    enabled: false,
+                    enabled: false, // Set email field to read-only
                     decoration: _buildInputDecoration(
-                      localizations.email,
-                      localizations.emailExample,
+                      localizations.email, // Use localized string for 'Email'
+                      localizations.emailExample, // Use localized string for example
                     ),
                   ),
                 ],

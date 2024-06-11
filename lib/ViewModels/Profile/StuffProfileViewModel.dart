@@ -6,7 +6,7 @@ class ProfileStaffViewModel extends ChangeNotifier {
 
   Future<void> fetchUserData() async {
     try {
-      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('Users').where('user_rule', isEqualTo: 'staff').get();
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('Users').where('user_role', isEqualTo: 'staff').get();
 
       if (usersSnapshot.docs.isNotEmpty) {
         DocumentSnapshot staffDoc = usersSnapshot.docs.first;

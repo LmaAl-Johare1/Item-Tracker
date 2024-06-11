@@ -132,9 +132,9 @@ class _InsertProductViewState extends State<_InsertProductView> {
               child: TextField(
                 onChanged: _viewModel.updateProductId,
                 controller:
-                    TextEditingController(text: _viewModel.productId ?? ''),
+                TextEditingController(text: _viewModel.productId ?? ''),
                 decoration: _inputDecoration(
-                        localizations.productId, _viewModel.productIdError)
+                    localizations.productId, _viewModel.productIdError)
                     .copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.qr_code_scanner, color: AppColor.primary),
@@ -167,8 +167,8 @@ class _InsertProductViewState extends State<_InsertProductView> {
                             controller: TextEditingController(
                               text: _viewModel.quantity.toString(),
                             )..selection = TextSelection.collapsed(
-                                offset: _viewModel.quantity.toString().length,
-                              ),
+                              offset: _viewModel.quantity.toString().length,
+                            ),
                             onChanged: (value) {
                               int? newQuantity = int.tryParse(value);
                               if (newQuantity != null) {
@@ -276,7 +276,7 @@ class _InsertProductViewState extends State<_InsertProductView> {
     return InputDecoration(
       labelText: label,
       labelStyle:
-          TextStyle(color: AppColor.FieldLabel, fontWeight: FontWeight.bold),
+      TextStyle(color: AppColor.FieldLabel, fontWeight: FontWeight.bold),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide(color: AppColor.primary, width: 2),

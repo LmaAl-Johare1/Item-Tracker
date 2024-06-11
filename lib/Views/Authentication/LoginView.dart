@@ -15,10 +15,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve localized strings
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -66,12 +66,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.only(top: 5.0),
                             ),
                           SizedBox(height: 35),
-                          TextField(
+                          TextFormField(
                             controller: _passwordController,
-                            obscureText: true,
+                            obscureText: _isObscured,
                             decoration: _buildInputDecoration(
                               localizations.password,
                               model.passwordError,
+                              suffixIcon: IconButton(
+                                icon: Icon(_isObscured ? Icons.visibility_off: Icons.visibility),
+                                color: Colors.grey,
+
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscured = !_isObscured;
+                                  });
+                                },
+                              ),
                             ),
                             onChanged: (value) {
                               model.setPassword(value);
@@ -138,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  InputDecoration _buildInputDecoration(String labelText, String? errorText) {
+  InputDecoration _buildInputDecoration(String labelText, String? errorText, {Widget? suffixIcon}) {
     return InputDecoration(
       labelText: labelText,
       labelStyle: TextStyle(
@@ -163,6 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
       alignLabelWithHint: true,
       floatingLabelBehavior: FloatingLabelBehavior.always,
       errorText: errorText,
+      suffixIcon: suffixIcon,
     );
   }
 

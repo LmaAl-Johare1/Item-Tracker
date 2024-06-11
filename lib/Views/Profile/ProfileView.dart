@@ -151,8 +151,8 @@ class _ProfileState extends State<Profile> {
                 controller: _viewModel.emailController,
                 enabled: false, // Set email field to read-only
                 decoration: _buildInputDecoration(
-                  localizations.email, // Use localized string for 'Email'
-                  localizations.emailExample, // Use localized string for example
+                  localizations.email,
+                  localizations.emailExample,
                 ),
               ),
               SizedBox(height: 30),

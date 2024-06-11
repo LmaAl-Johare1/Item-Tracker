@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../Models/Reminder.dart';
 import '../../Services/network_service.dart';
-import '../../Services/notification_service.dart';
 
 class RemindersViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
-  final NotificationService _notificationService = NotificationService();
   List<Reminder> _reminders = [];
 
   List<Reminder> get reminders => _reminders;
@@ -70,15 +68,11 @@ class RemindersViewModel extends ChangeNotifier {
           timestamp: DateTime.now(),
         );
 
-        await _networkService.sendData('Reminders', newReminder.toMap());
+        //await _networkService.sendData('Reminders', newReminder.toMap());
         await fetchReminders();
 
-        // Show notification
-        await _notificationService.showNotification(
-          id: productId.hashCode,
-          title: 'Low Stock Alert',
-          body: 'The stock of $productName is below 10.',
-        );
+
+
       }
     } catch (e) {
       print('Failed to check and add reminder: $e');

@@ -11,7 +11,6 @@ import '../Report/ReportView.dart';
 import '../setting/SettingView.dart';
 import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../Services/notification_service.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -20,15 +19,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Timer? _resetTimer;
-  late RemindersViewModel _remindersViewModel;
-  final NotificationService _notificationService = NotificationService();
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _remindersViewModel = RemindersViewModel();
     _startResetTimer();
-    _checkReminders();
   }
 
   void _startResetTimer() {
@@ -40,30 +36,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<void> _checkReminders() async {
-    await _remindersViewModel.fetchReminders();
-    _remindersViewModel.reminders.forEach((reminder) {
-      if (reminder.currentStock <= 10) {
-        _showNotification(reminder);
-      }
-    });
-  }
-
-  void _showNotification(Reminder reminder) {
-    _notificationService.showNotification(
-      id: reminder.id.hashCode,
-      title: 'Low Stock Alert',
-      body: '${reminder.productName} is low on stock!',
-    );
-  }
-
   @override
   void dispose() {
     _resetTimer?.cancel();
     super.dispose();
   }
-
-  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -73,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ReportView()));
     } else if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()));
     } else if (index == 2) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }

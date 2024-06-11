@@ -88,5 +88,6 @@
   "enterValidCategoryName": "enter Valid Category Name",
   "deleteCategory": "delete Category",
   "confirmDeleteCategory": "confirm Delete Category",
-  "cancel" : "Cancel"
+  "cancel" : "Cancel",
+  "save" : "Save"
 }
