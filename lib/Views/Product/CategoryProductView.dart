@@ -98,13 +98,11 @@ class CategoryProductView extends StatelessWidget {
 
   Widget _placeholderImage() {
     return ClipOval(
-      child: Container(
+      child: Image.asset(
+        'assets/img/defualt.png',
         width: 50,
         height: 50,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-        ),
-        child: Icon(Icons.image, color: Colors.white),
+        fit: BoxFit.cover,
       ),
     );
   }
