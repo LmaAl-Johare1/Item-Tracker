@@ -22,6 +22,7 @@ import 'Views/Profile/AdminProfileView.dart';
 import 'Views/Profile/EditProfileView.dart';
 import 'Views/Profile/StuffProfileView.dart';
 import 'Views/Reminder/ReminderView.dart';
+import 'Views/Report/ReportView.dart';
 import 'Views/Setting/ChangeEmailView.dart';
 import 'Views/WelcomeScreenView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
@@ -47,6 +48,7 @@ void main() async {
       appId: "1:188054375610:android:e0d9116276a116b2f80683",
       messagingSenderId: "188054375610",
       projectId: "itemtracker-cfd33",
+      storageBucket: 'itemtracker-cfd33.appspot.com',
     ),
   );
 
@@ -126,7 +128,8 @@ class MyAppState extends State<MyApp> {
         },
         initialRoute: '/',
         routes: {
-          '/': (context) => WelcomeScreen(),
+          '/': (context) => ViewCategoryView(),
+          '/addCategory': (context) => InsertCategoryScreen(),
           '/VerifyEmailView': (context) => VerifyEmailView(),
           '/changePassword': (context) => ChangePasswordView(),
           '/resetPassword': (context) => ResetPassword(),
@@ -144,7 +147,7 @@ class MyAppState extends State<MyApp> {
           '/Category': (context) => ViewCategoryView(),
           '/deleteAccount': (context) => DeleteAccountPage(),
           '/managerProfile': (context) => Profile(),
-          '/reminders': (context) => RemindersView(),
+          //'/reminders': (context) => RemindersView(),
           '/changeEmail': (context) => ChangeEmailView(),
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Setting': (context) => SettingsPage(),

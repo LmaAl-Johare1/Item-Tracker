@@ -103,8 +103,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProductView(
-                                    product: product,
+                                  builder: (context) => EditProductView(product: product,
                                   ),
                                 ),
                               );

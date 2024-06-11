@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:project/services/network_service.dart';
-import 'package:project/utils/validators.dart';
-/// ViewModel for inserting products.
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'dart:io';
+
+import '../../services/network_service.dart';
+import '../../utils/validators.dart';
+
 class InsertProductViewModel with ChangeNotifier {
   final NetworkService _networkService = NetworkService();
 
@@ -19,31 +24,24 @@ class InsertProductViewModel with ChangeNotifier {
   String? _quantityError;
   String? _expDateError;
   String? _categoryError;
+  File? _imageFile;
+  String? _imageUrl;
 
   /// Getters
   String? get selectedCategory => _selectedCategory;
-
   String? get imagePath => _imagePath;
-
   String? get productId => _productId;
-
   String? get productName => _productName;
-
   int get quantity => _quantity;
-
   DateTime? get expDate => _expDate;
-
   List<String> get categories => _categories;
-
   String? get productNameError => _productNameError;
-
   String? get productIdError => _productIdError;
-
   String? get quantityError => _quantityError;
-
   String? get expDateError => _expDateError;
-
   String? get categoryError => _categoryError;
+  File? get imageFile => _imageFile;
+  String? get imageUrl => _imageUrl;
 
   /// Initializes the view model by fetching categories.
   InsertProductViewModel() {
@@ -117,8 +115,39 @@ class InsertProductViewModel with ChangeNotifier {
     updateProductId(barcodeScanRes);
   }
 
+  /// Picks an image from the gallery or camera.
+  Future<void> pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: source);
+    if (pickedImage != null) {
+      _imageFile = File(pickedImage.path);
+      notifyListeners();
+    }
+  }
+
+  /// Uploads the image to Firebase Storage and returns the download URL.
+  Future<void> uploadImage(BuildContext context) async {
+    if (_imageFile == null) return;
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String fileName = path.basename(_imageFile!.path);
+      Reference ref = storage.ref().child('product_images/$fileName');
+      UploadTask uploadTask = ref.putFile(_imageFile!);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      _imageUrl = await taskSnapshot.ref.getDownloadURL();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Image uploaded successfully'),
+      ));
+      notifyListeners();
+    } catch (ex) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(ex.toString()),
+      ));
+    }
+  }
+
   /// Saves the product data.
-  Future<bool> saveProduct() async {
+  Future<bool> saveProduct(BuildContext context) async {
     DateTime dateAdded = DateTime.now();
     bool success = false;
 
@@ -127,8 +156,16 @@ class InsertProductViewModel with ChangeNotifier {
       return success;
     }
 
+    await uploadImage(context);
+
+    if (_imageUrl == null) {
+      _productNameError = "Failed to upload image. Please try again.";
+      notifyListeners();
+      return success;
+    }
+
     Map<String, dynamic> data = {
-      'imagePath': _imagePath,
+      'imagePath': _imageUrl,
       'productId': _productId,
       'productName': _productName,
       'quantity': _quantity,
@@ -155,7 +192,6 @@ class InsertProductViewModel with ChangeNotifier {
 
     return success;
   }
-
 
   /// Validates all fields before saving.
   bool _validateFields() {
@@ -209,6 +245,8 @@ class InsertProductViewModel with ChangeNotifier {
     _productName = null;
     _quantity = 0;
     _expDate = null;
+    _imageFile = null;
+    _imageUrl = null;
 
     _productNameError = null;
     _productIdError = null;

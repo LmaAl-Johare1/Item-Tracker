@@ -1,36 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../Models/Reminder.dart';
 import '../../Services/network_service.dart';
+import '../../Services/notification_service.dart';
 
 class RemindersViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final NotificationService _notificationService = NotificationService();
   List<Reminder> _reminders = [];
 
   List<Reminder> get reminders => _reminders;
 
   RemindersViewModel() {
-    _initializeNotifications();
-  }
-
-  Future<void> _initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
-
-    final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
-
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    fetchReminders();
+    _checkAndAddRemindersForAllProducts();
   }
 
   Future<void> fetchReminders() async {
     try {
       List<Map<String, dynamic>> remindersData = await _networkService.fetchAll('Reminders');
       _reminders = remindersData.map((data) {
-        String documentId = data['documentId'] ?? '';
+        String documentId = data['id'] ?? '';
         return Reminder.fromMap(data, documentId);
       }).toList();
       notifyListeners();
@@ -48,64 +37,51 @@ class RemindersViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> _checkAndAddRemindersForAllProducts() async {
+    try {
+      List<Map<String, dynamic>> productsData = await _networkService.fetchAll('products');
+      for (var productData in productsData) {
+        String productId = productData['id'] ?? '';
+        await checkAndAddReminder(productId);
+      }
+    } catch (e) {
+      print('Failed to check and add reminders for all products: $e');
+    }
+  }
+
   Future<void> checkAndAddReminder(String productId) async {
     try {
-      Map<String, dynamic> productData = await _networkService.fetchData('products', 'id', productId);
-      int currentStock = productData['quantity'];
-      String productName = productData['productName'];
-      DateTime? expDate = (productData['expDate'] as Timestamp?)?.toDate();
-
-      // Check if the product is near sold out
-      if (currentStock <= 5) {
-        Reminder newReminder = Reminder(
-          id: '',
-          productId: productId,
-          productName: productName,
-          currentStock: currentStock,
-          timestamp: DateTime.now(),
-        );
-
-        await _networkService.sendData('Reminders', newReminder.toMap());
-        await fetchReminders();
-        _showNotification(productName, 'Low stock: $currentStock remaining');
+      Map<String, dynamic>? productData = await _networkService.fetchData('products', 'productId', productId);
+      if (productData == null) {
+        print('No document found for id: $productId');
+        return;
       }
 
-      // Check if the expiration date is within 10 days
-      if (expDate != null && expDate.difference(DateTime.now()).inDays <= 10) {
+      int currentStock = productData['quantity'] ?? 0;
+      String productName = productData['productName'] ?? 'Unknown';
+
+      // Check if the product is near sold out
+      if (currentStock <= 10) {
         Reminder newReminder = Reminder(
           id: '',
           productId: productId,
           productName: productName,
           currentStock: currentStock,
           timestamp: DateTime.now(),
-          expDate: expDate,
         );
 
         await _networkService.sendData('Reminders', newReminder.toMap());
         await fetchReminders();
-        _showNotification(productName, 'Product expiring soon');
+
+        // Show notification
+        await _notificationService.showNotification(
+          id: productId.hashCode,
+          title: 'Low Stock Alert',
+          body: 'The stock of $productName is below 10.',
+        );
       }
     } catch (e) {
       print('Failed to check and add reminder: $e');
     }
-  }
-
-  Future<void> _showNotification(String title, String body) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      // 'your_channel_description',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await _flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      body,
-      platformChannelSpecifics,
-      payload: 'item x',
-    );
   }
 }

@@ -93,12 +93,20 @@ class ViewCategoryView extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: category.imagePath != null
+                                child: category.imagePath != null && category.imagePath!.isNotEmpty
                                     ? Image.network(
                                   category.imagePath!,
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      'assets/img/defualt.png',
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 )
                                     : Image.asset(
                                   'assets/img/defualt.png',
@@ -121,7 +129,7 @@ class ViewCategoryView extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.only(right: 22), // Add padding to the right
-                              child: Icon(Icons.arrow_forward_ios),
+                              child: Icon(Icons.arrow_forward),
                             ),
                           ],
                         ),

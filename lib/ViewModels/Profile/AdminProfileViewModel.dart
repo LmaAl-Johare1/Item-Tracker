@@ -6,7 +6,7 @@ class Profileadminviewmodel extends ChangeNotifier {
 
   Future<void> fetchUserData() async {
     try {
-      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('Users').where('user_rule', isEqualTo: 'admin').get(); // تم تغيير staff إلى admin هنا
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance.collection('Users').where('user_role', isEqualTo: 'Admin').get(); // تم تغيير staff إلى admin هنا
 
       if (usersSnapshot.docs.isNotEmpty) {
         DocumentSnapshot staffDoc = usersSnapshot.docs.first;
@@ -14,7 +14,7 @@ class Profileadminviewmodel extends ChangeNotifier {
 
         emailController.text = userData['email'] ?? '';
       } else {
-        print('No users with the role "admin" found.'); // تم تغيير staff إلى admin هنا
+        print('No users with the role "admin" found.');
       }
     } catch (error) {
       print('Error fetching user data: $error');

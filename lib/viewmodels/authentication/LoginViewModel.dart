@@ -72,29 +72,14 @@ class LoginViewModel extends ChangeNotifier {
           return;
         }
 
-        // Update password in Firestore if login is successful
-        await _updatePasswordInFirestore(_email, _password);
-
         // Proceed with successful login
         _emailError = null;
         _passwordError = null;
         notifyListeners();
-
       } catch (e) {
         _passwordError = 'Failed to sign in: $e';
         notifyListeners();
       }
-    }
-  }
-
-  Future<void> _updatePasswordInFirestore(String email, String newPassword) async {
-    try {
-      var userDoc = await _firestore.collection('Users').where('email', isEqualTo: email).limit(1).get();
-      if (userDoc.docs.isNotEmpty) {
-        await _firestore.collection('Users').doc(userDoc.docs.first.id).update({'password': newPassword});
-      }
-    } catch (e) {
-      throw Exception("Failed to update password in Firestore: $e");
     }
   }
 }

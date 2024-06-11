@@ -5,8 +5,6 @@ import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../res/AppText.dart'; // Import generated localizations
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
