@@ -21,6 +21,7 @@ class Report {
       operation: map['operation'] ?? '',
       date: (map['date'] as Timestamp).toDate(), // Convert Timestamp to DateTime
       description: map['description'] ?? '',
+      productName: map['productName'] ?? '', // Add this line to include productName
     );
   }
 

@@ -6,8 +6,8 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      name: json['name'] ?? 'Unnamed Category',
-      imagePath: json['imagePath'],
+      name: json['name'] as String,
+      imagePath: json['imagePath'] as String?,
     );
   }
 

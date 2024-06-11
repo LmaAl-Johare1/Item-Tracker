@@ -6,7 +6,7 @@ class Reminder {
   final String productName;
   final int currentStock;
   final DateTime timestamp;
-  final DateTime? expDate;
+  final bool acknowledged;
 
   Reminder({
     required this.id,
@@ -14,7 +14,7 @@ class Reminder {
     required this.productName,
     required this.currentStock,
     required this.timestamp,
-    this.expDate,
+    this.acknowledged = false,
   });
 
   factory Reminder.fromMap(Map<String, dynamic>? data, String documentId) {
@@ -25,10 +25,10 @@ class Reminder {
     return Reminder(
       id: documentId,
       productId: data['productId'] ?? '',
-      productName: data['productName'] ?? '',
+      productName: data['productName'] ?? 'Unknown',
       currentStock: data['currentStock'] ?? 0,
       timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      expDate: (data['expDate'] as Timestamp?)?.toDate(),
+      acknowledged: data['acknowledged'] ?? false,
     );
   }
 
@@ -38,7 +38,7 @@ class Reminder {
       'productName': productName,
       'currentStock': currentStock,
       'timestamp': timestamp,
-      if (expDate != null) 'expDate': expDate,
+      'acknowledged': acknowledged,
     };
   }
 }
