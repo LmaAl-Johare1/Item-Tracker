@@ -5,14 +5,14 @@ class Product {
   String productName;
   int quantity;
   Timestamp expDate;
-  String? imagePath; // Add this line
+  String? imagePath;
 
   Product({
     required this.productId,
     required this.productName,
     required this.quantity,
     required this.expDate,
-    this.imagePath, // Add this line
+    this.imagePath,
   });
 
   // Add a method to convert from Map
@@ -22,7 +22,7 @@ class Product {
       productName: data['productName'],
       quantity: data['quantity'],
       expDate: data['expDate'],
-      imagePath: data['imagePath'], // Add this line
+      imagePath: data['imagePath'],
     );
   }
 
@@ -32,7 +32,7 @@ class Product {
       'productName': productName,
       'quantity': quantity,
       'expDate': expDate,
-      'imagePath': imagePath, // Add this line
+      'imagePath': imagePath,
     };
   }
 }

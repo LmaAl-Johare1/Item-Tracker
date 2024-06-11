@@ -89,5 +89,5 @@
   "deleteCategory": "delete Category",
   "confirmDeleteCategory": "confirm Delete Category",
   "cancel" : "Cancel",
-  "Save" : "Save"
+  "save" : "Save"
 }

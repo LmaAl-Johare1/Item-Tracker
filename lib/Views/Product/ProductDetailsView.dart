@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../ViewModels/products/ProductViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
-import 'EditProductView.dart'; // Updated import statement
+import 'EditProductView.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final String productId;

@@ -1,23 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:project/ViewModels/Authentication/ResetPasswordViewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:project/ViewModels/Authentication/LoginViewModel.dart';
+
+import 'Services/PermissionChecker.dart';
+import 'Services/UserService.dart';
+import 'Services/network_service.dart';
+import 'ViewModels/Authentication/LoginViewModel.dart';
 import 'ViewModels/Dashboard/DashboardViewModel.dart';
-import 'ViewModels/Report/ReportViewModel.dart';
-import 'ViewModels/Setting/DeleteAccountViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
 import 'ViewModels/products/ProductViewModel.dart';
-import 'Views/Authentication/ResetPasswordView.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/GenerateBarcode/GenerateBarcodeView.dart';
-import 'Views/Profile/AdminProfileView.dart';
-import 'Views/Profile/EditProfileView.dart';
-import 'Views/Profile/StuffProfileView.dart';
+import 'Views/Profile/ProfileNavigator.dart';
 import 'Views/Reminder/ReminderView.dart';
 import 'Views/Setting/ChangeEmailView.dart';
 import 'Views/authentication/ChangePasswordView.dart';
@@ -46,53 +45,49 @@ void main() async {
     ),
   );
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => MyHomePageViewModel()..initialize(), // Ensure initial values are fetched
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   @override
   MyAppState createState() => MyAppState();
+
 }
 
 class MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
+  late final NetworkService _networkService;
+  late final UserService _userService;
+  late final PermissionChecker _permissionChecker; // Instantiate PermissionChecker
 
-  void setLocale(Locale value) {
+  MyApp() {
+    _networkService = NetworkService();
+    _userService = UserService();
+    _permissionChecker = PermissionChecker(_userService); // Initialize PermissionChecker
+  }
+  void setLocale(Locale locale) {
     setState(() {
-      _locale = value;
+      _locale = locale;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _networkService = NetworkService();
+    _userService = UserService();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<LoginViewModel>(
-          create: (_) => LoginViewModel(),
-        ),
-        ChangeNotifierProvider<ResetPasswordViewModel>(
-          create: (_) => ResetPasswordViewModel(),
-        ),
-        ChangeNotifierProvider<InsertProductViewModel>(
-          create: (_) => InsertProductViewModel(),
-        ),
-        ChangeNotifierProvider<ViewCategoryViewModel>(
-          create: (_) => ViewCategoryViewModel(),
-        ),
-        ChangeNotifierProvider<ProductViewModel>(
-          create: (_) => ProductViewModel(),
-        ),
-        ChangeNotifierProvider<DeleteAccountViewModel>(
-          create: (_) => DeleteAccountViewModel(),
-        ),
-        ChangeNotifierProvider<ReportViewModel>(
-          create: (_) => ReportViewModel(),
-        ),
+        ChangeNotifierProvider(create: (_) => InsertProductViewModel()),
+        ChangeNotifierProvider(create: (_) => ViewCategoryViewModel()),
+        ChangeNotifierProvider(create: (_) => ProductViewModel()),
+        ChangeNotifierProvider(create: (_) => MyHomePageViewModel()),
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        Provider.value(value: _userService),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -117,32 +112,30 @@ class MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
-        initialRoute: '/',
+        initialRoute: '/signup',
         routes: {
-          '/': (context) => MyHomePage(),
-          '/resetPassword': (context) => ResetPassword(),
           '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
           '/RegisterBack': (context) => LoginScreen(),
           '/SettingsPage': (context) => SettingsPage(),
           '/MyHomePage': (context) => MyHomePage(),
-          '/Profile': (context) => ProfileAdmin(),
+          '/Profile': (context) => ProfileNavigator(),
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
-          '/charts': (context) => ChartView(),
-          '/Category': (context) => ViewCategoryView(),
+          '/charts': (context) => _permissionChecker.canAccessFeature(context, 'Staff', ChartView()),
+          '/viewCategories': (context) => ViewCategoryView(),
           '/changePassword': (context) => ChangePasswordView(),
-          '/deleteAccount': (context) => DeleteAccountPage(),
+          '/deleteAccount': (context) => _permissionChecker.canAccessFeature(context, ['Staff', 'Manager'], DeleteAccountPage()),
           '/managerProfile': (context) => Profile(),
-          '/reminders': (context) => RemindersView(),
-          '/changeEmail': (context) => ChangeEmailView(),
+          '/reminders': (context) => _permissionChecker.canAccessFeature(context, 'Staff', RemindersView()),
+          '/changeEmail': (context) => _permissionChecker.canAccessFeature(context, ['Staff', 'Manager'], ChangeEmailView()),
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Setting': (context) => SettingsPage(),
+          '/Category': (context) => ViewCategoryView(),
           '/signup': (context) => RegisterPage(),
           '/addCategory': (context) => InsertCategoryScreen(),
-
         },
       ),
     );

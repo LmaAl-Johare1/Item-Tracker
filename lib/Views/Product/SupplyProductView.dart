@@ -20,7 +20,6 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
     _viewModel.addListener(() {
       setState(() {});
     });
-    // _viewModel.scanProduct(); // Optional: remove or keep as needed
   }
 
   @override

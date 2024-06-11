@@ -6,17 +6,17 @@ import '../../res/AppText.dart';
 
 class ProfileAdmin extends StatefulWidget {
   @override
-  _ProfileAdminState createState() => _ProfileAdminState(); // Corrected class name
+  _ProfileAdminState createState() => _ProfileAdminState();
 }
 
-class _ProfileAdminState extends State<ProfileAdmin> { // Corrected class name
-  late Profileadminviewmodel _viewModel; // Corrected ViewModel name
+class _ProfileAdminState extends State<ProfileAdmin> {
+  late Profileadminviewmodel _viewModel;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = Profileadminviewmodel(); // Corrected ViewModel name
-    _viewModel.fetchUserData(); // Fetch user data
+    _viewModel = Profileadminviewmodel();
+    _viewModel.fetchUserData();
   }
 
   InputDecoration _buildInputDecoration(String labelText, String placeholder) {
@@ -49,7 +49,7 @@ class _ProfileAdminState extends State<ProfileAdmin> { // Corrected class name
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!; // Retrieve localized strings
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -62,14 +62,14 @@ class _ProfileAdminState extends State<ProfileAdmin> { // Corrected class name
           },
         ),
         title: Text(
-          localizations.admin, // Use localized string for 'Profile Admin'
+          localizations.admin,
           style: TextStyle(
             fontSize: AppText.headingOne.fontSize,
             fontWeight: AppText.headingThree.fontWeight,
             color: AppColor.primary,
           ),
         ),
-        centerTitle: true, // Align the title in the center
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -77,24 +77,24 @@ class _ProfileAdminState extends State<ProfileAdmin> { // Corrected class name
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 40), // Reduced height
+              SizedBox(height: 40),
               Text(
-                localizations.personalInformation, // Use localized string for 'Personal Information'
+                localizations.personalInformation,
                 style: TextStyle(
                   color: AppColor.secondary,
                   fontSize: AppText.headingTwo.fontSize,
                 ),
               ),
-              SizedBox(height: 20), // Reduced height
+              SizedBox(height: 20),
               Column(
                 children: [
-                  SizedBox(height: 30), // Added height for spacing
+                  SizedBox(height: 30),
                   TextField(
                     controller: _viewModel.emailController,
-                    enabled: false, // Set email field to read-only
+                    enabled: false,
                     decoration: _buildInputDecoration(
-                      localizations.email, // Use localized string for 'Email'
-                      localizations.emailExample, // Use localized string for example
+                      localizations.email,
+                      localizations.emailExample,
                     ),
                   ),
                 ],

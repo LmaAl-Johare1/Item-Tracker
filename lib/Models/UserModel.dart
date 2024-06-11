@@ -1,21 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:project/res/AppColor.dart';
-import 'package:project/res/AppText.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-
-// Model
 class UserModel {
   String businessName;
   String businessAddress;
   String phoneNumber;
   String email;
+  String role;
 
   UserModel({
     required this.businessName,
     required this.businessAddress,
     required this.phoneNumber,
     required this.email,
+    required this.role,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> data) {
@@ -24,6 +19,7 @@ class UserModel {
       businessAddress: data['businessAddress'] ?? '',
       phoneNumber: data['phoneNumber'] ?? '',
       email: data['email'] ?? '',
+      role: data['role'] ?? 'admin',
     );
   }
 
@@ -33,6 +29,7 @@ class UserModel {
       'businessAddress': businessAddress,
       'phoneNumber': phoneNumber,
       'email': email,
+      'role': role,
     };
   }
 }

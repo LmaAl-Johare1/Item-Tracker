@@ -2,6 +2,7 @@ import '../../../services/network_service.dart';
 import 'package:flutter/material.dart';
 import 'package:project/utils/validators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
@@ -14,9 +15,11 @@ class LoginViewModel extends ChangeNotifier {
   String? _passwordError;
 
   String get email => _email;
+
   String get password => _password;
 
   String? get emailError => _emailError;
+
   String? get passwordError => _passwordError;
 
   void setEmail(String email) {
@@ -53,7 +56,15 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> login() async {
     if (validateFields()) {
       try {
-        final userData = await _networkService.fetchData('Users', 'email', _email);
+        // Sign in user
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        // Once signed in, proceed with fetching user data and role
+        final userData = await _networkService.fetchData(
+            'Users', 'email', _email);
 
         if (userData.isEmpty) {
           _emailError = 'Email does not exist';
@@ -80,6 +91,7 @@ class LoginViewModel extends ChangeNotifier {
         _passwordError = null;
         notifyListeners();
 
+        // Fetch user role after successful login
       } catch (e) {
         _passwordError = 'Failed to sign in: $e';
         notifyListeners();
@@ -87,14 +99,18 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _updatePasswordInFirestore(String email, String newPassword) async {
+  Future<void> _updatePasswordInFirestore(String email,
+      String newPassword) async {
     try {
-      var userDoc = await _firestore.collection('Users').where('email', isEqualTo: email).limit(1).get();
+      var userDoc = await _firestore.collection('Users').where(
+          'email', isEqualTo: email).limit(1).get();
       if (userDoc.docs.isNotEmpty) {
-        await _firestore.collection('Users').doc(userDoc.docs.first.id).update({'password': newPassword});
+        await _firestore.collection('Users').doc(userDoc.docs.first.id).update(
+            {'password': newPassword});
       }
     } catch (e) {
       throw Exception("Failed to update password in Firestore: $e");
     }
   }
+
 }
