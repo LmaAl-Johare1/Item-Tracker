@@ -128,7 +128,7 @@ class MyAppState extends State<MyApp> {
         },
         initialRoute: '/',
         routes: {
-          '/': (context) => ViewCategoryView(),
+          '/': (context) => MyHomePage(),
           '/addCategory': (context) => InsertCategoryScreen(),
           '/VerifyEmailView': (context) => VerifyEmailView(),
           '/changePassword': (context) => ChangePasswordView(),

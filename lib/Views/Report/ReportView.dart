@@ -3,10 +3,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project/ViewModels/Report/ReportViewModel.dart';
 import 'package:project/Views/dashboard/DashboardView.dart';
 import 'package:provider/provider.dart';
+import 'package:project/Models/Report.dart';
 
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 import '../Setting/SettingView.dart';
+import 'DataSearch.dart';
 
 class ReportView extends StatefulWidget {
   @override
@@ -53,7 +55,7 @@ class _ReportViewState extends State<ReportView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // Ensure the build method is implemented
     final localizations = AppLocalizations.of(context)!;
 
     return ChangeNotifierProvider(
@@ -73,68 +75,54 @@ class _ReportViewState extends State<ReportView> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                final viewModel = Provider.of<ReportViewModel>(context, listen: false);
+                await viewModel.fetchTransactions();
+                showSearch(context: context, delegate: DataSearch(viewModel.report));
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _searchController,
-                        onChanged: (value) {
-                          print('Search query: $value');
-                          Provider.of<ReportViewModel>(context, listen: false).searchTransactions(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: localizations.search,
-                          prefixIcon: Icon(Icons.search),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(15.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      _showDatePicker(context);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Icon(Icons.filter_list),
-                    ),
-                  ),
-                ],
+                // children: [
+                //   Expanded(
+                //     child: Container(
+                //       height: 50,
+                //
+                //     ),
+                //   ),
+                //   SizedBox(width: 10),
+                //   // GestureDetector(
+                //   //   onTap: () {
+                //   //     _showDatePicker(context);
+                //   //   },
+                //   //   child: Container(
+                //   //     height: 50,
+                //   //     width: 50,
+                //   //     padding: EdgeInsets.all(10.0),
+                //   //     decoration: BoxDecoration(
+                //   //       color: Colors.white,
+                //   //       borderRadius: BorderRadius.circular(10.0),
+                //   //       boxShadow: [
+                //   //         BoxShadow(
+                //   //           color: Colors.grey.withOpacity(0.5),
+                //   //           spreadRadius: 2,
+                //   //           blurRadius: 5,
+                //   //           offset: Offset(0, 3),
+                //   //         ),
+                //   //       ],
+                //   //     ),
+                //   //     child: Icon(Icons.filter_list),
+                //   //   ),
+                //   // ),
+                // ],
               ),
             ),
             SizedBox(height: 20),

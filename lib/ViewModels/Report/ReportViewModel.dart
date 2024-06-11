@@ -16,8 +16,12 @@ class ReportViewModel extends ChangeNotifier {
       final data = await _networkService.fetchAll('Reports');
       if (data.isNotEmpty) {
         report = data.map((e) => Report.fromMap(e)).toList();
+
+        // Sort the reports by date in descending order (latest first)
+        report.sort((a, b) => b.date.compareTo(a.date));
+
         filteredReport = report;
-        print('Fetched reports: $report'); // Debug print
+        print('Fetched and sorted reports: $report'); // Debug print
       } else {
         print('No data in Reports collection');
       }
@@ -35,8 +39,9 @@ class ReportViewModel extends ChangeNotifier {
     } else {
       filteredReport = report.where((report) {
         final operationLower = report.operation.toLowerCase();
+        final productNameLower = report.productName.toLowerCase();
         final searchLower = query.toLowerCase();
-        return operationLower.contains(searchLower);
+        return operationLower.contains(searchLower) || productNameLower.contains(searchLower);
       }).toList();
     }
     print('Search results: $filteredReport'); // Debug print
