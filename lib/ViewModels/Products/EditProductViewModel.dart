@@ -109,4 +109,19 @@ class EditProductViewModel extends ChangeNotifier {
     };
     await updateProduct(product.productId, updatedData);
   }
+
+  Future<void> deleteProduct(BuildContext context) async {
+    try {
+      await _networkService.deleteData('products', 'productId', product.productId);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Product deleted successfully'),
+      ));
+      Navigator.pop(context, true); // Return true to indicate success
+      Navigator.pop(context); // Go back to products view screen
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to delete product: $error'),
+      ));
+    }
+  }
 }
