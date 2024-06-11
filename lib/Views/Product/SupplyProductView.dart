@@ -49,7 +49,7 @@ class _SupplyProductPageState extends State<SupplyProductPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/dashboard');
           },
