@@ -54,7 +54,7 @@
   "delete": "حذف",
   "productDetails": "تفاصيل المنتج",
   "id": "المعرف",
-  "items": "العناصر",
+  "items": ":العناصر",
   "expDate": "تاريخ الانتهاء",
   "chooseFromGallery": "اختيار من المعرض",
   "takeAPhoto": "التقاط صورة",
@@ -81,6 +81,6 @@
   "reminders": "تذكيرات",
    "categoryName":"اسم فئة",
    "insertCategory":"إدراج فئة",
-   "categories": "الفئات"
-
+   "categories": "الفئات",
+  "profileStuffs":"صفحه الموظف"
 }

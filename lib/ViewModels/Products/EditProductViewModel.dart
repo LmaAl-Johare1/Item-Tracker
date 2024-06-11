@@ -1,42 +1,139 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../Models/products.dart';
-import '../../Services/network_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProductViewModel extends ChangeNotifier {
-  final NetworkService _networkService = NetworkService();
-  late Product product;
+  String? imagePath;
+  String? productName;
+  String? productId;
+  int quantity = 1;
+  DateTime? expDate;
+  String? selectedCategory;
 
-  EditProductViewModel(Product product) {
-    this.product = product;
+  List<String> categories = [];
+
+  final TextEditingController productNameController = TextEditingController();
+  final TextEditingController productIdController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+  final TextEditingController expDateController = TextEditingController();
+
+  EditProductViewModel(String initialProductId) {
+    productId = initialProductId;
+    loadProductData(initialProductId);
+    loadCategories();
   }
 
-  Future<void> updateProduct(String productId, Map<String, dynamic> updatedData) async {
+  @override
+  void dispose() {
+    productNameController.dispose();
+    productIdController.dispose();
+    quantityController.dispose();
+    expDateController.dispose();
+    super.dispose();
+  }
+
+  Future<void> loadProductData(String productId) async {
+    if (productId.isEmpty) {
+      print('Product ID is empty');
+      return;
+    }
+
     try {
-      print('Updating Product with productId: $productId');
-      print('Updated data: $updatedData');
+      DocumentSnapshot productDoc = await FirebaseFirestore.instance
+          .collection('products')
+          .doc(productId)
+          .get();
 
-      // Fetch the document based on productId
-      final productData = await _networkService.fetchData('products', 'productId', productId);
-      if (productData.isEmpty) {
-        print('Document with productId $productId does not exist.');
-        return;
-      }
+      if (productDoc.exists) {
+        Map<String, dynamic> productData = productDoc.data() as Map<String, dynamic>;
 
-      // Update the document
-      await _networkService.updateData('products', 'productId', productId, updatedData);
+        productName = productData['productName'];
+        this.productId = productData['productId'];
+        quantity = productData['quantity'];
+        expDate = (productData['expDate'] as Timestamp).toDate();
+        selectedCategory = productData['category'];
+        imagePath = productData['imagePath'];
 
-      // Verify the update
-      final updatedProductData = await _networkService.fetchData('products', 'productId', productId);
-      if (updatedProductData.isNotEmpty) {
-        product = Product.fromMap(updatedProductData, productId);
+        productNameController.text = productName ?? '';
+        productIdController.text = this.productId ?? '';
+        quantityController.text = quantity.toString();
+        expDateController.text = expDate?.toLocal().toString().split(' ')[0] ?? '';
+
         notifyListeners();
-        print('Product updated successfully');
       } else {
-        print('Failed to fetch updated Product.');
+        print('Product not found');
       }
-    } catch (error) {
-      print('Error updating Product: $error');
+    } catch (e) {
+      print('Error loading product data: $e');
+    }
+  }
+
+  Future<void> loadCategories() async {
+    try {
+      QuerySnapshot categorySnapshot = await FirebaseFirestore.instance
+          .collection('Categories')
+          .get();
+
+      categories = categorySnapshot.docs
+          .map((doc) => doc['name'] as String)
+          .toList();
+
+      notifyListeners();
+    } catch (e) {
+      print('Error loading categories: $e');
+    }
+  }
+
+  Future<void> updateImagePath(String path) async {
+    imagePath = path;
+    notifyListeners();
+  }
+
+  void updateProductName(String name) {
+    productName = name;
+    notifyListeners();
+  }
+
+  void updateProductId(String id) {
+    productId = id;
+    notifyListeners();
+  }
+
+  void incrementQuantity() {
+    quantity++;
+    notifyListeners();
+  }
+
+  void decrementQuantity() {
+    if (quantity > 1) {
+      quantity--;
+      notifyListeners();
+    }
+  }
+
+  void updateExpDate(DateTime date) {
+    expDate = date;
+    expDateController.text = expDate!.toLocal().toString().split(' ')[0];
+    notifyListeners();
+  }
+
+  void updateSelectedCategory(String? category) {
+    selectedCategory = category;
+    notifyListeners();
+  }
+
+  Future<void> saveProduct() async {
+    try {
+      await FirebaseFirestore.instance.collection('products').doc(productId).update({
+        'productName': productName,
+        'productId': productId,
+        'quantity': quantity,
+        'expDate': expDate,
+        'category': selectedCategory,
+        'imagePath': imagePath,
+      });
+      print('Product updated successfully');
+    } catch (e) {
+      print('Error saving product: $e');
     }
   }
 }
