@@ -20,6 +20,8 @@ import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
 
 import 'ViewModels/products/ProductViewModel.dart';
+import 'Views/Authentication/ResetPasswordView.dart';
+import 'Views/Authentication/SetNewPassword.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
 import 'Views/Profile/AdminProfileView.dart';
@@ -151,8 +153,10 @@ class MyAppState extends State<MyApp> {
         },
         routes: {
           '/': (context) => WelcomeScreen(),
+          '/resetPassword': (context) => ResetPassword(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
+          '/resetPassword': (context) => ResetPassword(),
           '/RegisterBack': (context) => LoginScreen(),
           '/SettingsPage': (context) => SettingsPage(),
           '/MyHomePage': (context) => MyHomePage(),
@@ -170,8 +174,8 @@ class MyAppState extends State<MyApp> {
           '/Setting': (context) => SettingsPage(),
           '/ProfileStuff': (context) => ProfileStuff(),
           '/ProfileAdmin': (context) => ProfileAdmin(),
-          '/EditProfile': (context) => EditProfile(),
-          '/signup': (context) =>
+          '/signup': (context) => RegisterPage(),
+          '/AddAccount': (context) =>
               _permissionChecker.canAccessFeature(context, ['Admin'], RegisterPage()),
           '/reminders': (context) =>
               _permissionChecker.canAccessFeature(context, ['Manager', 'Admin'], RemindersView()),
@@ -180,6 +184,8 @@ class MyAppState extends State<MyApp> {
           '/generateBarcode': (context) => GenerateBarcodeView(),
           '/Category': (context) => ViewCategoryView(),
           '/addCategory': (context) => InsertCategoryScreen(),
+
+
         },
       ),
     );
