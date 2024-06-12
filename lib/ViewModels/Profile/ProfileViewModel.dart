@@ -2,40 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../Services/UserService.dart';
-import '../../Services/network_service.dart';
+import '../../Services/network_service.dart'; // Import your network service class
 
-/// ViewModel for managing and editing the profile data of a user.
-///
-/// This class provides functionality to fetch and update the profile data
-/// of a user with the role "Manager" from Firestore.
 class ProfileViewModel extends ChangeNotifier {
-  /// Controller for the business name text field.
   final TextEditingController businessNameController = TextEditingController();
-
-  /// Controller for the business address text field.
   final TextEditingController businessAddressController = TextEditingController();
-
-  /// Controller for the phone number text field.
   final TextEditingController phoneController = TextEditingController();
-
-  /// Controller for the email text field.
   final TextEditingController emailController = TextEditingController();
 
-  /// Instance of UserService to fetch user roles.
   final UserService _userService = UserService();
+  final NetworkService _networkService = NetworkService(); // Instance of NetworkService
 
-  /// Instance of NetworkService to fetch and update data from Firestore.
-  final NetworkService _networkService = NetworkService();
-
-  /// Flag to track whether the profile is in editing mode.
   bool isEditing = false;
 
-  /// Fetches the user data for the currently logged-in user.
-  ///
-  /// This method fetches the user data from Firestore and populates the text
-  /// controllers with the fetched data. It ensures that the current user has
-  /// the role "Manager". If the user is not a manager or no user is logged in,
-  /// appropriate messages are printed to the console.
   Future<void> fetchUserData() async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -65,12 +44,41 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  /// Toggles the editing mode for the profile.
-  ///
-  /// This method switches the `isEditing` flag between true and false,
-  /// and notifies listeners of the change.
   void toggleEditing() {
     isEditing = !isEditing;
     notifyListeners();
+  }
+
+  Future<void> saveChanges(BuildContext context) async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        final userId = currentUser.uid;
+        await _networkService.updateData('Users', 'userId', userId, {
+          'businessName': businessNameController.text,
+          'businessAddress': businessAddressController.text,
+          'phoneNumber': phoneController.text,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Changes saved successfully!'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+
+        toggleEditing();
+      }
+    } catch (error) {
+      print('Error saving changes: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to save changes'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
