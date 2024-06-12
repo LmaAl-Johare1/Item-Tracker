@@ -64,23 +64,6 @@ class _ReminderCardState extends State<ReminderCard> {
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: widget.onAcknowledge,
-                        child: Text(AppLocalizations.of(context)!.ok),
-                      ),
-                      SizedBox(width: 8),
-                      TextButton(
-                        onPressed: widget.onDelete,
-                        child: Text(
-                          AppLocalizations.of(context)!.delete,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
