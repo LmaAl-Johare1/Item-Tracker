@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
+import 'package:provider/provider.dart';
 import '../../ViewModels/Profile/ProfileViewModel.dart'; // Import your view model
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
@@ -77,6 +78,17 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(_viewModel.isEditing ? Icons.save : Icons.edit, color: AppColor.primary),
+            onPressed: () {
+              if (_viewModel.isEditing) {
+                _viewModel.saveChanges(context);
+              }
+              _toggleEditing();
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -95,23 +107,6 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 20), // Reduced height
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        color: AppColor.primary,
-                        onPressed: _toggleEditing,
-                      ),
-                      Text(
-                        localizations.edit, // Use localized string for 'Edit'
-                        style: TextStyle(
-                          color: AppColor.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                   TextField(
                     controller: _viewModel.businessNameController,
                     enabled: _viewModel.isEditing,
