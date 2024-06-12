@@ -132,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 size: 35,
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/signup');
+                Navigator.pushReplacementNamed(context, '/AddAccount');
               },
             ),
           ),
@@ -247,7 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     size: 25,
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/VerifyEmailView');
+                    Navigator.pushReplacementNamed(context, '/changePassword');
                   },
                 ),
                 ListTile(
