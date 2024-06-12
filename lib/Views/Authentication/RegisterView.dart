@@ -13,7 +13,6 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final RegisterViewModel _registerViewModel = RegisterViewModel(NetworkService());
-  String _selectedRole = 'Admin';
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
@@ -23,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
   late AppLocalizations localizations;
+  String _selectedRole = '';
 
   @override
   void didChangeDependencies() {
@@ -220,38 +220,45 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: AppText.headingsix.fontWeight,
                       )),
                       ListTile(
-                        title: Text(localizations.admin), // Use localized string
+                        title: Text(localizations.admin),
                         leading: Radio<String>(
                           value: 'Admin',
-                          groupValue: model.selectedRole,
+                          groupValue: _selectedRole,
                           onChanged: (value) {
-                            model.setSelectedRole(value!);
+                            setState(() {
+                              _selectedRole = value!;
+                            });
                           },
                           activeColor: AppColor.primary,
                         ),
                       ),
                       ListTile(
-                        title: Text(localizations.manager), // Use localized string
+                        title: Text(localizations.manager),
                         leading: Radio<String>(
                           value: 'Manager',
-                          groupValue: model.selectedRole,
+                          groupValue: _selectedRole,
                           onChanged: (value) {
-                            model.setSelectedRole(value!);
+                            setState(() {
+                              _selectedRole = value!;
+                            });
                           },
                           activeColor: AppColor.primary,
                         ),
                       ),
                       ListTile(
-                        title: Text(localizations.staff), // Use localized string
+                        title: Text(localizations.staff),
                         leading: Radio<String>(
                           value: 'Staff',
-                          groupValue: model.selectedRole,
+                          groupValue: _selectedRole,
                           onChanged: (value) {
-                            model.setSelectedRole(value!);
+                            setState(() {
+                              _selectedRole = value!;
+                            });
                           },
                           activeColor: AppColor.primary,
                         ),
                       ),
+
                       if (model.selectedRole != 'Manager')
                         buildContinueButton(),
                       if (model.selectedRole == 'Manager')

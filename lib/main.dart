@@ -11,11 +11,13 @@ import 'Services/network_service.dart';
 import 'ViewModels/Authentication/LoginViewModel.dart';
 import 'ViewModels/Authentication/ResetPasswordViewModel.dart';
 import 'ViewModels/Dashboard/DashboardViewModel.dart';
+import 'ViewModels/Reminder/ReminderViewModel.dart';
 import 'ViewModels/Report/ReportViewModel.dart';
 import 'ViewModels/Setting/DeleteAccountViewModel.dart';
 import 'ViewModels/WelcomeScreenViewModel.dart';
 import 'ViewModels/products/InsertProductViewModel.dart';
 import 'ViewModels/Category/ViewCategoryViewModel.dart';
+
 import 'ViewModels/products/ProductViewModel.dart';
 import 'Views/Category/InsertCategoryView.dart';
 import 'Views/Category/ViewCategoryView.dart';
@@ -71,7 +73,15 @@ class MyAppState extends State<MyApp> {
   Locale _locale = Locale('en');
   late final NetworkService _networkService;
   late final UserService _userService;
-  late final PermissionChecker _permissionChecker;
+  late PermissionChecker _permissionChecker;
+
+  @override
+  void initState() {
+    super.initState();
+    _networkService = NetworkService();
+    _userService = UserService();
+    _permissionChecker = PermissionChecker(_userService);
+  }
 
   MyApp() {
     _networkService = NetworkService();
@@ -84,12 +94,7 @@ class MyAppState extends State<MyApp> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _networkService = NetworkService();
-    _userService = UserService();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +103,7 @@ class MyAppState extends State<MyApp> {
         ChangeNotifierProvider<LoginViewModel>(
           create: (_) => LoginViewModel(),
         ),
+
         ChangeNotifierProvider<ResetPasswordViewModel>(
           create: (_) => ResetPasswordViewModel(),
         ),
@@ -118,6 +124,9 @@ class MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => SplashViewModel(NetworkService()),
+        ),
+        ChangeNotifierProvider<RemindersViewModel>(
+          create: (_) => RemindersViewModel(),
         ),
         Provider.value(value: _userService),
       ],
@@ -144,12 +153,11 @@ class MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
-        initialRoute: '/signup',
+        initialRoute: '/login',
         routes: {
 
           '/': (context) => MyHomePage(),
 
-          '/LoginPage': (context) => LoginScreen(),
           '/LoginFromReset': (context) => LoginScreen(),
           '/login': (context) => LoginScreen(),
           '/RegisterBack': (context) => LoginScreen(),
@@ -159,13 +167,11 @@ class MyAppState extends State<MyApp> {
           '/dashboard': (context) => MyHomePage(),
           '/insertProduct': (context) => InsertProductView(),
           '/supplyProduct': (context) => SupplyProductPage(),
-          '/charts': (context) => _permissionChecker.canAccessFeature(context, 'Staff', ChartView()),
+          '/charts': (context) => _permissionChecker.canAccessFeature(context, ['Manager','Admin'], ChartView()),
           '/viewCategories': (context) => ViewCategoryView(),
           '/changePassword': (context) => ChangePasswordView(),
-          '/deleteAccount': (context) => _permissionChecker.canAccessFeature(context, ['Staff', 'Manager'], DeleteAccountPage()),
+          '/deleteAccount': (context) => _permissionChecker.canAccessFeature(context, ['Admin'], DeleteAccountPage()),
           '/managerProfile': (context) => Profile(),
-          '/reminders': (context) => RemindersView(),
-          '/changeEmail': (context) => ChangeEmailView(),
           '/Setting': (context) => SettingsPage(),
           '/ProfileStuff': (context) => ProfileStuff(),
           '/ProfileAdmin': (context) => ProfileAdmin(),
@@ -176,12 +182,10 @@ class MyAppState extends State<MyApp> {
 
 
 
-          '/reminders': (context) => _permissionChecker.canAccessFeature(context, 'Staff', RemindersView()),
-          '/changeEmail': (context) => _permissionChecker.canAccessFeature(context, ['Staff', 'Manager'], ChangeEmailView()),
+          '/reminders': (context) => _permissionChecker.canAccessFeature(context, ['Manager','Admin'], RemindersView()),
+          '/changeEmail': (context) => _permissionChecker.canAccessFeature(context, ['Admin'], ChangeEmailView()),
           '/generateBarcode': (context) => GenerateBarcodeView(),
-          '/Setting': (context) => SettingsPage(),
           '/Category': (context) => ViewCategoryView(),
-          '/signup': (context) => RegisterPage(),
           '/addCategory': (context) => InsertCategoryScreen(),
         },
       ),

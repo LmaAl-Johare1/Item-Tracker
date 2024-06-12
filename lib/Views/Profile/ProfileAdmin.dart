@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import generated localizations
-import '../../ViewModels/ProfileAdminViewModel.dart';
-import '../../ViewModels/ProfileStaffViewModel.dart'; // Corrected import
+import '../../ViewModels/Profile/AdminProfileViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 

@@ -23,7 +23,7 @@ class ProfileViewModel extends ChangeNotifier {
         final userRole = await _userService.fetchUserRole(userId);
 
         if (userRole == 'Manager') {
-          final managerData = await _networkService.fetchData('Users', 'user_role', 'Manager');
+          final managerData = await _networkService.fetchData('Users', 'userId', userId);
 
           if (managerData != null) {
             businessNameController.text = managerData['businessName'] ?? '';

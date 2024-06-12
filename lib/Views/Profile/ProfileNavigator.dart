@@ -10,8 +10,12 @@ import 'StuffProfileView.dart';
 class ProfileNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Retrieve user role
-    final Future<String?> userRole = UserService().fetchUserRole(FirebaseAuth.instance.currentUser!.uid);
+
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+    print('Current user: $currentUser');
+    final Future<String?>? userRole = currentUser != null ? UserService().fetchUserRole(currentUser.uid) : null;
+
     return FutureBuilder<String?>(
       future: userRole,
       builder: (context, snapshot) {
@@ -22,6 +26,7 @@ class ProfileNavigator extends StatelessWidget {
           return Text('Error fetching user role');
         } else {
           final String? role = snapshot.data;
+          print('User role: $role');
           switch (role) {
             case 'Admin':
               return ProfileAdmin();

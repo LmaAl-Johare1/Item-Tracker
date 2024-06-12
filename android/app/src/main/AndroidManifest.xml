@@ -2,10 +2,13 @@
     package="com.company.itemtracker">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <application
         android:label="project"
         android:name="androidx.multidex.MultiDexApplication"
         android:icon="@mipmap/ic_launcher">
+        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ActionBroadcastReceiver" android:exported="true"/>
 
         <activity
             android:name=".MainActivity"

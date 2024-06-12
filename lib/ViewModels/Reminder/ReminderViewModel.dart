@@ -9,8 +9,16 @@ class RemindersViewModel extends ChangeNotifier {
   List<Reminder> get reminders => _reminders;
 
   RemindersViewModel() {
-    fetchReminders();
-    _checkAndAddRemindersForAllProducts();
+    _fetchAndAddReminders();
+  }
+
+  Future<void> _fetchAndAddReminders() async {
+    try {
+      await fetchReminders();
+      await _checkAndAddRemindersForAllProducts();
+    } catch (e) {
+      print('Failed to fetch and add reminders: $e');
+    }
   }
 
   Future<void> fetchReminders() async {
@@ -35,30 +43,38 @@ class RemindersViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteReminder(String reminderId) async {
+    try {
+      await _networkService.deleteData('Reminders', 'id', reminderId);
+      _reminders.removeWhere((reminder) => reminder.id == reminderId);
+      notifyListeners();
+    } catch (e) {
+      print('Failed to delete reminder: $e');
+    }
+  }
+
   Future<void> _checkAndAddRemindersForAllProducts() async {
     try {
       List<Map<String, dynamic>> productsData = await _networkService.fetchAll('products');
       for (var productData in productsData) {
-        String productId = productData['id'] ?? '';
-        await checkAndAddReminder(productId);
+        String productId = productData['productId'] ?? '';
+        await checkAndAddReminder(productId, productData);
       }
     } catch (e) {
       print('Failed to check and add reminders for all products: $e');
     }
   }
 
-  Future<void> checkAndAddReminder(String productId) async {
+  Future<void> checkAndAddReminder(String productId, Map<String, dynamic> productData) async {
     try {
-      Map<String, dynamic>? productData = await _networkService.fetchData('products', 'productId', productId);
-      if (productData == null) {
-        print('No document found for id: $productId');
+      bool reminderExists = _reminders.any((reminder) => reminder.productId == productId);
+      if (reminderExists) {
         return;
       }
 
       int currentStock = productData['quantity'] ?? 0;
       String productName = productData['productName'] ?? 'Unknown';
 
-      // Check if the product is near sold out
       if (currentStock <= 10) {
         Reminder newReminder = Reminder(
           id: '',
@@ -68,11 +84,8 @@ class RemindersViewModel extends ChangeNotifier {
           timestamp: DateTime.now(),
         );
 
-        //await _networkService.sendData('Reminders', newReminder.toMap());
-        await fetchReminders();
-
-
-
+        _reminders.add(newReminder);
+        notifyListeners();
       }
     } catch (e) {
       print('Failed to check and add reminder: $e');

@@ -11,43 +11,57 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/img/logo.png'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/LoginPage');
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: AppColor.primary,
-                minimumSize: Size(204, 55),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(17),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/img/logo.png',
+                  height: constraints.maxHeight * 0.5, // Adjust image height
                 ),
-              ),
-              child: Text('Login' , style: AppText.ButtunText,),
-            ),
-            Visibility(
-              visible: viewModel.isSignUpVisible,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/signup');
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: AppColor.primary,
-                  minimumSize: Size(204, 55),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17),
+                SizedBox(height: constraints.maxHeight * 0.05), // Adjust spacing
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: AppColor.primary,
+                    minimumSize: Size(constraints.maxWidth * 0.5, 55), // Adjust button width
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                  ),
+                  child: Text(
+                    'Login',
+                    style: AppText.ButtunText,
                   ),
                 ),
-                child: Text('Sign up'),
-              ),
-            ),
-          ],
+                Visibility(
+                  visible: viewModel.isSignUpVisible,
+                  child: SizedBox(height: constraints.maxHeight * 0.02), // Adjust spacing
+                ),
+                Visibility(
+                  visible: viewModel.isSignUpVisible,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/signup');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColor.primary,
+                      minimumSize: Size(constraints.maxWidth * 0.5, 55), // Adjust button width
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                    ),
+                    child: Text('Sign up'),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
