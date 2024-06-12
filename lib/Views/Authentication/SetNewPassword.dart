@@ -4,10 +4,18 @@ import '../../ViewModels/Authentication/ResetPasswordViewModel.dart';
 import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 
-class SetNewPassword extends StatelessWidget {
+class SetNewPassword extends StatefulWidget {
   final String? email;
 
   SetNewPassword({required this.email});
+
+  @override
+  _SetNewPasswordState createState() => _SetNewPasswordState();
+}
+
+class _SetNewPasswordState extends State<SetNewPassword> {
+  bool _isPasswordObscured = true;
+  bool _isConfirmPasswordObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,7 @@ class SetNewPassword extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/resetPassword');
           },
         ),
       ),
@@ -44,7 +52,7 @@ class SetNewPassword extends StatelessWidget {
                 children: [
                   TextField(
                     controller: model.passwordController,
-                    obscureText: true,
+                    obscureText: _isPasswordObscured,
                     decoration: InputDecoration(
                       labelText: "New Password",
                       labelStyle: const TextStyle(
@@ -69,12 +77,23 @@ class SetNewPassword extends StatelessWidget {
                           vertical: 10, horizontal: 12),
                       alignLabelWithHint: true,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordObscured = !_isPasswordObscured;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
                   TextField(
                     controller: model.confirmPasswordController,
-                    obscureText: true,
+                    obscureText: _isConfirmPasswordObscured,
                     decoration: InputDecoration(
                       labelText: "Confirm Password",
                       labelStyle: const TextStyle(
@@ -99,6 +118,17 @@ class SetNewPassword extends StatelessWidget {
                           vertical: 10, horizontal: 12),
                       alignLabelWithHint: true,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(height: 40),
@@ -116,7 +146,7 @@ class SetNewPassword extends StatelessWidget {
                           ),
                         ),
                         onPressed: () async {
-                          await model.resetPassword(email);
+                          await model.resetPassword(widget.email);
                           if (model.emailError == null) {
                             Navigator.pushReplacementNamed(
                                 context, '/login');
