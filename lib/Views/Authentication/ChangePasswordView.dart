@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the loca
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
 
-import '../../ViewModels/authentication/ChangePasswordViewModel.dart';
+import '../../ViewModels/Authentication/ChangePasswordViewModel.dart';
 
 class ChangePasswordView extends StatelessWidget {
   @override
@@ -45,20 +45,47 @@ class ChangePasswordView extends StatelessWidget {
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.currentPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.currentPassword), // Use localized string
+                  obscureText: viewModel.isCurrentPasswordObscured,
+                  decoration: _buildInputDecoration(localizations.currentPassword).copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        viewModel.isCurrentPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        viewModel.toggleCurrentPasswordVisibility();
+                      },
+                    ),
+                  ),
                 ),
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.newPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.newPassword), // Use localized string
+                  obscureText: viewModel.isNewPasswordObscured,
+                  decoration: _buildInputDecoration(localizations.newPassword).copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        viewModel.isNewPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        viewModel.toggleNewPasswordVisibility();
+                      },
+                    ),
+                  ),
                 ),
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.confirmPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.confirmNewPassword), // Use localized string
+                  obscureText: viewModel.isConfirmPasswordObscured,
+                  decoration: _buildInputDecoration(localizations.confirmNewPassword).copyWith(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        viewModel.isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        viewModel.toggleConfirmPasswordVisibility();
+                      },
+                    ),
+                  ),
                 ),
                 SizedBox(height: 100),
                 if (viewModel.errorMessage != null)
