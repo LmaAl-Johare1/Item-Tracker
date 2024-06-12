@@ -7,6 +7,7 @@ import '../../ViewModels/Reminder/ReminderViewModel.dart';
 import '../../utils/validators.dart';
 import 'package:provider/provider.dart';
 
+/// ViewModel for handling user authentication and login functionality.
 class LoginViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,16 +30,21 @@ class LoginViewModel extends ChangeNotifier {
 
   String? get userId => _userId; // Getter for user ID
 
+  /// Sets the email value.
   void setEmail(String email) {
     _email = email;
     notifyListeners();
   }
 
+  /// Sets the password value.
   void setPassword(String password) {
     _password = password;
     notifyListeners();
   }
 
+  /// Validates the email and password fields.
+  ///
+  /// Returns true if both fields are valid, otherwise false.
   bool validateFields() {
     bool isValid = true;
 
@@ -60,12 +66,15 @@ class LoginViewModel extends ChangeNotifier {
     return isValid;
   }
 
+  /// Logs in the user.
+  ///
+  /// If the fields are valid, it attempts to sign in the user with the provided credentials.
+  /// Displays appropriate error messages if the sign-in fails.
   Future<void> login(BuildContext context) async {
     if (validateFields()) {
       try {
         final RemindersViewModel reminderViewModel = Provider.of<RemindersViewModel>(context, listen: false);
-        final UserCredential userCredential = await _auth
-            .signInWithEmailAndPassword(
+        final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: _email.trim(),
           password: _password.trim(),
         );
@@ -81,8 +90,7 @@ class LoginViewModel extends ChangeNotifier {
         }
 
         // Fetch user data using the authenticated user's ID
-        final userData = await _networkService.fetchData(
-            'Users', 'userId', _userId!);
+        final userData = await _networkService.fetchData('Users', 'userId', _userId!);
 
         // Check if user is a manager
         final bool isManager = userData['user_role'] == 'Manager';

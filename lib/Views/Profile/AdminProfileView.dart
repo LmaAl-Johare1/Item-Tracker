@@ -65,7 +65,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
           localizations.admin,
           style: TextStyle(
             fontSize: AppText.headingOne.fontSize,
-            fontWeight: AppText.headingThree.fontWeight,
+            fontWeight: AppText.headingOne.fontWeight,
             color: AppColor.primary,
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project/Services/network_service.dart';
 
+/// ViewModel for managing data related to the home page.
 class MyHomePageViewModel extends ChangeNotifier {
   int _total = 0;
   int _productIn = 0;
@@ -10,43 +11,59 @@ class MyHomePageViewModel extends ChangeNotifier {
   DateTime _lastReset = DateTime.now();
   final NetworkService _networkService = NetworkService();
 
+  /// Total quantity of products.
   int get total => _total;
+
+  /// Total quantity of products received.
   int get productIn => _productIn;
+
+  /// Total quantity of products supplied.
   int get productOut => _productOut;
+
+  /// Total quantity of products supplied overall.
   int get totalSupplied => _totalSupplied;
+
+  /// Timestamp of the last reset.
   DateTime get lastReset => _lastReset;
 
+  /// Sets the total quantity of products.
   set total(int value) {
     _total = value;
     notifyListeners();
   }
 
+  /// Sets the total quantity of products received.
   set productIn(int value) {
     _productIn = value;
     notifyListeners();
   }
 
+  /// Sets the total quantity of products supplied.
   set productOut(int value) {
     _productOut = value;
     notifyListeners();
   }
 
+  /// Sets the total quantity of products supplied overall.
   set totalSupplied(int value) {
     _totalSupplied = value;
     notifyListeners();
   }
 
+  /// Sets the timestamp of the last reset.
   set lastReset(DateTime value) {
     _lastReset = value;
     notifyListeners();
   }
 
+  /// Initializes the view model by updating product in count and listening for product insertions.
   Future<void> initialize() async {
     await updateProductInCount();
     listenForProductInsertions();
     checkAndAggregateQuantities();
   }
 
+  /// Updates the product in count.
   Future<void> updateProductInCount() async {
     try {
       int totalQuantity = 0;
@@ -67,6 +84,7 @@ class MyHomePageViewModel extends ChangeNotifier {
     }
   }
 
+  /// Listens for product insertions and updates counts accordingly.
   void listenForProductInsertions() {
     FirebaseFirestore.instance.collection('products').snapshots().listen(
           (snapshot) {
@@ -102,6 +120,7 @@ class MyHomePageViewModel extends ChangeNotifier {
     );
   }
 
+  /// Checks and aggregates quantities of products supplied.
   void checkAndAggregateQuantities() {
     FirebaseFirestore.instance
         .collection('products')
@@ -135,6 +154,7 @@ class MyHomePageViewModel extends ChangeNotifier {
     );
   }
 
+  /// Updates the product out count.
   void updateProductOut(int suppliedQuantity) {
     _productOut += suppliedQuantity;
     _productIn -= suppliedQuantity;
@@ -142,6 +162,7 @@ class MyHomePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Resets the product out counter.
   void resetProductOutCounter() {
     _productOut = 0;
     _lastReset = DateTime.now();

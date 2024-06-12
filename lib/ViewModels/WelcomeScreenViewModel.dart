@@ -13,10 +13,13 @@ class SplashViewModel with ChangeNotifier {
 
   Future<void> _checkEmail() async {
     try {
+      // Fetch all users from the Users collection
       List<Map<String, dynamic>> users = await _networkService.fetchAll('Users');
-      _isSignUpVisible = users.isEmpty;
+      // Check if there are no users with an 'email' field
+      _isSignUpVisible = users.isEmpty || users.every((user) => user['email'] == null);
       notifyListeners();
     } catch (e) {
+      // Handle any errors that occur during the fetch operation
       print('Error checking emails: $e');
     }
   }

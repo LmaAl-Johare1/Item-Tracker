@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (_registerViewModel.validateFields()) {
       _registerViewModel.signUp().then((_) {
-        Navigator.pushReplacementNamed(context, '/dashboard');
+        Navigator.pushReplacementNamed(context, '/login');
       }).catchError((error) {
         _showSnackBar('Error signing up: $error');
       });
@@ -72,12 +72,6 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppColor.primary),
-            onPressed: (){
-              Navigator.pushReplacementNamed(context, '/RegisterBack');
-            },
-          ),
           title: Text(
             localizations.register,
             style: TextStyle(
@@ -258,10 +252,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           activeColor: AppColor.primary,
                         ),
                       ),
-
-                      if (model.selectedRole != 'Manager')
+                      if (_selectedRole != 'Manager')
                         buildContinueButton(),
-                      if (model.selectedRole == 'Manager')
+                      if (_selectedRole == 'Manager')
                         managerFields(model),
                     ],
                   );

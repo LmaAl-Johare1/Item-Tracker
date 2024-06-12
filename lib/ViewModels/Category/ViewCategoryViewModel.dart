@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import '../../Services/network_service.dart';
 import 'package:project/Models/Category.dart';
 
+/// ViewModel for viewing categories and fetching products by category.
 class ViewCategoryViewModel with ChangeNotifier {
   final NetworkService _networkService = NetworkService();
   List<Category> _categories = [];
   String? _errorMessage;
 
+  /// List of categories.
   List<Category> get categories => _categories;
+
+  /// Error message, if any.
   String? get errorMessage => _errorMessage;
 
+  /// Fetches all categories from the database.
   Future<void> fetchCategories() async {
     try {
       final List<Map<String, dynamic>> data = await _networkService.fetchAll('Categories');
@@ -23,6 +28,7 @@ class ViewCategoryViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Fetches products by category.
   Future<void> fetchProductsByCategory(String categoryName) async {
     try {
       List<DocumentSnapshot> result = await _networkService.fetchProductsByCategory(categoryName);
@@ -36,5 +42,7 @@ class ViewCategoryViewModel with ChangeNotifier {
   }
 
   List<Map<String, dynamic>> _products = [];
+
+  /// List of products.
   List<Map<String, dynamic>> get products => _products;
 }

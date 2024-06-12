@@ -2,12 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:project/Models/Report.dart';
 import '../../Services/network_service.dart';
 
+/// ViewModel for managing and filtering reports.
+///
+/// This class handles fetching reports from the database, searching through the reports,
+/// and filtering the reports by date.
 class ReportViewModel extends ChangeNotifier {
+  /// Instance of NetworkService to handle database operations.
   final NetworkService _networkService = NetworkService();
+
+  /// List of all reports fetched from the database.
   List<Report> report = [];
+
+  /// List of filtered reports based on search query or date.
   List<Report> filteredReport = [];
+
+  /// Boolean to indicate if the reports are currently being fetched.
   bool isLoading = false;
 
+  /// Fetches all transactions (reports) from the database.
+  ///
+  /// This method fetches all reports from the 'Reports' collection in Firestore,
+  /// sorts them by date in descending order (latest first), and updates the local lists.
   Future<void> fetchTransactions() async {
     isLoading = true;
     notifyListeners();
@@ -33,6 +48,12 @@ class ReportViewModel extends ChangeNotifier {
     }
   }
 
+  /// Searches through the transactions based on a query.
+  ///
+  /// This method filters the reports based on whether the query matches the operation
+  /// or product name of a report. If the query is empty, it resets the filtered reports to the full list.
+  ///
+  /// [query] - The search query to filter the reports.
   void searchTransactions(String query) {
     if (query.isEmpty) {
       filteredReport = report;
@@ -48,6 +69,11 @@ class ReportViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Filters the transactions based on a selected date.
+  ///
+  /// This method filters the reports to only include those that match the selected date.
+  ///
+  /// [selectedDate] - The date to filter the reports by.
   void filterTransactionsByDate(DateTime selectedDate) {
     filteredReport = report.where((report) {
       return report.date.year == selectedDate.year &&

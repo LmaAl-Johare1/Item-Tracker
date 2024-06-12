@@ -1,13 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// A class representing a Reminder with various attributes.
 class Reminder {
+  /// The ID of the reminder.
   final String id;
+
+  /// The ID of the associated product.
   final String productId;
+
+  /// The name of the associated product.
   final String productName;
+
+  /// The current stock of the product.
   final int currentStock;
+
+  /// The timestamp of when the reminder was created.
   final DateTime timestamp;
+
+  /// Whether the reminder has been acknowledged.
   final bool acknowledged;
 
+  /// Constructs a Reminder instance.
+  ///
+  /// The [id], [productId], [productName], [currentStock], and [timestamp] parameters are required.
+  /// The [acknowledged] parameter is optional and defaults to false.
   Reminder({
     required this.id,
     required this.productId,
@@ -17,6 +33,11 @@ class Reminder {
     this.acknowledged = false,
   });
 
+  /// Creates a Reminder instance from a Map object.
+  ///
+  /// The [data] parameter should be a Map<String, dynamic> containing the reminder data.
+  /// The [documentId] parameter represents the reminder ID.
+  /// Returns a Reminder instance with the data from the Map object.
   factory Reminder.fromMap(Map<String, dynamic>? data, String documentId) {
     if (data == null) {
       throw ArgumentError('Data cannot be null');
@@ -32,6 +53,9 @@ class Reminder {
     );
   }
 
+  /// Converts the Reminder instance to a Map object.
+  ///
+  /// Returns a Map<String, dynamic> representing the reminder data.
   Map<String, dynamic> toMap() {
     return {
       'productId': productId,
@@ -41,5 +65,4 @@ class Reminder {
       'acknowledged': acknowledged,
     };
   }
-
 }

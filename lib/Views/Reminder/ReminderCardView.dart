@@ -30,6 +30,7 @@ class _ReminderCardState extends State<ReminderCard> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+      color: Colors.white, // Set card background color to white
       child: Column(
         children: [
           ListTile(
@@ -60,11 +61,6 @@ class _ReminderCardState extends State<ReminderCard> {
                   SizedBox(height: 8),
                   Text(
                     '${AppLocalizations.of(context)!.quantity}: ${widget.reminder.currentStock}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    '${AppLocalizations.of(context)!.timestamp}: ${widget.reminder.timestamp}',
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 20),

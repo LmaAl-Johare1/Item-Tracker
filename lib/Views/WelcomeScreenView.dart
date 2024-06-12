@@ -56,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(17),
                       ),
                     ),
-                    child: Text('Sign up'),
+                    child: Text('Sign up', style: AppText.ButtunText,),
                   ),
                 ),
               ],

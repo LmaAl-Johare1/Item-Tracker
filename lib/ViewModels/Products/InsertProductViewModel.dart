@@ -8,6 +8,10 @@ import 'dart:io';
 import '../../services/network_service.dart';
 import '../../utils/validators.dart';
 
+/// ViewModel for inserting a new product.
+///
+/// This class provides functionality for adding a new product, including scanning barcodes,
+/// uploading images, and validating input fields.
 class InsertProductViewModel with ChangeNotifier {
   final NetworkService _networkService = NetworkService();
 
@@ -27,7 +31,7 @@ class InsertProductViewModel with ChangeNotifier {
   File? _imageFile;
   String? _imageUrl;
 
-  /// Getters
+  /// Getters for accessing private fields
   String? get selectedCategory => _selectedCategory;
   String? get imagePath => _imagePath;
   String? get productId => _productId;
