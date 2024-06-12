@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 
 import '../../Services/network_service.dart';
 
+/// ViewModel for managing category data and image uploads.
 class CategoryViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
 
@@ -21,17 +22,20 @@ class CategoryViewModel extends ChangeNotifier {
   File? get imageFile => _imageFile;
   String? get imageUrl => _imageUrl;
 
+  /// Updates the image path.
   void updateImagePath(String path) {
     _imagePath = path;
     notifyListeners();
   }
 
+  /// Updates the category name.
   void updateCategoryName(String name) {
     _name = name;
     _errorMessage = null; // Reset the error message when updating the name
     notifyListeners();
   }
 
+  /// Picks an image from the device's camera.
   Future<void> pickImage() async {
     var pickedImage = await ImagePicker().getImage(source: ImageSource.camera);
     if (pickedImage != null) {
@@ -40,6 +44,7 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
+  /// Uploads the selected image to Firebase Storage.
   Future<void> uploadImage(BuildContext context) async {
     if (_imageFile == null) return;
     try {
@@ -60,6 +65,7 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
+  /// Saves the category data and image URL to the database.
   Future<void> saveCategory(BuildContext context) async {
     if (_name == null || _name!.isEmpty) {
       _errorMessage = "Please enter a valid category name";
@@ -94,6 +100,7 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
+  /// Resets all fields to their initial state.
   void resetFields() {
     _imagePath = null;
     _name = null;

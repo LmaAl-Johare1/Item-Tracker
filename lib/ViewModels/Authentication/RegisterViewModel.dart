@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import '../../Services/network_service.dart';
 import '../../utils/validators.dart';
 
+/// ViewModel for handling user registration.
 class RegisterViewModel extends ChangeNotifier {
   final NetworkService _networkService;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,7 +14,7 @@ class RegisterViewModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
   String _confirmPassword = '';
-  String _selectedRole = 'Admin';
+  String _selectedRole = '';
   String _businessName = '';
   String _phoneNumber = '';
   String _businessAddress = '';
@@ -57,6 +58,7 @@ class RegisterViewModel extends ChangeNotifier {
   /// Sets the selected role.
   void setSelectedRole(String role) {
     _selectedRole = role;
+    print('Selected role: $_selectedRole'); // Add this line for debugging
     notifyListeners();
   }
 
@@ -79,6 +81,8 @@ class RegisterViewModel extends ChangeNotifier {
   }
 
   /// Validates the form fields and updates error messages.
+  ///
+  /// Returns true if all fields are valid, otherwise false.
   bool validateFields() {
     bool isValid = true;
 

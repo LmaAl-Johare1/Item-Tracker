@@ -165,37 +165,20 @@ class _EditProductViewState extends State<EditProductView> {
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: AppColor.primary,
-                            minimumSize: Size(100, 55),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              model.saveProduct(context);
-                              Navigator.pop(context, true); // Return true to indicate success
-                            }
-                          },
-                          child: Text(AppLocalizations.of(context)!.save, style: AppText.ButtunText), // Localized text
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: AppColor.validation,
-                            minimumSize: Size(100, 55),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
-                          ),
-                          onPressed: () {
-                            model.deleteProduct(context);
-                          },
-                          child: Text(AppLocalizations.of(context)!.delete, style: AppText.ButtunText), // Localized text
-                        ),
-                      ],
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: AppColor.primary,
+                        minimumSize: Size(204, 55),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          model.saveProduct(context);
+                          Navigator.pop(context, true); // Return true to indicate success
+                        }
+                      },
+                      child: Text(AppLocalizations.of(context)!.save, style: AppText.ButtunText), // Localized text
                     ),
                   ),
                 ],

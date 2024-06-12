@@ -165,10 +165,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.all(25),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RemindersView()),
-                          );
+                          Navigator.pushNamed(context, '/reminders');
+
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 8)),
@@ -193,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             const Expanded(
                               child: SizedBox(),
                             ),
-                            const Icon(Icons.arrow_forward_ios, color: AppColor.primary),
+                            const Icon(Icons.arrow_forward, color: AppColor.primary),
                           ],
                         ),
                       ),

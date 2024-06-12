@@ -8,10 +8,17 @@ import 'package:path/path.dart' as path;
 import '../../Models/products.dart';
 import '../../Services/network_service.dart';
 
+/// ViewModel for editing a product.
+///
+/// This class provides functionality to edit and update product details, including product name, quantity,
+/// expiration date, and product image.
 class EditProductViewModel extends ChangeNotifier {
   final NetworkService _networkService = NetworkService();
   late Product product;
 
+  /// Constructor to initialize the EditProductViewModel with the given product.
+  ///
+  /// Sets up initial values for the text controllers and expiration date based on the given product.
   EditProductViewModel(this.product) {
     productNameController.text = product.productName;
     quantityController.text = product.quantity.toString();
@@ -26,6 +33,9 @@ class EditProductViewModel extends ChangeNotifier {
   File? _imageFile;
   String? _imageUrl;
 
+  /// Updates the product details in Firestore.
+  ///
+  /// Fetches the document based on productId, updates the document with the given data, and verifies the update.
   Future<void> updateProduct(String productId, Map<String, dynamic> updatedData) async {
     try {
       // Fetch the document based on productId
@@ -48,26 +58,41 @@ class EditProductViewModel extends ChangeNotifier {
     }
   }
 
+  /// Updates the product name.
+  ///
+  /// Notifies listeners about the change.
   void updateProductName(String value) {
     product.productName = value;
     notifyListeners();
   }
 
+  /// Updates the product quantity.
+  ///
+  /// Notifies listeners about the change.
   void updateQuantity(String value) {
     product.quantity = int.parse(value);
     notifyListeners();
   }
 
+  /// Updates the product expiration date.
+  ///
+  /// Notifies listeners about the change.
   void updateExpDate(DateTime? date) {
     expDate = date;
     notifyListeners();
   }
 
+  /// Updates the image path.
+  ///
+  /// Notifies listeners about the change.
   void updateImagePath(String path) {
     imagePath = path;
     notifyListeners();
   }
 
+  /// Picks an image from the specified source and updates the image path.
+  ///
+  /// Notifies listeners about the change.
   Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedImage = await picker.getImage(source: source);
@@ -78,6 +103,9 @@ class EditProductViewModel extends ChangeNotifier {
     }
   }
 
+  /// Uploads the selected image to Firebase Storage and updates the image URL.
+  ///
+  /// Displays a success or error message based on the upload result.
   Future<void> uploadImage(BuildContext context) async {
     if (_imageFile == null) return;
     try {
@@ -98,6 +126,9 @@ class EditProductViewModel extends ChangeNotifier {
     }
   }
 
+  /// Saves the updated product details.
+  ///
+  /// Uploads the selected image (if any) and updates the product details in Firestore.
   Future<void> saveProduct(BuildContext context) async {
     await uploadImage(context);
 
@@ -105,23 +136,8 @@ class EditProductViewModel extends ChangeNotifier {
       'productName': productNameController.text,
       'quantity': int.parse(quantityController.text),
       'expDate': Timestamp.fromDate(expDate!),
-      'imagePath': _imageUrl ?? imagePath, // Use uploaded image URL if available
+      'imagePath': _imageUrl ?? imagePath,
     };
     await updateProduct(product.productId, updatedData);
-  }
-
-  Future<void> deleteProduct(BuildContext context) async {
-    try {
-      await _networkService.deleteData('products', 'productId', product.productId);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Product deleted successfully'),
-      ));
-      Navigator.pop(context, true); // Return true to indicate success
-      Navigator.pop(context); // Go back to products view screen
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Failed to delete product: $error'),
-      ));
-    }
   }
 }

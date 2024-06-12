@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
     model.setEmail(_emailController.text);
     model.setPassword(_passwordController.text);
 
-    await model.login();
+    await model.login(context);
 
     if (model.emailError == null && model.passwordError == null) {
       Navigator.pushReplacementNamed(context, '/dashboard');

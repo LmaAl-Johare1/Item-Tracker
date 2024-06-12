@@ -15,8 +15,8 @@ class SplashViewModel with ChangeNotifier {
     try {
       // Fetch all users from the Users collection
       List<Map<String, dynamic>> users = await _networkService.fetchAll('Users');
-      // If there are no users, make the sign-up button visible
-      _isSignUpVisible = users.isEmpty;
+      // Check if there are no users with an 'email' field
+      _isSignUpVisible = users.isEmpty || users.every((user) => user['email'] == null);
       notifyListeners();
     } catch (e) {
       // Handle any errors that occur during the fetch operation

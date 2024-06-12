@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
               Text(
                 localizations.personalInformation, // Use localized string for 'Personal Information'
                 style: TextStyle(
-                  color: AppColor.secondary,
+                  color: AppColor.grey,
                   fontSize: AppText.headingTwo.fontSize,
                 ),
               ),

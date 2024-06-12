@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:project/Services/network_service.dart';
 import 'package:project/utils/validators.dart';
 
+/// ViewModel for handling password reset functionality.
 class ResetPasswordViewModel extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -19,6 +20,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
 
   final NetworkService _networkService = NetworkService();
 
+  /// Checks if the entered email exists and sets [_email] if it does.
   Future<void> checkEmail() async {
     String email = emailController.text.trim();
 
@@ -53,6 +55,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
     }
   }
 
+  /// Resets the password for the user associated with the provided email.
   Future<void> resetPassword(String? email) async {
     if (email == null) {
       _errorMessage = "Email is not set";
@@ -91,3 +94,5 @@ class ResetPasswordViewModel extends ChangeNotifier {
     }
   }
 }
+
+

@@ -5,18 +5,30 @@ import '../../Services/network_service.dart';
 import '../Dashboard/DashboardViewModel.dart';
 
 /// ViewModel for managing the supply of products.
+///
+/// This class provides functionality to scan product barcodes,
+/// fetch product information, update product supply quantity,
+/// and send reports.
 class SupplyProductViewModel with ChangeNotifier {
-  TextEditingController productIdController = TextEditingController();
-  TextEditingController supplyQuantityController = TextEditingController();
+  final TextEditingController productIdController = TextEditingController();
+  final TextEditingController supplyQuantityController = TextEditingController();
   String scannedProductId = '';
   String productInfoMessage = '';
   Product? product;
   int suppliedQuantity = 0;
   final NetworkService _networkService = NetworkService();
   final MyHomePageViewModel _dashboardViewModel;
+
+  /// Constructs the [SupplyProductViewModel] with the given [MyHomePageViewModel].
+  ///
+  /// [dashboardViewModel] The view model for the dashboard.
   SupplyProductViewModel(this._dashboardViewModel);
 
-  /// Scans a Product barcode and fetches Product information.
+  /// Scans a product barcode and fetches product information.
+  ///
+  /// This method uses the FlutterBarcodeScanner to scan the barcode.
+  /// If the scan is successful, it fetches the product information
+  /// based on the scanned product ID.
   Future<void> scanProduct() async {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
@@ -33,22 +45,32 @@ class SupplyProductViewModel with ChangeNotifier {
     }
   }
 
+  /// Updates the product ID and fetches product information.
+  ///
+  /// [value] The new product ID.
   void updateProductId(String value) async {
     scannedProductId = value;
-    await fetchProductInfo(value); // Fetch product info when the ID is updated
+    await fetchProductInfo(value);
     notifyListeners();
   }
 
+  /// Updates the supply quantity.
+  ///
+  /// [value] The new supply quantity.
   void updateSupplyQuantity(String value) {
     supplyQuantityController.text = value;
     notifyListeners();
   }
 
-  /// Fetches Product information based on the Product ID.
+  /// Fetches product information based on the product ID.
+  ///
+  /// This method retrieves the product data from Firestore
+  /// and updates the local product state.
+  ///
+  /// [productId] The ID of the product to fetch.
   Future<void> fetchProductInfo(String productId) async {
     try {
-      var data = await _networkService.fetchData(
-          'products', 'productId', productId);
+      var data = await _networkService.fetchData('products', 'productId', productId);
       if (data.isNotEmpty) {
         product = Product.fromMap(data, productId);
         productInfoMessage =
@@ -62,7 +84,10 @@ class SupplyProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Saves the supplied Product quantity to the database and sends a report.
+  /// Saves the supplied product quantity to the database and sends a report.
+  ///
+  /// This method updates the product quantity in Firestore,
+  /// sends a report of the supply operation, and updates the dashboard.
   Future<void> saveProduct() async {
     if (product != null) {
       suppliedQuantity = int.tryParse(supplyQuantityController.text) ?? 0;
