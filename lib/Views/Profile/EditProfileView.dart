@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project/res/AppColor.dart';
 import 'package:project/res/AppText.dart';
-
 import '../../ViewModels/Profile/EditProfileViewModel.dart';
 
 class EditProfile extends StatelessWidget {
@@ -23,6 +22,15 @@ class EditProfile extends StatelessWidget {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.save, color: AppColor.primary),
+              onPressed: () {
+                final viewModel = Provider.of<EditProfileViewModel>(context, listen: false);
+                viewModel.saveChanges(context);
+              },
+            ),
+          ],
         ),
         body: Consumer<EditProfileViewModel>(
           builder: (context, viewModel, child) {
