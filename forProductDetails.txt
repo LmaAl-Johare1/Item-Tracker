@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:project/res/AppColor.dart';
+import 'package:project/res/AppText.dart';
+import'package:project/viewmodels/ProductDetailsviewm.dart';
+class ProductDetailsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.primary),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text('Product Details', style: TextStyle(
+            fontSize: AppText.headingOne.fontSize,
+            fontWeight: AppText.headingOne.fontWeight,
+            color: AppColor.primary)),
+        centerTitle: true,
+        elevation: 0, // Removes shadow under the app bar
+      ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Card(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Column(
+                    children: <Widget>[
+                      //Image.asset('assets/milk_image.png'), // Use your actual image asset path
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Milk',
+                            style: TextStyle(
+                                fontSize: AppText.HeadingTwo.fontSize,
+                                fontWeight: AppText.HeadingTwo.fontWeight,
+                                color: AppColor.primary),
+                          ),
+                          TextButton(
+                            onPressed: () => NavigationHelper.navigateToEditProduct(context),
+                              // Handle edit action
+
+                            child: Text(
+                              'edit',
+                              style: TextStyle(fontSize: AppText.HeadingFive.fontSize,
+                                  fontWeight: AppText.HeadingFive.fontWeight,
+                                  color: AppColor.productInfo),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text('ID: #123', style: TextStyle(fontSize: AppText.HeadingFive.fontSize,
+                          fontWeight: AppText.HeadingFive.fontWeight,
+                          color: AppColor.productInfo)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+
+              margin: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+              decoration: BoxDecoration(
+                color: AppColor.secondary,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+
+                children: <Widget>[
+                  Text(
+                    'Item(s):',
+                    style: TextStyle(
+                        fontSize: AppText.headingThree.fontSize,
+                        fontWeight: AppText.headingThree.fontWeight,
+                        color: AppColor.primary),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    '13',
+                    style: TextStyle(fontSize: AppText.headingThree.fontSize,
+                        fontWeight: AppText.headingThree.fontWeight,
+                        color: AppColor.primary),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+              decoration: BoxDecoration(
+                color: AppColor.validation, // Light red background
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Exp Date:',
+                    style: TextStyle(fontSize: AppText.headingThree.fontSize,
+                        fontWeight: AppText.headingThree.fontWeight,
+                        color: AppColor.secondary),
+                  ),
+                  Text(
+                    '20/05/2024',
+                    style: TextStyle(fontSize: AppText.headingFour.fontSize,
+                        fontWeight: AppText.headingFour.fontWeight,
+                        color: AppColor.secondary),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
