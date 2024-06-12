@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Import the localization
-import 'package:project/res/AppColor.dart';
-import 'package:project/res/AppText.dart';
-
-import '../../ViewModels/authentication/ChangePasswordViewModel.dart';
+import '../../res/AppColor.dart';
+import '../../res/AppText.dart';
+import '../../ViewModels/Authentication/ChangePasswordViewModel.dart';
 
 class ChangePasswordView extends StatelessWidget {
   @override
@@ -16,23 +15,15 @@ class ChangePasswordView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    localizations.changePassword, // Use localized string
-                    style: TextStyle(
-                      fontSize: AppText.headingOne.fontSize,
-                      fontWeight: AppText.headingOne.fontWeight,
-                      color: AppColor.primary,
-                    ),
-                  ),
-                ),
+          title: Center(
+            child: Text(
+              localizations.changePassword,
+              style: TextStyle(
+                fontSize: AppText.headingOne.fontSize,
+                fontWeight: AppText.headingOne.fontWeight,
+                color: AppColor.primary,
               ),
-              SizedBox(width: 40), // Use SizedBox to leave space
-            ],
+            ),
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
@@ -45,20 +36,32 @@ class ChangePasswordView extends StatelessWidget {
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.currentPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.currentPassword), // Use localized string
+                  obscureText: viewModel.isCurrentPasswordObscured,
+                  decoration: _buildInputDecoration(
+                    localizations.currentPassword, // Use localized string
+                        () => viewModel.toggleCurrentPasswordVisibility(),
+                    viewModel.isCurrentPasswordObscured,
+                  ),
                 ),
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.newPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.newPassword), // Use localized string
+                  obscureText: viewModel.isNewPasswordObscured,
+                  decoration: _buildInputDecoration(
+                    localizations.newPassword, // Use localized string
+                        () => viewModel.toggleNewPasswordVisibility(),
+                    viewModel.isNewPasswordObscured,
+                  ),
                 ),
                 SizedBox(height: 70),
                 TextField(
                   controller: viewModel.confirmPasswordController,
-                  obscureText: true,
-                  decoration: _buildInputDecoration(localizations.confirmNewPassword), // Use localized string
+                  obscureText: viewModel.isConfirmPasswordObscured,
+                  decoration: _buildInputDecoration(
+                    localizations.confirmNewPassword, // Use localized string
+                        () => viewModel.toggleConfirmPasswordVisibility(),
+                    viewModel.isConfirmPasswordObscured,
+                  ),
                 ),
                 SizedBox(height: 100),
                 if (viewModel.errorMessage != null)
@@ -82,7 +85,10 @@ class ChangePasswordView extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      await _saveChanges(context);
+                      bool success = await viewModel.changePassword();
+                      if (success) {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      }
                     },
                     child: Text(localizations.save, style: AppText.ButtonText), // Use localized string
                   ),
@@ -95,15 +101,7 @@ class ChangePasswordView extends StatelessWidget {
     );
   }
 
-  Future<void> _saveChanges(BuildContext context) async {
-    var viewModel = Provider.of<ChangePasswordViewModel>(context, listen: false);
-    bool success = await viewModel.changePassword();
-    if (success) {
-      Navigator.of(context).pushReplacementNamed('/login');
-    }
-  }
-
-  InputDecoration _buildInputDecoration(String labelText) {
+  InputDecoration _buildInputDecoration(String labelText, VoidCallback toggleVisibility, bool isObscured) {
     return InputDecoration(
       labelText: labelText,
       labelStyle: TextStyle(
@@ -127,6 +125,13 @@ class ChangePasswordView extends StatelessWidget {
       contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       alignLabelWithHint: true,
       floatingLabelBehavior: FloatingLabelBehavior.always,
+      suffixIcon: IconButton(
+        icon: Icon(
+          isObscured ? Icons.visibility_off : Icons.visibility,
+          color: Colors.grey,
+        ),
+        onPressed: toggleVisibility,
+      ),
     );
   }
 }

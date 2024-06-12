@@ -85,11 +85,12 @@ class ResetPassword extends StatelessWidget {
                           ),
                           onPressed: () async {
                             await model.checkEmail();
-                            if (model.emailSent) {
+                            if (model.emailSent && model.email != null) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SetNewPassword(email: model.email)),
+                                  builder: (context) => SetNewPassword(email: model.email!),
+                                ),
                               );
                             }
                           },

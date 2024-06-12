@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:project/Services/network_service.dart';
 import 'package:project/utils/validators.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /// ViewModel for handling password reset functionality.
 class ResetPasswordViewModel extends ChangeNotifier {
@@ -19,6 +20,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
   String? get email => _email;
 
   final NetworkService _networkService = NetworkService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Checks if the entered email exists and sets [_email] if it does.
   Future<void> checkEmail() async {
@@ -56,13 +58,7 @@ class ResetPasswordViewModel extends ChangeNotifier {
   }
 
   /// Resets the password for the user associated with the provided email.
-  Future<void> resetPassword(String? email) async {
-    if (email == null) {
-      _errorMessage = "Email is not set";
-      notifyListeners();
-      return;
-    }
-
+  Future<void> resetPassword(String email) async {
     String newPassword = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
 
@@ -83,16 +79,24 @@ class ResetPasswordViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      // Update password in Firebase Authentication
+      User? user = await _auth.currentUser;
+      await user?.updatePassword(newPassword);
+
+      // After resetting the password in Authentication, update it in Firestore
       await _networkService.updatePasswordInFirestore(email, newPassword);
+
       _isLoading = false;
       _errorMessage = null;
       notifyListeners();
-    } on Exception catch (e) {
+    } on FirebaseAuthException catch (e) {
+      _isLoading = false;
+      _errorMessage = e.message;
+      notifyListeners();
+    } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
       notifyListeners();
     }
   }
 }
-
-

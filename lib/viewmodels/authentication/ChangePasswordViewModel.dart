@@ -1,19 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../Services/network_service.dart'; // Import your network service
 
-/// ViewModel for changing user password.
 class ChangePasswordViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final NetworkService _networkService = NetworkService();
+
   final TextEditingController currentPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
-  /// Error message to be displayed in case of any errors during password change.
+  bool _isCurrentPasswordObscured = true;
+  bool _isNewPasswordObscured = true;
+  bool _isConfirmPasswordObscured = true;
+
   String? errorMessage;
 
-  /// Changes the user's password.
-  ///
-  /// Returns true if the password change was successful, otherwise false.
+  bool get isCurrentPasswordObscured => _isCurrentPasswordObscured;
+  bool get isNewPasswordObscured => _isNewPasswordObscured;
+  bool get isConfirmPasswordObscured => _isConfirmPasswordObscured;
+
+  void toggleCurrentPasswordVisibility() {
+    _isCurrentPasswordObscured = !_isCurrentPasswordObscured;
+    notifyListeners();
+  }
+
+  void toggleNewPasswordVisibility() {
+    _isNewPasswordObscured = !_isNewPasswordObscured;
+    notifyListeners();
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+    notifyListeners();
+  }
+
   Future<bool> changePassword() async {
     try {
       User? user = _auth.currentUser;
@@ -34,10 +55,15 @@ class ChangePasswordViewModel extends ChangeNotifier {
         return false;
       }
 
+      // Re-authenticate the user with the current password
       AuthCredential credential = EmailAuthProvider.credential(email: user.email!, password: currentPassword);
       await user.reauthenticateWithCredential(credential);
 
+      // Update password in Firebase Authentication
       await user.updatePassword(newPassword);
+
+      // Update password in Firestore
+      await _networkService.updatePasswordInFirestore(user.email!, newPassword);
 
       return true;
     } catch (e) {

@@ -36,14 +36,17 @@ class DeleteAccountViewModel extends ChangeNotifier {
   /// This method updates the [_emails] list and notifies listeners upon completion.
   Future<void> fetchEmails() async {
     List<Map<String, dynamic>> users = await _networkService.fetchAll('Users');
-    _emails = users.map((user) => user['email'] as String).toList();
+    _emails = users
+        .map((user) => user['email'] as String?)
+        .where((email) => email != null)
+        .map((email) => email!)
+        .toList();
     _emails = _emails.toSet().toList(); // Remove duplicates
     if (!_emails.contains(_selectedAccount)) {
       _selectedAccount = ''; // Reset selected account if it's not in the list
     }
     notifyListeners();
   }
-
   /// Deletes the selected account after re-authenticating the user.
   ///
   /// [password] - The password of the user for re-authentication.

@@ -88,43 +88,6 @@ class _ReportViewState extends State<ReportView> {
         ),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                // children: [
-                //   Expanded(
-                //     child: Container(
-                //       height: 50,
-                //
-                //     ),
-                //   ),
-                //   SizedBox(width: 10),
-                //   // GestureDetector(
-                //   //   onTap: () {
-                //   //     _showDatePicker(context);
-                //   //   },
-                //   //   child: Container(
-                //   //     height: 50,
-                //   //     width: 50,
-                //   //     padding: EdgeInsets.all(10.0),
-                //   //     decoration: BoxDecoration(
-                //   //       color: Colors.white,
-                //   //       borderRadius: BorderRadius.circular(10.0),
-                //   //       boxShadow: [
-                //   //         BoxShadow(
-                //   //           color: Colors.grey.withOpacity(0.5),
-                //   //           spreadRadius: 2,
-                //   //           blurRadius: 5,
-                //   //           offset: Offset(0, 3),
-                //   //         ),
-                //   //       ],
-                //   //     ),
-                //   //     child: Icon(Icons.filter_list),
-                //   //   ),
-                //   // ),
-                // ],
-              ),
-            ),
             SizedBox(height: 20),
             Expanded(
               child: Consumer<ReportViewModel>(

@@ -26,13 +26,14 @@ class CategoryProductView extends StatelessWidget {
           elevation: 0,
           iconTheme: IconThemeData(color: AppColor.primary),
           title: Text(
-            '${localizations.productIn} $categoryName', // Use localized string
+            '${localizations.product}', // Use localized string
             style: TextStyle(
               color: AppColor.primary,
               fontSize: AppText.HeadingOne.fontSize,
               fontWeight: AppText.HeadingOne.fontWeight,
             ),
           ),
+          centerTitle:true ,
           actions: [
             IconButton(
               icon: Icon(Icons.add),

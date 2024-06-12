@@ -38,11 +38,12 @@ class ChangeEmailViewModel extends ChangeNotifier {
   Future<void> fetchEmails() async {
     try {
       // Fetch all user documents from the Users collection
-      print('Fetching emails from database...');
       List<Map<String, dynamic>> users = await networkService.fetchAll('Users');
-      print('Data received: $users');
-      emails = users.map((user) => user['email'].toString()).toList();
-      print('Parsed emails: $emails');
+      emails = users
+          .map((user) => user['email'] as String?)
+          .where((email) => email != null)
+          .map((email) => email!)
+          .toList();
       notifyListeners();
     } catch (e) {
       errorMessage = 'Failed to load emails: $e';
@@ -67,8 +68,12 @@ class ChangeEmailViewModel extends ChangeNotifier {
       try {
         User? user = FirebaseAuth.instance.currentUser;
         if (user != null && user.email == selectedEmail) {
+          // Debugging: Print current user email
+          print('Current user email: ${user.email}');
+
           // Update the email in Firebase Authentication
           await user.updateEmail(newEmailController.text);
+          print('Email updated in FirebaseAuth');
 
           // Update the email in Firestore
           await networkService.updateData(
@@ -77,6 +82,7 @@ class ChangeEmailViewModel extends ChangeNotifier {
             selectedEmail!, // Field and value to find the document
             {'email': newEmailController.text}, // New data to update
           );
+          print('Email updated in Firestore');
 
           successMessage = 'Email has been changed successfully';
           errorMessage = '';

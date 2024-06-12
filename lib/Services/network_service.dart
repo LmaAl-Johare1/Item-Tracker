@@ -303,4 +303,8 @@ class NetworkService {
       throw Exception("Error fetching product by ID: $e");
     }
   }
+
+
+
+
 }
