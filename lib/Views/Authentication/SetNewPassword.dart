@@ -5,7 +5,7 @@ import '../../res/AppColor.dart';
 import '../../res/AppText.dart';
 
 class SetNewPassword extends StatefulWidget {
-  final String email;
+  final String? email;
 
   SetNewPassword({required this.email});
 
