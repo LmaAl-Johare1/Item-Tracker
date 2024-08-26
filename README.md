@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Inventory Management System
 
 This Inventory Management System is a comprehensive mobile application built with Flutter and Dart, designed to streamline inventory tracking and management for small to medium-sized businesses. The application provides an intuitive interface for managing products.
@@ -68,4 +67,3 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
->>>>>>> Dev2
