@@ -50,7 +50,7 @@ This Inventory Management System is a comprehensive mobile application built wit
 - Users can log in to access personalized dashboards.
 - Admins have full control over user and inventory management functionalities.
 - Managers and staff access is tailored according to their operational needs and permissions.
-=======
+
 # project
 
 A new Flutter project.
