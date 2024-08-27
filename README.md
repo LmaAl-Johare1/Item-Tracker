@@ -1,71 +1,47 @@
-# Item-Tracker
+# ItemTracker
 
-# Inventory Management System
+## Overview
 
-This Inventory Management System is a comprehensive mobile application built with Flutter and Dart, designed to streamline inventory tracking and management for small to medium-sized businesses. The application provides an intuitive interface for managing products.
+ItemTracker is an advanced inventory management system designed to streamline inventory operations for businesses. Built using modern technology, the application simplifies inventory organization, tracking, and management, making it a valuable tool for optimizing inventory practices and improving operational efficiency.
 
-## Key Features of the Inventory Management System
+## Key Features
 
-**Authentication and User Management**:
-- Streamlined sign-up and login processes for Admins, Managers, and Staff.
-- Robust account management options including adding new user accounts, deleting accounts, and changing passwords or emails.
-- Secure password reset functionality.
+- **Authentication and User Management**: Secure sign-up and login for Admins, Managers, and Staff with account management and password reset functionalities.
+- **Product Management**: Add, modify, and categorize products with features for barcode scanning and detail updates.
+- **Inventory Operations**: Real-time inventory monitoring, stock updates, and detailed dashboard for managing stock levels and expiration dates.
+- **Reports and Analytics**: Access detailed transaction history, visual analytics, and automated reminders for low-stock items.
+- **Multilingual Support**: Switch between English and Arabic for better accessibility.
 
+## User Roles and Permissions
 
-**Product Management**:
-- Efficiently add new products with details such as photos, names, barcodes, and expiration dates.
-- Modify existing product details, including rescan product ID.
-- Comprehensive product categorization with the ability to view, search, and add new categories directly from the app.
+### Administrator
+- **Full Control**: Manage accounts, oversee the dashboard, generate reports, and handle all product and category management.
+- **Advanced Features**: Access to detailed analytics, reminders, and multilingual support.
 
+### Manager
+- **Operational Access**: All features except account management (e.g., adding or deleting accounts) and email changes.
 
-**Inventory Operations**:
-- Supply products by scanning barcodes and updating inventory quantities.
-- Real-time inventory monitoring through a detailed dashboard that shows current stock levels, product in/out, and expiration statuses.
-
-
-**Navigation and Usability**:
-- Intuitive user interface with easy navigation between different sections like product details, category management, and user settings.
-- Multi-language support enabling users to switch between English and Arabic for improved usability.
-
-
-**Reports and Analytics**:
-- Detailed transaction history accessible through the reports section, with search capabilities to filter by date or keyword.
-- Visual analytics through charts displaying data on inventory status, such as items close to being sold out or nearing expiration.
-
-
-**Reminders and Notifications**:
-- Automated reminders for low-stock items to ensure timely replenishment.
-- Notification system within the app to alert users about important inventory updates.
-
-
-**Additional Features**:
-- Barcode generation directly from the app, with options to print generated barcodes.
-- Profile management tailored to user roles, allowing different levels of information access and edit capabilities.
-
-
-## System Requirements
-- Requires Flutter (latest version) for mobile app development.
-- Dart SDK for backend operations.
-- An IDE ( Visual Studio Code or Android Studio)
-
-## Usage Instructions
-- Users can log in to access personalized dashboards.
-- Admins have full control over user and inventory management functionalities.
-- Managers and staff access is tailored according to their operational needs and permissions.
-
-# project
-
-A new Flutter project.
+### Staff
+- **Restricted Access**: Limited to operational tasks, with no access to analytics, reminders, or account management.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. **Sign Up**: Begin by signing up as an Administrator to access all features.
+2. **Role Management**: Add and manage roles (Manager, Staff) as needed.
+3. **Product Management**: Use the barcode scanner to add products; manual entry is for exceptional cases.
+4. **Explore Features**: Navigate through the app to utilize features like reports, charts, and inventory tracking.
 
-A few resources to get you started if this is your first Flutter project:
+## Documentation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+For a detailed guide on using ItemTracker, including user roles and permissions, refer to the [Google Document](https://docs.google.com/document/d/1Wh5EtNXV5wWONsX_Lh_uvkBrW4_-qukQP4rolzDsAeQ/edit).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## System Requirements
+- **Flutter**: For mobile app development.
+- **Dart SDK**: For backend operations.
+- **IDE**: Visual Studio Code or Android Studio.
+
+## Resources
+- [Flutter Documentation](https://docs.flutter.dev/)
+- [Getting Started with Flutter](https://docs.flutter.dev/get-started/codelab)
+
+We hope you have a great experience with ItemTracker!
